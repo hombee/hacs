@@ -100,6 +100,7 @@ async def test_climate_state_reflects_registers(
     assert state.attributes["current_temperature"] == 21.9
     assert state.attributes["current_humidity"] == 45.5
     assert state.attributes["temperature"] == 24.0
+    assert state.attributes["target_temp_step"] == 0.1
     assert state.attributes["humidity"] == 50.0
     assert state.attributes["hvac_modes"] == ["auto"]
     assert state.attributes["preset_modes"] == [
@@ -120,13 +121,13 @@ async def test_set_temperature_writes_active_preset_pair(
     await hass.services.async_call(
         "climate",
         "set_temperature",
-        {"entity_id": CLIMATE_ENTITY, "temperature": 25.0},
+        {"entity_id": CLIMATE_ENTITY, "temperature": 25.1},
         blocking=True,
     )
-    assert ("comfort_heating_temperature_setpoint", 250) in mock_client.writes
-    assert ("comfort_cooling_temperature_setpoint", 250) in mock_client.writes
+    assert ("comfort_heating_temperature_setpoint", 251) in mock_client.writes
+    assert ("comfort_cooling_temperature_setpoint", 251) in mock_client.writes
     state = hass.states.get(CLIMATE_ENTITY)
-    assert state.attributes["temperature"] == 25.0
+    assert state.attributes["temperature"] == 25.1
 
 
 async def test_set_humidity_writes_active_preset_pair(
