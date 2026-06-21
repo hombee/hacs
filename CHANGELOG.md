@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/hombee/hacs/compare/v1.0.1...v1.0.2) (2026-06-21)
+
+### Bug Fixes
+
+* show Hombee as HACS author ([d0a10d1](https://github.com/hombee/hacs/commit/d0a10d15d0ef9a921d0485cd4e757db1a6dc87b7))
+
 ## [1.0.1](https://github.com/hombee/hacs/compare/v1.0.0...v1.0.1) (2026-06-21)
 
 ### Bug Fixes
