@@ -4,19 +4,17 @@ updates:
     directory: /
     schedule:
       interval: weekly
-    labels:
-      - dependencies
 
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: weekly
-    labels:
-      - dependencies
+    ignore:
+      # pytest-homeassistant-custom-component pins this test stack exactly.
+      - dependency-name: pytest
+      - dependency-name: pytest-asyncio
 
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
-    labels:
-      - dependencies
