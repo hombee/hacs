@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/hombee/hacs/compare/v1.0.0...v1.0.1) (2026-06-21)
+
+### Bug Fixes
+
+* unify Hombee Air climate mode selection ([22845be](https://github.com/hombee/hacs/commit/22845be9c3225749b50a9870d7d3fa1b513194c1))
+
 ## 1.0.0 (2026-06-21)
 
 ### Features
