@@ -64,6 +64,25 @@ jobs:
         uses: useblacksmith/checkout@v1
       - name: Run Docker smoke test
         run: bash scripts/ha_docker_smoke.sh
+  release:
+    name: Release dry run
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: useblacksmith/checkout@v1
+        with:
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24.10.0"
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install release dependencies
+        run: bun install --frozen-lockfile
+      - name: Verify release runtime
+        run: bun run release -- --dry-run --no-ci
   security:
     name: Security audit
     runs-on: blacksmith-2vcpu-ubuntu-2404

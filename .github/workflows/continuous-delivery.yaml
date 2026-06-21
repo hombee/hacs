@@ -28,6 +28,10 @@ jobs:
         uses: useblacksmith/setup-python@v6
         with:
           python-version: "3.12"
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24.10.0"
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
       - name: Install release dependencies
