@@ -2,7 +2,7 @@
   "domain": "hombee_air",
   "name": "Hombee Air",
   "codeowners": [
-    "@merlinnot"
+    "@hombee"
   ],
   "config_flow": true,
   "dependencies": [],

@@ -66,6 +66,7 @@ jobs:
         run: bash scripts/ha_docker_smoke.sh
   release:
     name: Release dry run
+    if: github.event_name != 'push'
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 10
     steps:
