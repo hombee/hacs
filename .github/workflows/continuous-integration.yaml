@@ -21,86 +21,65 @@ jobs:
     name: Python quality and tests
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 20
-
     steps:
       - name: Checkout
         uses: useblacksmith/checkout@v1
-
       - name: Set up Python
         uses: useblacksmith/setup-python@v6
         with:
           python-version: "3.12"
-
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
-
       - name: Check formatting
         run: black --check .
-
       - name: Lint Python
         run: ruff check .
-
       - name: Validate repository structure
         run: python scripts/validate_structure.py
-
       - name: Validate translations
         run: python scripts/check_translations.py
-
       - name: Run tests
         run: pytest
-
   home-assistant:
     name: Home Assistant compatibility
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 15
-
     steps:
       - name: Checkout
         uses: useblacksmith/checkout@v1
-
       - name: Validate HACS metadata
         uses: hacs/action@main
         with:
           category: integration
-
       - name: Run Hassfest
         uses: home-assistant/actions/hassfest@master
-
   docker:
     name: Home Assistant Docker smoke
     runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 15
-
     steps:
       - name: Checkout
         uses: useblacksmith/checkout@v1
-
       - name: Run Docker smoke test
         run: bash scripts/ha_docker_smoke.sh
-
   security:
     name: Security audit
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 15
-
     steps:
       - name: Checkout
         uses: useblacksmith/checkout@v1
-
       - name: Set up Python
         uses: useblacksmith/setup-python@v6
         with:
           python-version: "3.12"
-
       - name: Install audit tools
         run: |
           python -m pip install --upgrade pip
           python -m pip install "bandit[toml]==1.9.2" "pip-audit==2.10.0"
-
       - name: Run Bandit
         run: bandit -r custom_components scripts -c pyproject.toml
-
       - name: Audit runtime dependencies
         run: pip-audit --requirement requirements.txt
