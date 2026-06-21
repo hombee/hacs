@@ -1,9 +1,10 @@
 """Climate entity for the Hombee Air unit.
 
-The unit's programs map to climate presets (economy, comfort, comfort+,
-manual). Turning the unit off writes program 0; turning it on restores the
-last active program. Setpoint changes write the active program's register
-pair, mirroring how the unit resolves its own setpoints.
+The unit's programs map to climate presets (off, economy, comfort, comfort+,
+manual). Home Assistant only allows built-in HVAC modes, so Hombee Air exposes
+its user-facing program choice through presets and keeps HVAC mode as the
+internal auto/off operating state. Setpoint changes write the active program's
+register pair, mirroring how the unit resolves its own setpoints.
 """
 
 from __future__ import annotations
@@ -36,6 +37,7 @@ from .const import (
     KEY_ROOM_HUMIDITY,
     KEY_ROOM_TEMPERATURE,
     PRESET_COMFORT,
+    PRESET_OFF,
     PRESET_SETPOINTS,
     PRESET_TO_PROGRAM,
     PROGRAM_OFF,
@@ -74,7 +76,7 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
     _attr_max_temp = 35.0
     _attr_min_humidity = 0
     _attr_max_humidity = 100
-    _attr_hvac_modes: ClassVar[list[HVACMode]] = [HVACMode.OFF, HVACMode.AUTO]
+    _attr_hvac_modes: ClassVar[list[HVACMode]] = [HVACMode.AUTO]
     _attr_fan_modes: ClassVar[list[str]] = _FAN_MODES
     _attr_preset_modes: ClassVar[list[str]] = list(PRESET_TO_PROGRAM)
     _attr_supported_features = (
@@ -178,7 +180,7 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
     async def async_set_preset_mode(self, preset_mode: str) -> None:
         program = PRESET_TO_PROGRAM.get(preset_mode)
         if program is None:
-            raise HomeAssistantError(f"Unknown preset: {preset_mode}")
+            raise HomeAssistantError(f"Unknown mode: {preset_mode}")
         await self._write_program(program)
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
@@ -248,14 +250,14 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
 
     def _active_preset(self) -> PresetSetpoints | None:
         preset_mode = self.preset_mode
-        if preset_mode is None:
+        if preset_mode is None or preset_mode == PRESET_OFF:
             return None
-        return PRESET_SETPOINTS[preset_mode]
+        return PRESET_SETPOINTS.get(preset_mode)
 
     def _require_active_preset(self) -> PresetSetpoints:
         preset = self._active_preset()
         if preset is None:
-            raise HomeAssistantError("Select a preset before changing setpoints")
+            raise HomeAssistantError("Select an active mode before changing setpoints")
         return preset
 
     def _raw(self, key: str) -> int | bool | None:

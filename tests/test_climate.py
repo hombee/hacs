@@ -101,6 +101,14 @@ async def test_climate_state_reflects_registers(
     assert state.attributes["current_humidity"] == 45.5
     assert state.attributes["temperature"] == 24.0
     assert state.attributes["humidity"] == 50.0
+    assert state.attributes["hvac_modes"] == ["auto"]
+    assert state.attributes["preset_modes"] == [
+        "off",
+        "economy",
+        "comfort",
+        "comfort_plus",
+        "manual",
+    ]
     assert state.attributes["fan_mode"] == "2"
     assert state.attributes["preset_mode"] == "comfort"
     assert state.attributes["hvac_action"] == "heating"
@@ -148,21 +156,55 @@ async def test_set_preset_mode_writes_program(
     assert state.attributes["preset_mode"] == "economy"
 
 
+async def test_preset_mode_off_writes_program_off(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    await hass.services.async_call(
+        "climate",
+        "set_preset_mode",
+        {"entity_id": CLIMATE_ENTITY, "preset_mode": "off"},
+        blocking=True,
+    )
+    assert ("program_mode", 0) in mock_client.writes
+    assert hass.states.get(CLIMATE_ENTITY).state == "off"
+
+
+async def test_set_temperature_requires_active_mode(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    await hass.services.async_call(
+        "climate",
+        "set_preset_mode",
+        {"entity_id": CLIMATE_ENTITY, "preset_mode": "off"},
+        blocking=True,
+    )
+
+    with pytest.raises(HomeAssistantError):
+        await hass.services.async_call(
+            "climate",
+            "set_temperature",
+            {"entity_id": CLIMATE_ENTITY, "temperature": 22.0},
+            blocking=True,
+        )
+
+    assert ("comfort_heating_temperature_setpoint", 220) not in mock_client.writes
+
+
 async def test_turn_off_and_on_restores_program(
     hass: HomeAssistant, mock_client: MockModbusClient
 ) -> None:
     await hass.services.async_call(
         "climate",
-        "set_hvac_mode",
-        {"entity_id": CLIMATE_ENTITY, "hvac_mode": "off"},
+        "turn_off",
+        {"entity_id": CLIMATE_ENTITY},
         blocking=True,
     )
     assert ("program_mode", 0) in mock_client.writes
     assert hass.states.get(CLIMATE_ENTITY).state == "off"
     await hass.services.async_call(
         "climate",
-        "set_hvac_mode",
-        {"entity_id": CLIMATE_ENTITY, "hvac_mode": "auto"},
+        "turn_on",
+        {"entity_id": CLIMATE_ENTITY},
         blocking=True,
     )
     assert ("program_mode", 3) in mock_client.writes
