@@ -1,0 +1,32 @@
+write_register:
+  fields:
+    installation_id:
+      required: true
+      selector:
+        text:
+    key:
+      required: true
+      selector:
+        text:
+    value:
+      required: true
+      selector:
+        number:
+          mode: box
+          min: -32768
+          max: 65535
+
+write_coil:
+  fields:
+    installation_id:
+      required: true
+      selector:
+        text:
+    key:
+      required: true
+      selector:
+        text:
+    state:
+      required: true
+      selector:
+        boolean:

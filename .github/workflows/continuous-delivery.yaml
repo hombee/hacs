@@ -1,0 +1,38 @@
+name: Continuous delivery
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: useblacksmith/checkout@v1
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: useblacksmith/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install release dependencies
+        run: bun install --frozen-lockfile
+      - name: Release
+        run: bun run release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
