@@ -1,0 +1,59 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Połącz z Hombee Air",
+        "data": {
+          "host": "Host",
+          "name": "Nazwa",
+          "installation_id": "Identyfikator instalacji",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można połączyć się z centralą"
+    },
+    "abort": {
+      "already_configured": "Ta instalacja jest już skonfigurowana"
+    }
+  },
+  "services": {
+    "write_register": {
+      "name": "Zapisz rejestr",
+      "description": "Zapisuje surową wartość do zapisywalnego rejestru holding Hombee Air.",
+      "fields": {
+        "installation_id": {
+          "name": "Identyfikator instalacji",
+          "description": "Instalacja, do której należy centrala."
+        },
+        "key": {
+          "name": "Klucz punktu",
+          "description": "Klucz katalogowy rejestru holding."
+        },
+        "value": {
+          "name": "Wartość",
+          "description": "Surowa wartość rejestru do zapisania."
+        }
+      }
+    },
+    "write_coil": {
+      "name": "Zapisz cewkę",
+      "description": "Zapisuje stan do zapisywalnej cewki Hombee Air.",
+      "fields": {
+        "installation_id": {
+          "name": "Identyfikator instalacji",
+          "description": "Instalacja, do której należy centrala."
+        },
+        "key": {
+          "name": "Klucz punktu",
+          "description": "Klucz katalogowy cewki."
+        },
+        "state": {
+          "name": "Stan",
+          "description": "Stan cewki do zapisania."
+        }
+      }
+    }
+  }
+}

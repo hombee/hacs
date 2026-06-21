@@ -1,0 +1,59 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Hombee Air",
+        "data": {
+          "host": "Host",
+          "name": "Name",
+          "installation_id": "Installation id",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the unit"
+    },
+    "abort": {
+      "already_configured": "This installation is already configured"
+    }
+  },
+  "services": {
+    "write_register": {
+      "name": "Write register",
+      "description": "Writes a raw value to a writable Hombee Air holding register.",
+      "fields": {
+        "installation_id": {
+          "name": "Installation id",
+          "description": "Installation the unit belongs to."
+        },
+        "key": {
+          "name": "Point key",
+          "description": "Catalog key of the holding register."
+        },
+        "value": {
+          "name": "Value",
+          "description": "Raw register value to write."
+        }
+      }
+    },
+    "write_coil": {
+      "name": "Write coil",
+      "description": "Writes a state to a writable Hombee Air coil.",
+      "fields": {
+        "installation_id": {
+          "name": "Installation id",
+          "description": "Installation the unit belongs to."
+        },
+        "key": {
+          "name": "Point key",
+          "description": "Catalog key of the coil."
+        },
+        "state": {
+          "name": "State",
+          "description": "Coil state to write."
+        }
+      }
+    }
+  }
+}

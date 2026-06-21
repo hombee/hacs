@@ -1,0 +1,37 @@
+module.exports = {
+  branches: ["main"],
+  tagFormat: "v${version}",
+  plugins: [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        preset: "conventionalcommits",
+      },
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        preset: "conventionalcommits",
+      },
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        prepareCmd: "python scripts/set_version.py ${nextRelease.version}",
+      },
+    ],
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/git",
+      {
+        assets: [
+          "CHANGELOG.md",
+          "custom_components/hombee_air/manifest.json",
+        ],
+        message:
+          "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+      },
+    ],
+    "@semantic-release/github",
+  ],
+};

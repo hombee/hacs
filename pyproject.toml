@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hombee-hacs"
+version = "0.0.0"
+description = "Hombee Home Assistant Community Store integrations."
+requires-python = ">=3.12"
+dependencies = [
+  "pymodbus>=3.11,<4",
+  "voluptuous>=0.15,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "bandit[toml]==1.9.2",
+  "black==25.11.0",
+  "pip-audit==2.10.0",
+  "pytest==8.3.4",
+  "pytest-asyncio==0.24.0",
+  "pytest-homeassistant-custom-component==0.13.205",
+  "ruff==0.14.8",
+]
+
+[tool.setuptools]
+packages = []
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+  "A",
+  "ASYNC",
+  "B",
+  "BLE",
+  "C4",
+  "DTZ",
+  "E",
+  "F",
+  "FA",
+  "I",
+  "ICN",
+  "N",
+  "PERF",
+  "PIE",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "PTH",
+  "RET",
+  "RUF",
+  "S",
+  "SIM",
+  "T20",
+  "UP",
+  "W",
+]
+ignore = [
+  "PLR0913",
+  "PLR2004",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"custom_components/hombee_air/registers.py" = ["E501"]
+"tests/**" = ["S101"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.bandit]
+exclude_dirs = [".venv", "tests"]
+skips = ["B101"]
