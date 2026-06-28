@@ -40,6 +40,7 @@ class MockModbusClient:
         self.raw: dict[str, int | bool] = dict(_BASE_RAW)
         self.writes: list[tuple[str, int]] = []
         self.fail_writes = False
+        self.reflect_writes = True
 
     async def async_connect(self) -> None:
         pass
@@ -62,7 +63,8 @@ class MockModbusClient:
             future.set_exception(HombeeAirModbusError("write failed"))
             return future
         self.writes.append((register.key, raw_value))
-        self.raw[register.key] = raw_value
+        if self.reflect_writes:
+            self.raw[register.key] = raw_value
         future.set_result(None)
         return future
 
@@ -130,6 +132,21 @@ async def test_set_temperature_writes_active_preset_pair(
     assert state.attributes["temperature"] == 25.1
 
 
+async def test_set_temperature_survives_stale_immediate_readback(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    mock_client.reflect_writes = False
+    await hass.services.async_call(
+        "climate",
+        "set_temperature",
+        {"entity_id": CLIMATE_ENTITY, "temperature": 25.1},
+        blocking=True,
+    )
+    assert mock_client.raw["current_temperature_setpoint"] == 240
+    state = hass.states.get(CLIMATE_ENTITY)
+    assert state.attributes["temperature"] == 25.1
+
+
 async def test_set_humidity_writes_active_preset_pair(
     hass: HomeAssistant, mock_client: MockModbusClient
 ) -> None:
@@ -143,6 +160,21 @@ async def test_set_humidity_writes_active_preset_pair(
     assert ("comfort_cooling_humidity_setpoint", 550) in mock_client.writes
 
 
+async def test_set_humidity_survives_stale_immediate_readback(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    mock_client.reflect_writes = False
+    await hass.services.async_call(
+        "climate",
+        "set_humidity",
+        {"entity_id": CLIMATE_ENTITY, "humidity": 55},
+        blocking=True,
+    )
+    assert mock_client.raw["current_humidity_setpoint"] == 500
+    state = hass.states.get(CLIMATE_ENTITY)
+    assert state.attributes["humidity"] == 55
+
+
 async def test_set_preset_mode_writes_program(
     hass: HomeAssistant, mock_client: MockModbusClient
 ) -> None:
@@ -153,6 +185,21 @@ async def test_set_preset_mode_writes_program(
         blocking=True,
     )
     assert ("program_mode", 2) in mock_client.writes
+    state = hass.states.get(CLIMATE_ENTITY)
+    assert state.attributes["preset_mode"] == "economy"
+
+
+async def test_set_preset_mode_survives_stale_immediate_readback(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    mock_client.reflect_writes = False
+    await hass.services.async_call(
+        "climate",
+        "set_preset_mode",
+        {"entity_id": CLIMATE_ENTITY, "preset_mode": "economy"},
+        blocking=True,
+    )
+    assert mock_client.raw["program_mode"] == 3
     state = hass.states.get(CLIMATE_ENTITY)
     assert state.attributes["preset_mode"] == "economy"
 
@@ -226,6 +273,42 @@ async def test_set_fan_mode_writes_active_preset_gear(
     assert state.attributes["fan_mode"] == "3"
 
 
+async def test_set_fan_mode_survives_stale_immediate_readback(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    mock_client.reflect_writes = False
+    await hass.services.async_call(
+        "climate",
+        "set_fan_mode",
+        {"entity_id": CLIMATE_ENTITY, "fan_mode": "3"},
+        blocking=True,
+    )
+    assert mock_client.raw["current_fan_gear"] == 2
+    state = hass.states.get(CLIMATE_ENTITY)
+    assert state.attributes["fan_mode"] == "3"
+
+
+async def test_number_entity_survives_stale_immediate_readback(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    mock_client.reflect_writes = False
+    entity_id = _entity_id_for_unique_id(
+        hass, "hombee_air_test_unit_comfort_heating_temperature_setpoint"
+    )
+
+    await hass.services.async_call(
+        "number",
+        "set_value",
+        {"entity_id": entity_id, "value": 25.1},
+        blocking=True,
+    )
+
+    assert "comfort_heating_temperature_setpoint" not in mock_client.raw
+    state = hass.states.get(entity_id)
+    assert state is not None
+    assert state.state == "25.1"
+
+
 async def test_failed_write_rolls_back_optimistic_state(
     hass: HomeAssistant, mock_client: MockModbusClient
 ) -> None:
@@ -280,3 +363,10 @@ async def test_alarm_binary_sensor_is_diagnostic_problem(
         and entry.entity_category is not None
     ]
     assert alarm_entries
+
+
+def _entity_id_for_unique_id(hass: HomeAssistant, unique_id: str) -> str:
+    registry = er.async_get(hass)
+    entry = registry.async_get_entity_id("number", DOMAIN, unique_id)
+    assert entry is not None
+    return entry

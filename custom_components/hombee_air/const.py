@@ -21,6 +21,8 @@ SLOW_SCAN_INTERVAL = timedelta(seconds=60)
 IO_PACING_SECONDS = 0.03
 # The unit does not tolerate frequent writes: hard global write budget.
 WRITE_PACING_SECONDS = 1.0
+# Keep optimistic values visible across stale immediate Modbus readbacks.
+OPTIMISTIC_HOLD_SECONDS = 30.0
 
 MANUFACTURER = "Hombee"
 MODEL = "Air"
