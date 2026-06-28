@@ -9,6 +9,7 @@ register pair, mirroring how the unit resolves its own setpoints.
 
 from __future__ import annotations
 
+from time import monotonic
 from typing import Any, ClassVar
 
 from homeassistant.components.climate import (
@@ -36,6 +37,7 @@ from .const import (
     KEY_PROGRAM_MODE,
     KEY_ROOM_HUMIDITY,
     KEY_ROOM_TEMPERATURE,
+    OPTIMISTIC_HOLD_SECONDS,
     PRESET_COMFORT,
     PRESET_OFF,
     PRESET_SETPOINTS,
@@ -92,6 +94,7 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
         super().__init__(runtime.fast)
         self._runtime = runtime
         self._optimistic: dict[str, int] = {}
+        self._optimistic_deadlines: dict[str, float] = {}
         self._last_active_program = PRESET_TO_PROGRAM[PRESET_COMFORT]
         self._attr_unique_id = f"{DOMAIN}_{runtime.slug}_climate"
         self._attr_device_info = device_info(runtime.slug, title)
@@ -206,7 +209,7 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
         )
 
     def _handle_coordinator_update(self) -> None:
-        self._optimistic.clear()
+        self._prune_optimistic()
         program = self._program()
         if program is not None and program != PROGRAM_OFF:
             self._last_active_program = program
@@ -238,6 +241,9 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
         writes: list[tuple[HombeeAirRegister, int]],
     ) -> None:
         self._optimistic.update(optimistic)
+        expires_at = monotonic() + OPTIMISTIC_HOLD_SECONDS
+        for key in optimistic:
+            self._optimistic_deadlines[key] = expires_at
         self.async_write_ha_state()
         try:
             for register, raw in writes:
@@ -245,6 +251,7 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
         except HombeeAirModbusError as error:
             for key in optimistic:
                 self._optimistic.pop(key, None)
+                self._optimistic_deadlines.pop(key, None)
             self.async_write_ha_state()
             raise HomeAssistantError(str(error)) from error
 
@@ -261,6 +268,7 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
         return preset
 
     def _raw(self, key: str) -> int | bool | None:
+        self._prune_optimistic_key(key)
         if key in self._optimistic:
             return self._optimistic[key]
         return self._runtime.raw_value(key)
@@ -281,3 +289,22 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
 
     def _flag(self, key: str) -> bool:
         return bool(self._raw(key))
+
+    def _prune_optimistic(self) -> None:
+        for key in tuple(self._optimistic):
+            self._prune_optimistic_key(key)
+
+    def _prune_optimistic_key(self, key: str) -> None:
+        if key not in self._optimistic:
+            self._optimistic_deadlines.pop(key, None)
+            return
+        if self._runtime.raw_value(key) == self._optimistic[key]:
+            self._clear_optimistic_key(key)
+            return
+        deadline = self._optimistic_deadlines.get(key)
+        if deadline is not None and monotonic() >= deadline:
+            self._clear_optimistic_key(key)
+
+    def _clear_optimistic_key(self, key: str) -> None:
+        self._optimistic.pop(key, None)
+        self._optimistic_deadlines.pop(key, None)
