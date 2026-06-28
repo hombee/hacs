@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/hombee/hacs/compare/v1.0.2...v1.0.3) (2026-06-28)
+
+### Bug Fixes
+
+* retain Hombee Air optimistic readbacks ([baccbf6](https://github.com/hombee/hacs/commit/baccbf6db151a8dbad9f4bab1ad469412b5d9477))
+
 ## [1.0.2](https://github.com/hombee/hacs/compare/v1.0.1...v1.0.2) (2026-06-21)
 
 ### Bug Fixes
