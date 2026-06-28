@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/hombee/hacs/compare/v1.0.3...v1.1.0) (2026-06-28)
+
+### Features
+
+* add full Hombee Air alarm mapping ([cdca7fa](https://github.com/hombee/hacs/commit/cdca7fabd25e18c553de172f820657ff02a4e6e8))
+
 ## [1.0.3](https://github.com/hombee/hacs/compare/v1.0.2...v1.0.3) (2026-06-28)
 
 ### Bug Fixes
