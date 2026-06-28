@@ -26,6 +26,9 @@ dev = [
 [tool.setuptools]
 packages = []
 
+[tool.uv]
+prerelease = "allow"
+
 [tool.black]
 line-length = 88
 target-version = ["py312"]

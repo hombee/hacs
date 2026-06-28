@@ -1,0 +1,5 @@
+version = 1
+name = "hacs"
+
+[setup]
+script = "uv sync --python 3.12 --extra dev"
