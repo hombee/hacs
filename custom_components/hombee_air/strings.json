@@ -18,6 +18,12 @@
       "already_configured": "This installation is already configured"
     }
   },
+  "issues": {
+    "active_alarm": {
+      "title": "Active Hombee Air alarm {alarm_code}",
+      "description": "{unit} reports {alarm_name}. Catalog description: {description}"
+    }
+  },
   "services": {
     "write_register": {
       "name": "Write register",

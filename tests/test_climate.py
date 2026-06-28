@@ -10,11 +10,13 @@ import pytest
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import issue_registry as ir
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.hombee_air.const import DOMAIN
 from custom_components.hombee_air.modbus_client import HombeeAirModbusError
-from custom_components.hombee_air.registers import HombeeAirRegister
+from custom_components.hombee_air.registers import REGISTERS_BY_KEY, HombeeAirRegister
+from custom_components.hombee_air.repairs import active_alarm_issue_id
 
 CLIMATE_ENTITY = "climate.hombee_air"
 
@@ -71,7 +73,16 @@ class MockModbusClient:
 
 @pytest.fixture
 async def mock_client(hass: HomeAssistant) -> MockModbusClient:
+    client, _entry = await _setup_mock_client(hass)
+    return client
+
+
+async def _setup_mock_client(
+    hass: HomeAssistant, raw_overrides: dict[str, int | bool] | None = None
+) -> tuple[MockModbusClient, MockConfigEntry]:
     client = MockModbusClient("127.0.0.1", 502)
+    if raw_overrides is not None:
+        client.raw.update(raw_overrides)
     entry = MockConfigEntry(
         domain=DOMAIN,
         unique_id="test_unit",
@@ -90,7 +101,7 @@ async def mock_client(hass: HomeAssistant) -> MockModbusClient:
     ):
         assert await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
-    return client
+    return client, entry
 
 
 async def test_climate_state_reflects_registers(
@@ -365,8 +376,82 @@ async def test_alarm_binary_sensor_is_diagnostic_problem(
     assert alarm_entries
 
 
+async def test_active_alarm_creates_repair_issue_on_setup(
+    hass: HomeAssistant,
+) -> None:
+    await _setup_mock_client(hass, {"alarm_room_temp_prb": True})
+
+    issue = _alarm_issue(hass, "alarm_room_temp_prb")
+    assert issue is not None
+    assert issue.severity == ir.IssueSeverity.WARNING
+    assert issue.translation_key == "active_alarm"
+    assert issue.is_fixable is False
+    assert issue.is_persistent is False
+    assert issue.translation_placeholders == {
+        "unit": "Hombee Air",
+        "alarm_code": "A01",
+        "alarm_name": "room temperature sensor alarm",
+        "description": "alarm czujnika temperatury pomieszczenia",
+    }
+
+
+async def test_alarm_repair_issue_clears_when_alarm_clears(
+    hass: HomeAssistant,
+) -> None:
+    client, entry = await _setup_mock_client(hass, {"alarm_room_temp_prb": True})
+    assert _alarm_issue(hass, "alarm_room_temp_prb") is not None
+
+    client.raw["alarm_room_temp_prb"] = False
+    await entry.runtime_data.fast.async_refresh()
+    await hass.async_block_till_done()
+
+    assert _alarm_issue(hass, "alarm_room_temp_prb") is None
+
+
+async def test_multiple_active_alarms_create_separate_repair_issues(
+    hass: HomeAssistant,
+) -> None:
+    await _setup_mock_client(
+        hass,
+        {
+            "alarm_room_temp_prb": True,
+            "alarm_ret_temp_prb": True,
+        },
+    )
+
+    assert _alarm_issue(hass, "alarm_room_temp_prb") is not None
+    assert _alarm_issue(hass, "alarm_ret_temp_prb") is not None
+
+
+async def test_noncoded_alarm_boolean_does_not_create_repair_issue(
+    hass: HomeAssistant,
+) -> None:
+    await _setup_mock_client(hass, {"alarm_reset_by_bms": True})
+
+    assert _alarm_issue(hass, "alarm_reset_by_bms") is None
+
+
+async def test_alarm_repair_issues_clear_on_unload(
+    hass: HomeAssistant,
+) -> None:
+    _client, entry = await _setup_mock_client(hass, {"alarm_room_temp_prb": True})
+    assert _alarm_issue(hass, "alarm_room_temp_prb") is not None
+
+    assert await hass.config_entries.async_unload(entry.entry_id)
+    await hass.async_block_till_done()
+
+    assert _alarm_issue(hass, "alarm_room_temp_prb") is None
+
+
 def _entity_id_for_unique_id(hass: HomeAssistant, unique_id: str) -> str:
     registry = er.async_get(hass)
     entry = registry.async_get_entity_id("number", DOMAIN, unique_id)
     assert entry is not None
     return entry
+
+
+def _alarm_issue(hass: HomeAssistant, key: str) -> ir.IssueEntry | None:
+    register = REGISTERS_BY_KEY[key]
+    return ir.async_get(hass).async_get_issue(
+        DOMAIN, active_alarm_issue_id("test_unit", register)
+    )

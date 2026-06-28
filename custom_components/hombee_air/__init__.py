@@ -18,6 +18,7 @@ from .coordinator import (
 from .entity import device_info, is_writable
 from .modbus_client import HombeeAirModbusClient, HombeeAirModbusError
 from .registers import KIND_COIL, KIND_HOLDING_REGISTER, REGISTERS_BY_KEY
+from .repairs import async_start_alarm_issues, async_stop_alarm_issues
 
 PLATFORMS = [
     Platform.BINARY_SENSOR,
@@ -58,6 +59,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HombeeAirConfigEntry) ->
     await runtime.fast.async_config_entry_first_refresh()
     await runtime.slow.async_config_entry_first_refresh()
     entry.runtime_data = runtime
+    async_start_alarm_issues(hass, runtime, entry.title)
 
     device_registry = dr.async_get(hass)
     device_registry.async_get_or_create(
@@ -73,7 +75,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: HombeeAirConfigEntry) -
     """Unloads one Hombee Air unit."""
     unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unloaded:
-        await entry.runtime_data.client.async_close()
+        runtime = entry.runtime_data
+        async_stop_alarm_issues(hass, runtime)
+        await runtime.client.async_close()
     return unloaded
 
 
