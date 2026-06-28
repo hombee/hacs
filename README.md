@@ -33,13 +33,10 @@ Release, and lets HACS distribute the updated integration archive.
 ## Development
 
 ```bash
-python -m venv .venv
-. .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e ".[dev]"
-ruff check .
-black --check .
-pytest
+uv sync --python 3.12 --extra dev
+uv run ruff check .
+uv run black --check .
+uv run pytest
 ```
 
 The CI pipeline also validates the repository with HACS, Hassfest, security
