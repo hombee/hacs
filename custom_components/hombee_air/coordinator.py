@@ -8,7 +8,8 @@ refresh every minute and immediately after writes.
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from datetime import timedelta
 
 from homeassistant.config_entries import ConfigEntry
@@ -78,6 +79,8 @@ class HombeeAirRuntime:
     client: HombeeAirModbusClient
     fast: HombeeAirCoordinator
     slow: HombeeAirCoordinator
+    alarm_issue_remove_listener: Callable[[], None] | None = None
+    active_alarm_issue_ids: set[str] = field(default_factory=set)
 
     def coordinator_for(self, register: HombeeAirRegister) -> HombeeAirCoordinator:
         """Returns the coordinator polling the given register."""
