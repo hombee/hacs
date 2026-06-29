@@ -18,10 +18,2480 @@
       "already_configured": "Ta instalacja jest już skonfigurowana"
     }
   },
+  "entity": {
+    "sensor": {
+      "room_temperature": {
+        "name": "Temperatura pomieszczenia"
+      },
+      "return_temperature": {
+        "name": "Temperatura wywiewu"
+      },
+      "supply_temperature": {
+        "name": "Temperatura nawiewu"
+      },
+      "exhaust_temperature": {
+        "name": "Temperatura wyrzutni"
+      },
+      "outdoor_temperature": {
+        "name": "Temperatura zewnętrzna"
+      },
+      "current_temperature_setpoint": {
+        "name": "Aktualna wartość zadana temperatury"
+      },
+      "current_humidity_setpoint": {
+        "name": "Aktualna wartość zadana wilgotności"
+      },
+      "current_co2_setpoint": {
+        "name": "Aktualna wartość zadana CO2"
+      },
+      "current_fan_gear": {
+        "name": "Aktualny bieg wentylatora",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "current_program": {
+        "name": "Aktualny program",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "unit_status": {
+        "name": "Status centrali",
+        "state": {
+          "off_by_alarm": "Wyłączony przez alarm",
+          "off_by_bms": "Wyłączony przez BMS",
+          "off_by_digital_input": "Wyłączony przez wejście cyfrowe",
+          "off_by_key": "Wyłączony przyciskiem",
+          "frost_protection": "Ochrona przeciwzamrożeniowa",
+          "airing": "Wietrzenie",
+          "stopping": "Zatrzymywanie",
+          "warm_up": "Wygrzewanie",
+          "startup": "Rozruch",
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "manual": "Ręczny"
+        }
+      },
+      "supply_fan_request": {
+        "name": "Wysterowanie wentylatora nawiewu"
+      },
+      "return_fan_request": {
+        "name": "Wysterowanie wentylatora wywiewu"
+      },
+      "room_humidity": {
+        "name": "Wilgotność pomieszczenia"
+      },
+      "return_humidity": {
+        "name": "Wilgotność wywiewu"
+      },
+      "supply_humidity": {
+        "name": "Wilgotność nawiewu"
+      },
+      "mix_damper_request": {
+        "name": "Aktualne wysterowanie komory mieszania"
+      },
+      "humidifier_request": {
+        "name": "Aktualne wysterowanie nawilżacza"
+      },
+      "ain_room_temp_val": {
+        "name": "Temperatura pomieszczenia"
+      },
+      "ain_afreeze_ret_wat_sens_val": {
+        "name": "Temperatura powrotu wody z nagrzewnicy"
+      },
+      "ain_ext_hum_val": {
+        "name": "Wilgotność zewnętrzna (względna)"
+      },
+      "room_hum_absolute": {
+        "name": "Wilgotność pomieszczenia (bezwzględna)"
+      },
+      "ret_hum_absolute": {
+        "name": "Wilgotność wywiewu (bezwzględna)"
+      },
+      "supply_hum_absolute": {
+        "name": "Wilgotność nawiewu (bezwzględna)"
+      },
+      "ext_hum_absolute": {
+        "name": "Wilgotność zewnętrzna (bezwzględna)"
+      },
+      "ret_air_co2_lev_mdb": {
+        "name": "Ilość CO2"
+      },
+      "supply_air_pval_mdb": {
+        "name": "Ciśnienie nawiewu"
+      },
+      "return_air_pval_mdb": {
+        "name": "Ciśnienie wywiewu"
+      },
+      "supply_air_flow_val_mdb": {
+        "name": "Przepływ nawiewu"
+      },
+      "return_air_flow_val_mdb": {
+        "name": "Przepływ wywiewu"
+      },
+      "ain_aux1_prb_val": {
+        "name": "Pomiar czujnika głownego dodatkowej pętli regulacji nr 1"
+      },
+      "ain_aux1_prb_lim_val": {
+        "name": "Pomiar czujnika pomocniczego dodatkowej pętli regulacji nr 1"
+      },
+      "ain_aux2_prb_val": {
+        "name": "Pomiar czujnika głownego dodatkowej pętli regulacji nr 2"
+      },
+      "ain_aux2_prb_lim_val": {
+        "name": "Pomiar czujnika pomocniczego dodatkowej pętli regulacji nr 2"
+      },
+      "ain_aux3_prb_val": {
+        "name": "Pomiar czujnika głownego dodatkowej pętli regulacji nr 3"
+      },
+      "ain_aux3_prb_lim_val": {
+        "name": "Pomiar czujnika pomocniczego dodatkowej pętli regulacji nr 3"
+      },
+      "ain_aux4_prb_val": {
+        "name": "Pomiar czujnika głownego dodatkowej pętli regulacji nr 4"
+      },
+      "ain_aux4_prb_lim_val": {
+        "name": "Pomiar czujnika pomocniczego dodatkowej pętli regulacji nr 4"
+      },
+      "ain_exh_temp2_val": {
+        "name": "AIN exhaust temp2"
+      },
+      "ain_aux5_prb_val": {
+        "name": "Pomiar czujnika głownego dodatkowej pętli regulacji nr 5"
+      },
+      "ain_aux5_prb_lim_val": {
+        "name": "Pomiar czujnika pomocniczego dodatkowej pętli regulacji nr 5"
+      },
+      "ain_aux6_prb_val": {
+        "name": "Pomiar czujnika głownego dodatkowej pętli regulacji nr 6"
+      },
+      "ain_aux6_prb_lim_val": {
+        "name": "Pomiar czujnika pomocniczego dodatkowej pętli regulacji nr 6"
+      },
+      "ain_heat_cool_supply_sens_val": {
+        "name": "Temperatura zasilania nagrzewnico/chłodnicy"
+      },
+      "heater1_req_final": {
+        "name": "Aktualne wysterowane nagrzewnicy nr 1"
+      },
+      "heater2_req_final": {
+        "name": "Aktualne wysterowane nagrzewnicy nr 2"
+      },
+      "heater3_req_final": {
+        "name": "Aktualne wysterowane nagrzewnicy nr 3"
+      },
+      "heater4_req_final": {
+        "name": "Aktualne wysterowane nagrzewnicy nr 4"
+      },
+      "cooler1_req_final": {
+        "name": "Aktualne wysterowane chłodnicy nr 1"
+      },
+      "cooler2_req_final": {
+        "name": "Aktualne wysterowane chłodnicy nr 2"
+      },
+      "cooler3_req_final": {
+        "name": "Aktualne wysterowane chłodnicy nr 3"
+      },
+      "cooler4_req_final": {
+        "name": "Aktualne wysterowane chłodnicy nr 4"
+      },
+      "pc1_cool_req_final": {
+        "name": "Aktualne wysterowane chłodzenia pompy ciepła nr 1"
+      },
+      "pc1_heat_req_final": {
+        "name": "Aktualne wysterowane grzania pompy ciepła nr 1"
+      },
+      "pc2_cool_req_final": {
+        "name": "Aktualne wysterowane chłodzenia pompy ciepła nr 2"
+      },
+      "pc2_heat_req_final": {
+        "name": "Aktualne wysterowane grzania pompy ciepła nr 2"
+      },
+      "pc3_cool_req_final": {
+        "name": "Aktualne wysterowane chłodzenia pompy ciepła nr 3"
+      },
+      "pc3_heat_req_final": {
+        "name": "Aktualne wysterowane grzania pompy ciepła nr 3"
+      },
+      "heat_exchg_req_final": {
+        "name": "Aktualne wysterowane odzysku energii"
+      },
+      "ao_aux1_yout_val": {
+        "name": "Aktualne wysterowanie dodatkowej pętli regulacji nr 1"
+      },
+      "ao_aux2_yout_val": {
+        "name": "Aktualne wysterowanie dodatkowej pętli regulacji nr 2"
+      },
+      "ao_aux3_yout_val": {
+        "name": "Aktualne wysterowanie dodatkowej pętli regulacji nr 3"
+      },
+      "ao_aux4_yout_val": {
+        "name": "Aktualne wysterowanie dodatkowej pętli regulacji nr 4"
+      },
+      "ao_aux5_yout_val": {
+        "name": "Aktualne wysterowanie dodatkowej pętli regulacji nr 5"
+      },
+      "ao_aux6_yout_val": {
+        "name": "Aktualne wysterowanie dodatkowej pętli regulacji nr 6"
+      },
+      "ao_proport_setter1_val": {
+        "name": "Aktualne wysterowanie zadawania zewnętrznego nr 1"
+      },
+      "ao_proport_setter2_val": {
+        "name": "Aktualne wysterowanie zadawania zewnętrznego nr 1"
+      },
+      "ao_air_diffuser_yout_val": {
+        "name": "Aktualne wysterowanie nawiewników kierunkowych"
+      },
+      "ao_heat_cool_aout_val": {
+        "name": "Aktualne wysterowanie nagrzewnico/chłodnicy"
+      },
+      "temp_to_regulation": {
+        "name": "Temp to regulation"
+      },
+      "hum_to_regulation": {
+        "name": "Aktualna wilgotność do regulacji"
+      },
+      "msk_fans_req_val": {
+        "name": "Wartość zapotrzebowania wentylatorów"
+      },
+      "msk_heat_exchg_req_val": {
+        "name": "Wartość zapotrzebowania odzysku energii"
+      },
+      "msk_hum_req_val": {
+        "name": "Wartość zapotrzebowania nawilżania"
+      },
+      "msk_mix_damp_req_val": {
+        "name": "Wartość zapotrzebowania komory mieszania"
+      },
+      "msk_temp_req_val": {
+        "name": "Wartość zapotrzebowania temperatury"
+      },
+      "heating_levels_active": {
+        "name": "Aktywne stopnie grzania"
+      },
+      "cooling_levels_active": {
+        "name": "Aktywne stopnie chłodzenia"
+      },
+      "p_lan_info_2": {
+        "name": "P lan info[2]"
+      },
+      "p_lan_info_3": {
+        "name": "P lan info[3]"
+      },
+      "work_counter1_work_hrs": {
+        "name": "Work counter1 work hrs"
+      },
+      "work_counter2_work_hrs": {
+        "name": "Work counter2 work hrs"
+      },
+      "work_counter3_work_hrs": {
+        "name": "Work counter3 work hrs"
+      }
+    },
+    "number": {
+      "manual_temperature_setpoint": {
+        "name": "Ręczna wartość zadana temperatury"
+      },
+      "manual_humidity_setpoint": {
+        "name": "Ręczna wartość zadana wilgotności"
+      },
+      "manual_co2_setpoint": {
+        "name": "Ręczna wartość zadana CO2"
+      },
+      "winter_start_month": {
+        "name": "Miesiąc początku zimy"
+      },
+      "winter_start_day": {
+        "name": "Dzień początku zimy"
+      },
+      "summer_start_month": {
+        "name": "Miesiąc początku lata"
+      },
+      "summer_start_day": {
+        "name": "Dzień początku lata"
+      },
+      "transition_weeks": {
+        "name": "Czas trwania okresu przejściowego"
+      },
+      "transition_cooling_lock_temperature": {
+        "name": "Blokada chłodzenia w okresie przejściowym"
+      },
+      "transition_heating_lock_temperature": {
+        "name": "Blokada grzania w okresie przejściowym"
+      },
+      "temperature_heat_pid_kp": {
+        "name": "Wzmocnienie regulatora temperatury - grzanie"
+      },
+      "temperature_heat_pid_ti": {
+        "name": "Czas całkowania regulatora temperatury - grzanie"
+      },
+      "temperature_heat_pid_td": {
+        "name": "Czas różniczkowania regulatora temperatury - grzanie"
+      },
+      "temperature_heat_deadband": {
+        "name": "Strefa martwa regulatora temperatury - grzanie"
+      },
+      "humidity_pid_kp": {
+        "name": "Wzmocnienie regulatora wilgotności"
+      },
+      "humidity_pid_ti": {
+        "name": "Czas całkowania regulatora wilgotności"
+      },
+      "humidity_pid_td": {
+        "name": "Czas różniczkowania regulatora wilgotności"
+      },
+      "humidity_deadband": {
+        "name": "Strefa martwa regulatora wilgotności"
+      },
+      "air_quality_pid_kp": {
+        "name": "Wzmocnienie regulatora jakości powietrza (CO2)"
+      },
+      "air_quality_pid_ti": {
+        "name": "Czas całkowania regulatora jakości powietrza (CO2)"
+      },
+      "air_quality_pid_td": {
+        "name": "Czas różniczkowania regulatora jakości powietrza (CO2)"
+      },
+      "air_quality_deadband": {
+        "name": "Strefa martwa regulatora jakości powietrza (CO2)"
+      },
+      "supply_fan_pressure_pid_kp": {
+        "name": "Wzmocnienie regulatora ciśnienia nawiewu"
+      },
+      "supply_fan_pressure_pid_ti": {
+        "name": "Czas całkowania regulatora ciśnienia nawiewu"
+      },
+      "supply_fan_pressure_pid_td": {
+        "name": "Czas różniczkowania regulatora ciśnienia nawiewu"
+      },
+      "supply_pressure_deadband": {
+        "name": "Strefa martwa regulatora ciśnienia nawiewu"
+      },
+      "return_fan_manual_override": {
+        "name": "Ręczne wymuszenie wentylatora wywiewu"
+      },
+      "humidifier_manual_override": {
+        "name": "Ręczne wymuszenie nawilżacza"
+      },
+      "supply_fan_manual_override": {
+        "name": "Ręczne wymuszenie wentylatora nawiewu"
+      },
+      "controller_minute": {
+        "name": "Czas sterownika - minuta"
+      },
+      "controller_hour": {
+        "name": "Czas sterownika - godzina"
+      },
+      "controller_day": {
+        "name": "Czas sterownika - dzień miesiąca"
+      },
+      "controller_month": {
+        "name": "Czas sterownika - miesiąc"
+      },
+      "controller_year": {
+        "name": "Czas sterownika - rok pomniejszony o 2000"
+      },
+      "economy_heating_temperature_setpoint": {
+        "name": "Wartość zadana temperatury - EKONO - ZIMA"
+      },
+      "economy_cooling_temperature_setpoint": {
+        "name": "Wartość zadana temperatury - EKONO - LATO"
+      },
+      "comfort_heating_temperature_setpoint": {
+        "name": "Wartość zadana temperatury - KOMFORT - ZIMA"
+      },
+      "comfort_cooling_temperature_setpoint": {
+        "name": "Wartość zadana temperatury - KOMFORT - LATO"
+      },
+      "comfort_plus_heating_temperature_setpoint": {
+        "name": "Wartość zadana temperatury - KOMFORT+ - ZIMA"
+      },
+      "comfort_plus_cooling_temperature_setpoint": {
+        "name": "Wartość zadana temperatury - KOMFORT+ - LATO"
+      },
+      "economy_heating_humidity_setpoint": {
+        "name": "Wartość zadana wilgotności - EKONO - ZIMA"
+      },
+      "economy_cooling_humidity_setpoint": {
+        "name": "Wartość zadana wilgotności - EKONO - LATO"
+      },
+      "comfort_heating_humidity_setpoint": {
+        "name": "Wartość zadana wilgotności - KOMFORT - ZIMA"
+      },
+      "comfort_cooling_humidity_setpoint": {
+        "name": "Wartość zadana wilgotności - KOMFORT - LATO"
+      },
+      "comfort_plus_heating_humidity_setpoint": {
+        "name": "Wartość zadana wilgotności - KOMFORT+ - ZIMA"
+      },
+      "comfort_plus_cooling_humidity_setpoint": {
+        "name": "Wartość zadana wilgotności - KOMFORT+ - LATO"
+      },
+      "economy_co2_setpoint": {
+        "name": "Wartość zadana CO2 - EKONO"
+      },
+      "comfort_co2_setpoint": {
+        "name": "Wartość zadana CO2 - KOMFORT"
+      },
+      "comfort_plus_co2_setpoint": {
+        "name": "Wartość zadana CO2 - KOMFORT+"
+      },
+      "standby_heating_off_temperature": {
+        "name": "Temperatura wyłączenia w trybie Standby - ZIMA"
+      },
+      "standby_heating_on_temperature": {
+        "name": "Temperatura włączenia w trybie Standby - ZIMA"
+      },
+      "standby_cooling_off_temperature": {
+        "name": "Temperatura wyłączenia w trybie Standby - LATO"
+      },
+      "standby_cooling_on_temperature": {
+        "name": "Temperatura włączenia w trybie Standby - LATO"
+      },
+      "supply_fan_speed_gear_1": {
+        "name": "Wartość zadana 1 bieg - prędkość - nawiew"
+      },
+      "supply_fan_speed_gear_2": {
+        "name": "Wartość zadana 2 bieg - prędkość - nawiew"
+      },
+      "supply_fan_speed_gear_3": {
+        "name": "Wartość zadana 3 bieg - prędkość - nawiew"
+      },
+      "return_fan_speed_gear_1": {
+        "name": "Wartość zadana 1 bieg - prędkość - wywiew"
+      },
+      "return_fan_speed_gear_2": {
+        "name": "Wartość zadana 2 bieg - prędkość - wywiew"
+      },
+      "return_fan_speed_gear_3": {
+        "name": "Wartość zadana 3 bieg - prędkość - wywiew"
+      },
+      "supply_fan_pressure_gear_1": {
+        "name": "Wartość zadana 1 bieg - ciśnienie - nawiew"
+      },
+      "supply_fan_pressure_gear_2": {
+        "name": "Wartość zadana 2 bieg - ciśnienie - nawiew"
+      },
+      "supply_fan_pressure_gear_3": {
+        "name": "Wartość zadana 3 bieg - ciśnienie - nawiew"
+      },
+      "return_fan_pressure_gear_1": {
+        "name": "Wartość zadana 1 bieg - ciśnienie - wywiew"
+      },
+      "return_fan_pressure_gear_2": {
+        "name": "Wartość zadana 2 bieg - ciśnienie - wywiew"
+      },
+      "return_fan_pressure_gear_3": {
+        "name": "Wartość zadana 3 bieg - ciśnienie - wywiew"
+      },
+      "supply_fan_airflow_gear_1": {
+        "name": "Wartość zadana 1 bieg - przepływ - nawiew"
+      },
+      "supply_fan_airflow_gear_2": {
+        "name": "Wartość zadana 2 bieg - przepływ - nawiew"
+      },
+      "supply_fan_airflow_gear_3": {
+        "name": "Wartość zadana 3 bieg - przepływ - nawiew"
+      },
+      "return_fan_airflow_gear_1": {
+        "name": "Wartość zadana 1 bieg - przepływ - wywiew"
+      },
+      "return_fan_airflow_gear_2": {
+        "name": "Wartość zadana 2 bieg - przepływ - wywiew"
+      },
+      "return_fan_airflow_gear_3": {
+        "name": "Wartość zadana 3 bieg - przepływ - wywiew"
+      },
+      "supply_air_flow_reg_deadband": {
+        "name": "Strefa martwa regulatora przepływu nawiewu (przy regulacji przepływu)"
+      },
+      "pid_return_fan_pressure_kp": {
+        "name": "Wzmocnienie regulatora ciśnienia wywiewu"
+      },
+      "pid_return_fan_pressure_ti": {
+        "name": "Czas całkowania regulatora ciśnienia wywiewu"
+      },
+      "pid_return_fan_pressure_td": {
+        "name": "Czas róźniczkowania regulatora ciśnienia wywiewu"
+      },
+      "return_pressure_reg_deadband": {
+        "name": "Strefa martwa regulatora ciśnienia wywiewu"
+      },
+      "return_air_flow_reg_deadband": {
+        "name": "Strefa martwa regulatora przepływu wywiewu (przy regulacji przepływu)"
+      },
+      "pid_temperature_cooling_kp": {
+        "name": "Wzmocnienie regulatora temperatury - chłodzenie"
+      },
+      "pid_temperature_cooling_ti": {
+        "name": "Czas całkowania regulatora temperatury - chłodzenie"
+      },
+      "pid_temperature_cooling_td": {
+        "name": "Czas róźniczkowania regulatora temperatury - chłodzenie"
+      },
+      "temperature_reg_cooling_deadband": {
+        "name": "Strefa martwa regulatora temperatury - chłodzenie"
+      },
+      "winter_min_duct_temperature": {
+        "name": "Minimalna temperatura nawiewu zimą"
+      },
+      "winter_max_duct_temperature": {
+        "name": "Maksymalna temperatura nawiewu zimą"
+      },
+      "summer_min_duct_temperature": {
+        "name": "Minimalna temperatura nawiewu latem"
+      },
+      "summer_max_duct_temperature": {
+        "name": "Maksymalna temperatura nawiewu latem"
+      },
+      "winter_min_duct_humidity": {
+        "name": "Minimalna wilgotność nawiewu zimą"
+      },
+      "winter_max_duct_humidity": {
+        "name": "Maksymalna wilgotność nawiewu zimą"
+      },
+      "summer_min_duct_humidity": {
+        "name": "Minimalna wilgotność nawiewu latem"
+      },
+      "summer_max_duct_humidity": {
+        "name": "Maksymalna wilgotność nawiewu latem"
+      },
+      "min_set_temperature_winter": {
+        "name": "Minimalna temperatura zadana zimą"
+      },
+      "max_set_temperature_winter": {
+        "name": "Maksymalna temperatura zadana zimą"
+      },
+      "min_set_temperature_summer": {
+        "name": "Minimalna temperatura zadana latem"
+      },
+      "max_set_temperature_summer": {
+        "name": "Maksymalna temperatura zadana latem"
+      },
+      "min_supply_fan_set_value": {
+        "name": "Minimalny wydatek wentylatora nawiewu"
+      },
+      "max_supply_fan_set_value": {
+        "name": "Maksymalny wydatek wentylatora nawiewu"
+      },
+      "min_return_fan_set_value": {
+        "name": "Minimalny wydatek wentylatora wywiewu"
+      },
+      "max_return_fan_set_value": {
+        "name": "Maksymalny wydatek wentylatora wywiewu"
+      },
+      "supply_fan_start_delay": {
+        "name": "Opóźnienie startu nawiewu względem otwarcia przepustnic"
+      },
+      "return_fan_start_delay": {
+        "name": "Opóźnienie startu wywiewu względem otwarcia przepustnic"
+      },
+      "fans_off_delay": {
+        "name": "Opóźnienie zatrzymania wentylatorów"
+      },
+      "air_flow_sw_run_alarm_delay": {
+        "name": "Opóźnienia czasu wykrycia sprężu wentylatorów"
+      },
+      "heating_reg_split_ratio": {
+        "name": "Podział wyjścia regulatora temperatury (Odzysk--->Grzanie)"
+      },
+      "cooling_reg_split_ratio": {
+        "name": "Podział wyjścia regulatora temperatury (Odzysk--->Chłodzenie)"
+      },
+      "humid_reg_split_ratio": {
+        "name": "Podział wyjścia regulatora wilgotności (Odzysk--->Nawilżanie)"
+      },
+      "dehumid_reg_split_ratio": {
+        "name": "Podział wyjścia regulatora wilgotności (Odzysk--->Osuszanie)"
+      },
+      "h_ex_delta_temperature": {
+        "name": "Różnica temperatur do uruchomienia odzysku"
+      },
+      "h_ex_hister_temperature": {
+        "name": "Histereza temperatur do wyłączenia odzysku"
+      },
+      "mix_damper_delta_temperature": {
+        "name": "Różnica temperatur do uruchomienia komory mieszania"
+      },
+      "mix_damper_hister_temperature": {
+        "name": "Histereza temperatur do wyłączenia komory mieszania"
+      },
+      "a_freeze_low_supply_temperature": {
+        "name": "Temperatura zabezpieczenia przechłodzenia nawiewu"
+      },
+      "a_freeze_low_supply_temperature_alarm_delay": {
+        "name": "Czas do wyzwolenia zabezpieczenia przechłodzenia nawiewu"
+      },
+      "a_freeze_low_supply_temperature_hister": {
+        "name": "Histereza wyzwolenia zabezpieczenia przechłodzenia nawiewu"
+      },
+      "a_freeze_return_water_min_temperature": {
+        "name": "Minimalna temperatura powrotu wody z nagrzewnicy"
+      },
+      "a_freeze_return_water_alarm_delay": {
+        "name": "Czas do wyzwolenia zabezpieczenia powrotu wody z nagrzewnicy"
+      },
+      "a_freeze_return_water_min_temperature_hister": {
+        "name": "Histereza wyzwolenia zabezpieczenia powrotu wody z nagrzewnicy"
+      },
+      "pre_heating_time_curve_t_0": {
+        "name": "Krzywa czasu wygrzewania - Temperatura niska"
+      },
+      "pre_heating_time_curve_y_0": {
+        "name": "Krzywa czasu wygrzewania - Wyjście niskie"
+      },
+      "pre_heating_time_curve_t_1": {
+        "name": "Krzywa czasu wygrzewania - Temperatura wysoka"
+      },
+      "pre_heating_time_curve_y_1": {
+        "name": "Krzywa czasu wygrzewania - Wyjście wysokie"
+      },
+      "a_freeze_min_valve_open_curve_t_0": {
+        "name": "Krzywa minimalnego otwarcia zaworu nagrzewnicy - Temperatura niska"
+      },
+      "a_freeze_min_valve_open_curve_y_0": {
+        "name": "Krzywa minimalnego otwarcia zaworu nagrzewnicy - Wyjście niskie"
+      },
+      "a_freeze_min_valve_open_curve_t_1": {
+        "name": "Krzywa minimalnego otwarcia zaworu nagrzewnicy - Temperatura wysoka"
+      },
+      "a_freeze_min_valve_open_curve_y_1": {
+        "name": "Krzywa minimalnego otwarcia zaworu nagrzewnicy - Wyjście wysokie"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_start_day": {
+        "name": "Dzień początku okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_start_month": {
+        "name": "Miesiąc początku okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_end_day": {
+        "name": "Dzień końca okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_end_month": {
+        "name": "Miesiąc końca okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_start_day": {
+        "name": "Dzień początku okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_start_month": {
+        "name": "Miesiąc początku okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_end_day": {
+        "name": "Dzień końca okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_end_month": {
+        "name": "Miesiąc końca okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_start_day": {
+        "name": "Dzień początku okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_start_month": {
+        "name": "Miesiąc początku okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_end_day": {
+        "name": "Dzień końca okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_end_month": {
+        "name": "Miesiąc końca okresu wakacyjnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_special_day": {
+        "name": "Dzień dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_special_month": {
+        "name": "Miesiąc dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_special_day": {
+        "name": "Dzień dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_special_month": {
+        "name": "Miesiąc dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_special_day": {
+        "name": "Dzień dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_special_month": {
+        "name": "Miesiąc dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_special_day": {
+        "name": "Dzień dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_special_month": {
+        "name": "Miesiąc dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_special_day": {
+        "name": "Dzień dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_special_month": {
+        "name": "Miesiąc dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_special_day": {
+        "name": "Dzień dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_special_month": {
+        "name": "Miesiąc dla dnia specjalnego"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_hours": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 0 godzina"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_minutes": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 0 minuta"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_hours": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 1 godzina"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_minutes": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 1 minuta"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_hours": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 2 godzina"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_minutes": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 2 minuta"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_hours": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 3 godzina"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_minutes": {
+        "name": "Harmonogram pracy centrali 1 strefa dzienna 3 minuta"
+      },
+      "scheduler_on_off_unit_scheduler_1_save_data": {
+        "name": "Zapis ustawień kalendarza"
+      },
+      "mix_damper_preset_cooling_economy": {
+        "name": "Preset komory mieszania dla chłodzenia economy"
+      },
+      "mix_damper_preset_cooling_precomfort": {
+        "name": "Preset komory mieszania dla chłodzenia precomfort"
+      },
+      "mix_damper_preset_cooling_comfort": {
+        "name": "Preset komory mieszania dla chłodzenia comfort"
+      },
+      "mix_damper_preset_cooling_standby": {
+        "name": "Preset komory mieszania dla chłodzenia standby"
+      },
+      "mix_damper_preset_cooling_manual": {
+        "name": "Preset komory mieszania dla chłodzenia ręczny"
+      },
+      "mix_damper_preset_heating_economy": {
+        "name": "Preset komory mieszania dla grzania economy"
+      },
+      "mix_damper_preset_heating_precomfort": {
+        "name": "Preset komory mieszania dla grzania precomfort"
+      },
+      "mix_damper_preset_heating_comfort": {
+        "name": "Preset komory mieszania dla grzania comfort"
+      },
+      "mix_damper_preset_heating_standby": {
+        "name": "Preset komory mieszania dla grzania standby"
+      },
+      "mix_damper_preset_heating_manual": {
+        "name": "Preset komory mieszania dla grzania ręczny"
+      },
+      "aux_regulator_1_setpoint": {
+        "name": "Wartość zadana dodatkowej pętli regulacji nr 1"
+      },
+      "aux_regulator_2_setpoint": {
+        "name": "Wartość zadana dodatkowej pętli regulacji nr 2"
+      },
+      "aux_regulator_3_setpoint": {
+        "name": "Wartość zadana dodatkowej pętli regulacji nr 3"
+      },
+      "aux_regulator_4_setpoint": {
+        "name": "Wartość zadana dodatkowej pętli regulacji nr 4"
+      },
+      "aux_regulator_5_setpoint": {
+        "name": "Wartość zadana dodatkowej pętli regulacji nr 5"
+      },
+      "aux_regulator_6_setpoint": {
+        "name": "Wartość zadana dodatkowej pętli regulacji nr 6"
+      },
+      "unit_season_transition_period_delay": {
+        "name": "Czas przełączenia trybu Lato/Zima w okresie przejściowym przez temperaturę zewnętrzną"
+      },
+      "heater_1_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania nagrzewnicy nr 1"
+      },
+      "heater_2_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania nagrzewnicy nr 2"
+      },
+      "heater_3_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania nagrzewnicy nr 3"
+      },
+      "heater_4_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania nagrzewnicy nr 4"
+      },
+      "cooler_1_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania chłodnicy nr 1"
+      },
+      "cooler_2_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania chłodnicy nr 2"
+      },
+      "cooler_3_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania chłodnicy nr 3"
+      },
+      "cooler_4_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania chłodnicy nr 4"
+      },
+      "heat_pump_1_heating_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania grzania pompy ciepła nr 1"
+      },
+      "heat_pump_1_cooling_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania chlodzenia pompy ciepła nr 1"
+      },
+      "heat_pump_2_heating_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania grzania pompy ciepła nr 2"
+      },
+      "heat_pump_2_cooling_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania chlodzenia pompy ciepła nr 2"
+      },
+      "heat_pump_3_heating_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania grzania pompy ciepła nr 3"
+      },
+      "heat_pump_3_cooling_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania chlodzenia pompy ciepła nr 3"
+      },
+      "mix_damper_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania komory mieszania"
+      },
+      "heat_exchanger_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania odzysku energii"
+      },
+      "aux_reg_1_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania dodatkowej pętli regulacji nr 1"
+      },
+      "aux_reg_2_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania dodatkowej pętli regulacji nr 2"
+      },
+      "aux_reg_3_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania dodatkowej pętli regulacji nr 3"
+      },
+      "aux_reg_4_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania dodatkowej pętli regulacji nr 4"
+      },
+      "aux_reg_5_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania dodatkowej pętli regulacji nr 5"
+      },
+      "aux_reg_6_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania dodatkowej pętli regulacji nr 6"
+      },
+      "heating_cooling_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania nagrzewnico/chłodnicy"
+      },
+      "air_diffuser_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania nawiewników kierunkowych"
+      },
+      "on_off_damper_manual_override": {
+        "name": "Ręczne wymuszenie wysterowania przepustnic powietrza"
+      }
+    },
+    "select": {
+      "manual_supply_fan_gear": {
+        "name": "Ręczny bieg wentylatora nawiewu",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "program_mode": {
+        "name": "Tryb programu",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "season_source": {
+        "name": "Źródło wyboru sezonu",
+        "state": {
+          "pgd1": "PGD1",
+          "bms": "BMS",
+          "digital_input": "Wejście cyfrowe",
+          "calendar": "Kalendarz",
+          "outdoor_temperature": "Temperatura zewnętrzna"
+        }
+      },
+      "temperature_lead_sensor": {
+        "name": "Wiodący czujnik temperatury",
+        "state": {
+          "supply": "Nawiew",
+          "return": "Wywiew",
+          "room": "Pomieszczenie"
+        }
+      },
+      "humidity_lead_sensor": {
+        "name": "Wiodący czujnik wilgotności",
+        "state": {
+          "return": "Wywiew",
+          "room": "Pomieszczenie"
+        }
+      },
+      "standby_direction": {
+        "name": "Czuwanie direction",
+        "state": {
+          "cooling": "Chłodzenie",
+          "heating": "Grzanie",
+          "summer_winter": "Lato/zima"
+        }
+      },
+      "economy_program_fan_gear": {
+        "name": "Bieg wentylatorów w programie EKONO",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "comfort_program_fan_gear": {
+        "name": "Bieg wentylatorów w programie KOMFORT",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "comfort_plus_program_fan_gear": {
+        "name": "Bieg wentylatorów w programie KOMFORT+",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "standby_program_fan_gear": {
+        "name": "Bieg wentylatorów w programie STANDBY",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_unit_status": {
+        "name": "Program aktywny w czasie okresu wakacyjnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_unit_status": {
+        "name": "Program aktywny w czasie okresu wakacyjnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_unit_status": {
+        "name": "Program aktywny w czasie okresu wakacyjnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_unit_status": {
+        "name": "Program aktywny w czasie dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_unit_status": {
+        "name": "Program aktywny w czasie dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_unit_status": {
+        "name": "Program aktywny w czasie dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_unit_status": {
+        "name": "Program aktywny w czasie dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_unit_status": {
+        "name": "Program aktywny w czasie dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_unit_status": {
+        "name": "Program aktywny w czasie dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_unit_status": {
+        "name": "Program w czasie trwania strefy dziennej nr 1",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_unit_status": {
+        "name": "Program w czasie trwania strefy dziennej nr 2",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_unit_status": {
+        "name": "Program w czasie trwania strefy dziennej nr 3",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_unit_status": {
+        "name": "Program w czasie trwania strefy dziennej nr 4",
+        "state": {
+          "off": "Wyłączony",
+          "standby": "Czuwanie",
+          "economy": "Ekonomiczny",
+          "comfort": "Komfort",
+          "comfort_plus": "Komfort+",
+          "auto": "Auto",
+          "manual": "Ręczny"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_day": {
+        "name": "Wybór dnia do którego zapisane zostaną ustawienia kalendarza (0=PON; ...; 6=NIEDZ)",
+        "state": {
+          "monday": "Poniedziałek",
+          "tuesday": "Wtorek",
+          "wednesday": "Środa",
+          "thursday": "Czwartek",
+          "friday": "Piątek",
+          "saturday": "Sobota",
+          "sunday": "Niedziela"
+        }
+      }
+    },
+    "binary_sensor": {
+      "fans_running": {
+        "name": "Wentylatory pracują"
+      },
+      "return_fan_airflow_regulation_active": {
+        "name": "Regulacja przepływu wentylatora wywiewu"
+      },
+      "return_fan_pressure_regulation_active": {
+        "name": "Regulacja ciśnienia wentylatora wywiewu"
+      },
+      "return_fan_speed_regulation_active": {
+        "name": "Regulacja prędkości wentylatora wywiewu"
+      },
+      "supply_fan_airflow_regulation_active": {
+        "name": "Regulacja przepływu wentylatora nawiewu"
+      },
+      "supply_fan_pressure_regulation_active": {
+        "name": "Regulacja ciśnienia wentylatora nawiewu"
+      },
+      "supply_fan_speed_regulation_active": {
+        "name": "Regulacja prędkości wentylatora nawiewu"
+      },
+      "fan_capacity_regulation_active": {
+        "name": "Regulacja wydajności wentylatorów aktywna"
+      },
+      "dirty_filter": {
+        "name": "Brudny filtr"
+      },
+      "alarm_room_temp_prb": {
+        "name": "Alarm czujnika temperatury pomieszczenia (A01)"
+      },
+      "alarm_ret_temp_prb": {
+        "name": "Alarm czujnika temperatury wywiewu (A02)"
+      },
+      "alarm_supply_temp_prb": {
+        "name": "Alarm czujnika temperatury nawiewu (A03)"
+      },
+      "alarm_exh_temp_prb": {
+        "name": "Alarm czujnika temperatury za odzyskiem (A04)"
+      },
+      "alarm_ext_temp_prb": {
+        "name": "Alarm czujnika temperatury zewnętrznej (A05)"
+      },
+      "alarm_room_hum_prb": {
+        "name": "Alarm czujnika wilgotności pomieszczenia (A06)"
+      },
+      "alarm_ret_hum_prb": {
+        "name": "Alarm czujnika wilgotności wywiewu (A07)"
+      },
+      "alarm_supply_hum": {
+        "name": "Alarm czujnika wilgotności nawiewu (A08)"
+      },
+      "alarm_ext_hum_prb": {
+        "name": "Alarm czujnika wilgotności zewnętrznej (A09)"
+      },
+      "alarm_ret_air_co2_lev_prb": {
+        "name": "CO2 transmitter alarm (A10)"
+      },
+      "alarm_supply_air_p_prb": {
+        "name": "Alarm przetwornika ciśnienia nawiewu (A11)"
+      },
+      "alarm_ret_air_p_prb": {
+        "name": "Alarm przetwornika ciśnienia wywiewu (A12)"
+      },
+      "alarm_afreeze_temp_prb": {
+        "name": "Alarm czujnika temperatury powrotu wody (A13)"
+      },
+      "alarm_fire_alarm": {
+        "name": "Alarm przeciwpożarowy (A14)"
+      },
+      "alarm_critic_alarm": {
+        "name": "Critical alarm (A15)"
+      },
+      "alarm_afreeze_signal": {
+        "name": "Alarm przeciwzamrożeniowy - termostat (A16)"
+      },
+      "alarm_afreeze_ret_wat_temp": {
+        "name": "Alarm przeciwzamrożeniowy - niska temperatura czynnika (A17)"
+      },
+      "alarm_afreeze_low_supply_temp": {
+        "name": "Alarm przeciwzamrożeniowy - niska temperatura nawiewu (A18)"
+      },
+      "alarm_heater_ovld": {
+        "name": "Termostat przegrzaniowy nagrzewnicy (A19)"
+      },
+      "alarm_fans_ovld": {
+        "name": "Alarm wentylatorów - zbiorczy (A20)"
+      },
+      "alarm_supply_fan_ovld": {
+        "name": "Alarm wentylatora nawiewu (A21)"
+      },
+      "alarm_ret_fan_ovld": {
+        "name": "Alarm wentylatora wywiewu (A22)"
+      },
+      "alarm_air_flw_sw": {
+        "name": "Brak sprezu wentylatorów - zbiorczy (A23)"
+      },
+      "alarm_supply_air_flw_sw": {
+        "name": "Brak sprezu wentylatora nawiewu (A24)"
+      },
+      "alarm_ret_air_flw_sw": {
+        "name": "Brak sprezu wentylatora wywiewu (A25)"
+      },
+      "alarm_heat_exchg_alrm": {
+        "name": "Alarm odzysku energii (A26)"
+      },
+      "alarm_pc1_defrost": {
+        "name": "Defrost pompy ciepła PC1 (A27)"
+      },
+      "alarm_pc2_defrost": {
+        "name": "Defrost pompy ciepła PC2 (A28)"
+      },
+      "alarm_supply_filtr1": {
+        "name": "Zabrudzenie filtra nawiewu nr 1 (A29)"
+      },
+      "alarm_supply_filtr2": {
+        "name": "Zabrudzenie filtra nawiewu nr 2 (A30)"
+      },
+      "alarm_return_filtr1": {
+        "name": "Zabrudzenie filtra wywiewu nr 1 (A31)"
+      },
+      "alarm_return_filtr2": {
+        "name": "Zabrudzenie filtra wywiewu nr 2 (A32)"
+      },
+      "alarm_hepa_filtr1": {
+        "name": "Filtr HEPA 1 brudny (A33)"
+      },
+      "alarm_hepa_filtr2": {
+        "name": "Filtr HEPA 2 brudny (A34)"
+      },
+      "alarm_hepa_filtr3": {
+        "name": "Filtr HEPA 3 brudny (A35)"
+      },
+      "alarm_hepa_filtr4": {
+        "name": "Filtr HEPA 4 brudny (A36)"
+      },
+      "alarm_filtr_work_hrs": {
+        "name": "Maksymalny czas pracy filtrów (A37)"
+      },
+      "alarm_non_critic": {
+        "name": "Non-critical alarm (A38)"
+      },
+      "alarm_cooler1": {
+        "name": "Alarm agregatu chłodniczego nr 1 (A39)"
+      },
+      "alarm_inv_supply1": {
+        "name": "Alarm przemiennika nawiewu nr 1 (A40)"
+      },
+      "alarm_inv_return1": {
+        "name": "Alarm przemiennika wywiewu nr 1 (A41)"
+      },
+      "alarm_inv_supply2": {
+        "name": "Alarm przemiennika nawiewu nr 2 (A42)"
+      },
+      "alarm_inv_return2": {
+        "name": "Alarm przemiennika wywiewu nr 2 (A43)"
+      },
+      "alarm_ec_supply1": {
+        "name": "Alarm silnika EC nawiewu nr 1 (A44)"
+      },
+      "alarm_ec_return1": {
+        "name": "Alarm silnika EC wywiewu nr 1 (A45)"
+      },
+      "alarm_ec_supply2": {
+        "name": "Alarm silnika EC nawiewu nr 2 (A46)"
+      },
+      "alarm_ec_return2": {
+        "name": "Alarm silnika EC wywiewu nr 2 (A47)"
+      },
+      "alarm_ec_supply3": {
+        "name": "Alarm silnika EC nawiewu nr 3 (A48)"
+      },
+      "alarm_ec_return3": {
+        "name": "Alarm silnika EC wywiewu nr 3 (A49)"
+      },
+      "alarm_ec_supply4": {
+        "name": "Alarm silnika EC nawiewu nr 4 (A50)"
+      },
+      "alarm_ec_return4": {
+        "name": "Alarm silnika EC wywiewu nr 4 (A51)"
+      },
+      "alarm_ec_supply5": {
+        "name": "Alarm silnika EC nawiewu nr 5 (A52)"
+      },
+      "alarm_ec_return5": {
+        "name": "Alarm silnika EC wywiewu nr 5 (A53)"
+      },
+      "alarm_ec_supply6": {
+        "name": "Alarm silnika EC nawiewu nr 6 (A54)"
+      },
+      "alarm_ec_return6": {
+        "name": "Alarm silnika EC wywiewu nr 6 (A55)"
+      },
+      "alarm_th_tune_temp_prb": {
+        "name": "Alarm czujnika temperatury w th-Tune (A56)"
+      },
+      "alarm_th_tune_hum_prb": {
+        "name": "Alarm czujnika wilgotności w th-Tune (A57)"
+      },
+      "alarm_u_pc3_io_offline": {
+        "name": "Rozszerzenie wejść/wyjść - offline (A58)"
+      },
+      "alarm_supply_fan1_modbus_offline": {
+        "name": "Przemiennik wentylatora nawiewu nr 1 - offline (A59)"
+      },
+      "alarm_return_fan1_modbus_offline": {
+        "name": "Przemiennik wentylatora wywiewu nr 1 - offline (A60)"
+      },
+      "alarm_supply_fan2_modbus_offline": {
+        "name": "Przemiennik wentylatora nawiewu nr 2 - offline (A61)"
+      },
+      "alarm_return_fan2_modbus_offline": {
+        "name": "Przemiennik wentylatora wywiewu nr 2 - offline (A62)"
+      },
+      "alarm_supply_ecfan1_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 1 - offline (A63)"
+      },
+      "alarm_return_ecfan1_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 1 - offline (A64)"
+      },
+      "alarm_supply_ecfan2_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 2 - offline (A65)"
+      },
+      "alarm_return_ecfan2_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 2 - offline (A66)"
+      },
+      "alarm_supply_ecfan3_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 3 - offline (A67)"
+      },
+      "alarm_return_ecfan3_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 3 - offline (A68)"
+      },
+      "alarm_supply_ecfan4_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 4 - offline (A69)"
+      },
+      "alarm_return_ecfan4_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 4 - offline (A70)"
+      },
+      "alarm_supply_ecfan5_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 5 - offline (A71)"
+      },
+      "alarm_return_ecfan5_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 5 - offline (A72)"
+      },
+      "alarm_supply_ecfan6_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 6 - offline (A73)"
+      },
+      "alarm_return_ecfan6_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 6 - offline (A74)"
+      },
+      "alarm_hepa_filtr5": {
+        "name": "Filtr HEPA 5 brudny (A75)"
+      },
+      "alarm_hepa_filtr6": {
+        "name": "Filtr HEPA 6 brudny (A76)"
+      },
+      "alarm_hepa_filtr7": {
+        "name": "Filtr HEPA 7 brudny (A77)"
+      },
+      "alarm_hepa_filtr8": {
+        "name": "Filtr HEPA 8 brudny (A78)"
+      },
+      "alarm_retain": {
+        "name": "Błąd zapisu pamięci nieulotnej (A79)"
+      },
+      "alarm_err_retain_write": {
+        "name": "Błąd zapisu pamięci nieulotnej (A80)"
+      },
+      "alarm_ec_return7": {
+        "name": "Alarm silnika EC wywiewu nr 7 (A82)"
+      },
+      "alarm_ec_return8": {
+        "name": "Alarm silnika EC wywiewu nr 8 (A84)"
+      },
+      "alarm_ec_supply7": {
+        "name": "Alarm silnika EC nawiewu nr 7 (A81)"
+      },
+      "alarm_ec_supply8": {
+        "name": "Alarm silnika EC nawiewu nr 8 (A83)"
+      },
+      "alarm_supply_ecfan7_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 7 - offline (A85)"
+      },
+      "alarm_supply_ecfan8_modbus_offline": {
+        "name": "Wentylator nawiewu EC nr 8 - offline (A87)"
+      },
+      "alarm_return_ecfan7_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 7 - offline (A86)"
+      },
+      "alarm_return_ecfan8_modbus_offline": {
+        "name": "Wentylator wywiewu EC nr 8 - offline (A88)"
+      },
+      "alarm_pc3_defrost": {
+        "name": "Defrost pompy ciepła PC3 (A89)"
+      },
+      "alarm_supply_fan_work_hrs": {
+        "name": "Maksymalny czas pracy wentylatora nawiewu (A90)"
+      },
+      "alarm_return_fan_work_hrs": {
+        "name": "Maksymalny czas pracy wentylatora wywiewu (A91)"
+      },
+      "alarm_heater1_work_hrs": {
+        "name": "Maksymalny czas pracy nagrzewnicy 1 (A92)"
+      },
+      "alarm_heater2_work_hrs": {
+        "name": "Maksymalny czas pracy nagrzewnicy 2 (A93)"
+      },
+      "alarm_heater3_work_hrs": {
+        "name": "Maksymalny czas pracy nagrzewnicy 3 (A94)"
+      },
+      "alarm_heater4_work_hrs": {
+        "name": "Maksymalny czas pracy nagrzewnicy 4 (A95)"
+      },
+      "alarm_cooler1_work_hrs": {
+        "name": "Maksymalny czas pracy chłodnicy 1 (A96)"
+      },
+      "alarm_cooler2_work_hrs": {
+        "name": "Maksymalny czas pracy chłodnicy 2 (A97)"
+      },
+      "alarm_cooler3_work_hrs": {
+        "name": "Maksymalny czas pracy chłodnicy 3 (A98)"
+      },
+      "alarm_cooler4_work_hrs": {
+        "name": "Maksymalny czas pracy chłodnicy 4 (A99)"
+      },
+      "alarm_aux1_prb": {
+        "name": "Alarm czujnika głównego pętli regulacji nr 1 (A116)"
+      },
+      "alarm_aux1_prb_lim": {
+        "name": "Alarm czujnika pomocniczego pętli regulacji nr 1 (A117)"
+      },
+      "alarm_aux1_reg_din": {
+        "name": "Alarm pętli regulacji nr 1 (A112)"
+      },
+      "alarm_aux2_prb": {
+        "name": "Alarm czujnika głównego pętli regulacji nr 2 (A118)"
+      },
+      "alarm_aux2_prb_lim": {
+        "name": "Alarm czujnika pomocniczego pętli regulacji nr 2 (A119)"
+      },
+      "alarm_aux2_reg_din": {
+        "name": "Alarm pętli regulacji nr 2 (A113)"
+      },
+      "alarm_aux3_prb": {
+        "name": "Alarm czujnika głównego pętli regulacji nr 3 (A120)"
+      },
+      "alarm_aux3_prb_lim": {
+        "name": "Alarm czujnika pomocniczego pętli regulacji nr 3 (A121)"
+      },
+      "alarm_aux3_reg_din": {
+        "name": "Alarm pętli regulacji nr 3 (A114)"
+      },
+      "alarm_aux4_prb": {
+        "name": "Alarm czujnika głównego pętli regulacji nr 4 (A122)"
+      },
+      "alarm_aux4_prb_lim": {
+        "name": "Alarm czujnika pomocniczego pętli regulacji nr 4 (A123)"
+      },
+      "alarm_aux4_reg_din": {
+        "name": "Alarm pętli regulacji nr 4 (A115)"
+      },
+      "alarm_cooler2": {
+        "name": "Alarm agregatu chłodniczego nr 2 (A132)"
+      },
+      "alarm_cooler3": {
+        "name": "Alarm agregatu chłodniczego nr 3 (A133)"
+      },
+      "alarm_dampers_work_hrs": {
+        "name": "Maksymalny czas pracy przepustnic (A101)"
+      },
+      "alarm_emerson_pcalarm": {
+        "name": "Alarm sterownika pompy ciepła (A109)"
+      },
+      "alarm_emerson_pcoffline": {
+        "name": "Sterownik pompy ciepła - offline (A110)"
+      },
+      "alarm_heat_exchg_driver_alarm": {
+        "name": "Rotary heat exchanger driver alarm (A107)"
+      },
+      "alarm_heat_exchg_driver_offline": {
+        "name": "Rotary heat exchanger driver offline (A108)"
+      },
+      "alarm_heat_exchg_work_hrs": {
+        "name": "Maksymalny czas pracy odzysku energii (A102)"
+      },
+      "alarm_humidifier": {
+        "name": "Alarm nawilżacza (A111)"
+      },
+      "alarm_humidifier_work_hrs": {
+        "name": "Maksymalny czas pracy nawilżacza (A103)"
+      },
+      "alarm_inv_return3": {
+        "name": "Alarm przemiennika wywiewu nr 3 (A125)"
+      },
+      "alarm_inv_return4": {
+        "name": "Alarm przemiennika wywiewu nr 4 (A127)"
+      },
+      "alarm_inv_supply3": {
+        "name": "Alarm przemiennika nawiewu nr 3 (A124)"
+      },
+      "alarm_inv_supply4": {
+        "name": "Alarm przemiennika nawiewu nr 4 (A126)"
+      },
+      "alarm_main_temp_sens": {
+        "name": "Alarm głównego czujnika regulacji (A134)"
+      },
+      "alarm_mix_damp_work_hrs": {
+        "name": "Maksymalny czas pracy komory mieszania (A100)"
+      },
+      "alarm_pc1_work_hrs": {
+        "name": "Maksymalny czas pracy pompy ciepła 1 (A104)"
+      },
+      "alarm_pc2_work_hrs": {
+        "name": "Maksymalny czas pracy pompy ciepła 2 (A105)"
+      },
+      "alarm_pc3_work_hrs": {
+        "name": "Maksymalny czas pracy pompy ciepła 3 (A106)"
+      },
+      "alarm_return_fan3_modbus_offline": {
+        "name": "Przemiennik wentylatora wywiewu nr 3 - offline (A129)"
+      },
+      "alarm_return_fan4_modbus_offline": {
+        "name": "Przemiennik wentylatora wywiewu nr 4 - offline (A131)"
+      },
+      "alarm_supply_fan3_modbus_offline": {
+        "name": "Przemiennik wentylatora nawiewu nr 3 - offline (A128)"
+      },
+      "alarm_supply_fan4_modbus_offline": {
+        "name": "Przemiennik wentylatora nawiewu nr 4 - offline (A130)"
+      },
+      "alarm_exh_temp_prb2": {
+        "name": "Alarm czujnika temperatury za odzyskiem nr 2 (A135)"
+      },
+      "alarm_aux5_reg_din": {
+        "name": "Alarm pętli regulacji nr 5 (A136)"
+      },
+      "alarm_aux6_reg_din": {
+        "name": "Alarm pętli regulacji nr 6 (A137)"
+      },
+      "alarm_aux5_prb": {
+        "name": "Alarm czujnika głównego pętli regulacji nr 5 (A138)"
+      },
+      "alarm_aux5_prb_lim": {
+        "name": "Alarm czujnika pomocniczego pętli regulacji nr 5 (A139)"
+      },
+      "alarm_aux6_prb": {
+        "name": "Alarm czujnika głównego pętli regulacji nr 6 (A140)"
+      },
+      "alarm_aux6_prb_lim": {
+        "name": "Alarm czujnika pomocniczego pętli regulacji nr 6 (A141)"
+      },
+      "alarm_sc_ui8_offline": {
+        "name": "Moduł SC-UI8AO4DO4 - offline (A142)"
+      },
+      "alarm_heat_cool_work_hrs": {
+        "name": "Maksymalny czas pracy nagrzewnico-chłodnicy (A143)"
+      },
+      "alarm_cooler4": {
+        "name": "Alarm agregatu chłodniczego nr 4 (A144)"
+      },
+      "alarm_programmable1": {
+        "name": "Programmable alarm 1 (A145)"
+      },
+      "alarm_programmable2": {
+        "name": "Programmable alarm 2 (A146)"
+      },
+      "alarm_programmable3": {
+        "name": "Programmable alarm 3 (A147)"
+      },
+      "alarm_programmable4": {
+        "name": "Programmable alarm 4 (A148)"
+      },
+      "alarm_free_sensor1": {
+        "name": "Alarm czujnika dodatkowego nr 1 (A149)"
+      },
+      "alarm_free_sensor2": {
+        "name": "Alarm czujnika dodatkowego nr 2 (A150)"
+      },
+      "alarm_free_sensor3": {
+        "name": "Alarm czujnika dodatkowego nr 3 (A151)"
+      },
+      "alarm_heat_pump1": {
+        "name": "Alarm pompy ciepła nr 1 (A152)"
+      },
+      "alarm_heat_pump2": {
+        "name": "Alarm pompy ciepła nr 2 (A153)"
+      },
+      "alarm_heat_pump3": {
+        "name": "Alarm pompy ciepła nr 3 (A154)"
+      },
+      "alarm_supply_filter1_press": {
+        "name": "Zabrudzenie filtra nawiewu nr 1 (A155)"
+      },
+      "alarm_supply_filter2_press": {
+        "name": "Zabrudzenie filtra nawiewu nr 2 (A156)"
+      },
+      "alarm_return_filter1_press": {
+        "name": "Zabrudzenie filtra wywiewu nr 1 (A157)"
+      },
+      "alarm_return_filter2_press": {
+        "name": "Zabrudzenie filtra wywiewu nr 2 (A158)"
+      },
+      "alarm_heater_pump_dry_run": {
+        "name": "Suchobieg pompy nagrzewnicy (A159)"
+      },
+      "alarm_cooler_pump_dry_run": {
+        "name": "Suchobieg pompy chłodnicy (A160)"
+      },
+      "alarm_high_supply_temp": {
+        "name": "Przegrzanie nawiewu (A161)"
+      },
+      "alarm_supply_fan_inverter1_6404": {
+        "name": "Wentylator nawiewu 1 - przetężenie prądowe (A162)"
+      },
+      "alarm_supply_fan_inverter1_6405": {
+        "name": "Wentylator nawiewu 1 - przekroczenie napięcia DC (A163)"
+      },
+      "alarm_supply_fan_inverter1_6406": {
+        "name": "Wentylator nawiewu 1 - złe parametry napięcia zasilającego (A164)"
+      },
+      "alarm_supply_fan_inverter1_6407": {
+        "name": "Wentylator nawiewu 1 - przeciążenie przemiennika (A165)"
+      },
+      "alarm_supply_fan_inverter1_6408": {
+        "name": "Wentylator nawiewu 1 - zbyt niskie napięcie (A166)"
+      },
+      "alarm_supply_fan_inverter1_6409": {
+        "name": "Wentylator nawiewu 1 - przegrzanie (A167)"
+      },
+      "alarm_supply_fan_inverter1_640a": {
+        "name": "Wentylator nawiewu 1 - przeciążenie silnika (A168)"
+      },
+      "alarm_supply_fan_inverter1_640d": {
+        "name": "Wentylator nawiewu 1 - zewnętrzny błąd - ESTOP (A169)"
+      },
+      "alarm_supply_fan_inverter1_6412": {
+        "name": "Wentylator nawiewu 1 - programowe przekroczenie prądu obciążenia (A170)"
+      },
+      "alarm_supply_fan_inverter1_6413": {
+        "name": "Wentylator nawiewu 1 - brak fazy wyjściowej lub brak obciążenia (A171)"
+      },
+      "alarm_supply_fan_inverter1_6415": {
+        "name": "Wentylator nawiewu 1 - bieg jałowy (A172)"
+      },
+      "alarm_supply_fan_inverter1_6416": {
+        "name": "Wentylator nawiewu 1 - zbyt małe obciążenie przemiennika (A173)"
+      },
+      "alarm_supply_fan_inverter1_641c": {
+        "name": "Wentylator nawiewu 1 - błąd uziemienia (A174)"
+      },
+      "alarm_supply_fan_inverter1_6425": {
+        "name": "Wentylator nawiewu 1 - błąd przegrzania silnika (A175)"
+      },
+      "alarm_supply_fan_inverter1_6445": {
+        "name": "Wentylator nawiewu 1 - przetężenie prądowe (A176)"
+      },
+      "alarm_supply_fan_inverter2_6404": {
+        "name": "Wentylator nawiewu 2 - przetężenie prądowe (A177)"
+      },
+      "alarm_supply_fan_inverter2_6405": {
+        "name": "Wentylator nawiewu 2 - przekroczenie napięcia DC (A178)"
+      },
+      "alarm_supply_fan_inverter2_6406": {
+        "name": "Wentylator nawiewu 2 - złe parametry napięcia zasilającego (A179)"
+      },
+      "alarm_supply_fan_inverter2_6407": {
+        "name": "Wentylator nawiewu 2 - przeciążenie przemiennika (A180)"
+      },
+      "alarm_supply_fan_inverter2_6408": {
+        "name": "Wentylator nawiewu 2 - zbyt niskie napięcie (A181)"
+      },
+      "alarm_supply_fan_inverter2_6409": {
+        "name": "Wentylator nawiewu 2 - przegrzanie (A182)"
+      },
+      "alarm_supply_fan_inverter2_640a": {
+        "name": "Wentylator nawiewu 2 - przeciążenie silnika (A183)"
+      },
+      "alarm_supply_fan_inverter2_640d": {
+        "name": "Wentylator nawiewu 2 - zewnętrzny błąd - ESTOP (A184)"
+      },
+      "alarm_supply_fan_inverter2_6412": {
+        "name": "Wentylator nawiewu 2 - programowe przekroczenie prądu obciążenia (A185)"
+      },
+      "alarm_supply_fan_inverter2_6413": {
+        "name": "Wentylator nawiewu 2 - brak fazy wyjściowej lub brak obciążenia (A186)"
+      },
+      "alarm_supply_fan_inverter2_6415": {
+        "name": "Wentylator nawiewu 2 - bieg jałowy (A187)"
+      },
+      "alarm_supply_fan_inverter2_6416": {
+        "name": "Wentylator nawiewu 2 - zbyt małe obciążenie przemiennika (A188)"
+      },
+      "alarm_supply_fan_inverter2_641c": {
+        "name": "Wentylator nawiewu 2 - błąd uziemienia (A189)"
+      },
+      "alarm_supply_fan_inverter2_6425": {
+        "name": "Wentylator nawiewu 2 - błąd przegrzania silnika (A190)"
+      },
+      "alarm_supply_fan_inverter2_6445": {
+        "name": "Wentylator nawiewu 2 - przetężenie prądowe (A191)"
+      },
+      "alarm_supply_fan_inverter3_6404": {
+        "name": "Wentylator nawiewu 3 - przetężenie prądowe (A192)"
+      },
+      "alarm_supply_fan_inverter3_6405": {
+        "name": "Wentylator nawiewu 3 - przekroczenie napięcia DC (A193)"
+      },
+      "alarm_supply_fan_inverter3_6406": {
+        "name": "Wentylator nawiewu 3 - złe parametry napięcia zasilającego (A194)"
+      },
+      "alarm_supply_fan_inverter3_6407": {
+        "name": "Wentylator nawiewu 3 - przeciążenie przemiennika (A195)"
+      },
+      "alarm_supply_fan_inverter3_6408": {
+        "name": "Wentylator nawiewu 3 - zbyt niskie napięcie (A196)"
+      },
+      "alarm_supply_fan_inverter3_6409": {
+        "name": "Wentylator nawiewu 3 - przegrzanie (A197)"
+      },
+      "alarm_supply_fan_inverter3_640a": {
+        "name": "Wentylator nawiewu 3 - przeciążenie silnika (A198)"
+      },
+      "alarm_supply_fan_inverter3_640d": {
+        "name": "Wentylator nawiewu 3 - zewnętrzny błąd - ESTOP (A199)"
+      },
+      "alarm_supply_fan_inverter3_6412": {
+        "name": "Wentylator nawiewu 3 - programowe przekroczenie prądu obciążenia (A200)"
+      },
+      "alarm_supply_fan_inverter3_6413": {
+        "name": "Wentylator nawiewu 3 - brak fazy wyjściowej lub brak obciążenia (A201)"
+      },
+      "alarm_supply_fan_inverter3_6415": {
+        "name": "Wentylator nawiewu 3 - bieg jałowy (A202)"
+      },
+      "alarm_supply_fan_inverter3_6416": {
+        "name": "Wentylator nawiewu 3 - zbyt małe obciążenie przemiennika (A203)"
+      },
+      "alarm_supply_fan_inverter3_641c": {
+        "name": "Wentylator nawiewu 3 - błąd uziemienia (A204)"
+      },
+      "alarm_supply_fan_inverter3_6425": {
+        "name": "Wentylator nawiewu 3 - błąd przegrzania silnika (A205)"
+      },
+      "alarm_supply_fan_inverter3_6445": {
+        "name": "Wentylator nawiewu 3 - przetężenie prądowe (A206)"
+      },
+      "alarm_supply_fan_inverter4_6404": {
+        "name": "Wentylator nawiewu 4 - przetężenie prądowe (A207)"
+      },
+      "alarm_supply_fan_inverter4_6405": {
+        "name": "Wentylator nawiewu 4 - przekroczenie napięcia DC (A208)"
+      },
+      "alarm_supply_fan_inverter4_6406": {
+        "name": "Wentylator nawiewu 4 - złe parametry napięcia zasilającego (A209)"
+      },
+      "alarm_supply_fan_inverter4_6407": {
+        "name": "Wentylator nawiewu 4 - przeciążenie przemiennika (A210)"
+      },
+      "alarm_supply_fan_inverter4_6408": {
+        "name": "Wentylator nawiewu 4 - zbyt niskie napięcie (A211)"
+      },
+      "alarm_supply_fan_inverter4_6409": {
+        "name": "Wentylator nawiewu 4 - przegrzanie (A212)"
+      },
+      "alarm_supply_fan_inverter4_640a": {
+        "name": "Wentylator nawiewu 4 - przeciążenie silnika (A213)"
+      },
+      "alarm_supply_fan_inverter4_640d": {
+        "name": "Wentylator nawiewu 4 - zewnętrzny błąd - ESTOP (A214)"
+      },
+      "alarm_supply_fan_inverter4_6412": {
+        "name": "Wentylator nawiewu 4 - programowe przekroczenie prądu obciążenia (A215)"
+      },
+      "alarm_supply_fan_inverter4_6413": {
+        "name": "Wentylator nawiewu 4 - brak fazy wyjściowej lub brak obciążenia (A216)"
+      },
+      "alarm_supply_fan_inverter4_6415": {
+        "name": "Wentylator nawiewu 4 - bieg jałowy (A217)"
+      },
+      "alarm_supply_fan_inverter4_6416": {
+        "name": "Wentylator nawiewu 4 - zbyt małe obciążenie przemiennika (A218)"
+      },
+      "alarm_supply_fan_inverter4_641c": {
+        "name": "Wentylator nawiewu 4 - błąd uziemienia (A219)"
+      },
+      "alarm_supply_fan_inverter4_6425": {
+        "name": "Wentylator nawiewu 4 - błąd przegrzania silnika (A220)"
+      },
+      "alarm_supply_fan_inverter4_6445": {
+        "name": "Wentylator nawiewu 4 - przetężenie prądowe (A221)"
+      },
+      "alarm_return_fan_inverter1_6404": {
+        "name": "Wentylator wywiewu 1 - przetężenie prądowe (A222)"
+      },
+      "alarm_return_fan_inverter1_6405": {
+        "name": "Wentylator wywiewu 1 - przekroczenie napięcia DC (A223)"
+      },
+      "alarm_return_fan_inverter1_6406": {
+        "name": "Wentylator wywiewu 1 - złe parametry napięcia zasilającego (A224)"
+      },
+      "alarm_return_fan_inverter1_6407": {
+        "name": "Wentylator wywiewu 1 - przeciążenie przemiennika (A225)"
+      },
+      "alarm_return_fan_inverter1_6408": {
+        "name": "Wentylator wywiewu 1 - zbyt niskie napięcie (A226)"
+      },
+      "alarm_return_fan_inverter1_6409": {
+        "name": "Wentylator wywiewu 1 - przegrzanie (A227)"
+      },
+      "alarm_return_fan_inverter1_640a": {
+        "name": "Wentylator wywiewu 1 - przeciążenie silnika (A228)"
+      },
+      "alarm_return_fan_inverter1_640d": {
+        "name": "Wentylator wywiewu 1 - zewnętrzny błąd - ESTOP (A229)"
+      },
+      "alarm_return_fan_inverter1_6412": {
+        "name": "Wentylator wywiewu 1 - programowe przekroczenie prądu obciążenia (A230)"
+      },
+      "alarm_return_fan_inverter1_6413": {
+        "name": "Wentylator wywiewu 1 - brak fazy wyjściowej lub brak obciążenia (A231)"
+      },
+      "alarm_return_fan_inverter1_6415": {
+        "name": "Wentylator wywiewu 1 - bieg jałowy (A232)"
+      },
+      "alarm_return_fan_inverter1_6416": {
+        "name": "Wentylator wywiewu 1 - zbyt małe obciążenie przemiennika (A233)"
+      },
+      "alarm_return_fan_inverter1_641c": {
+        "name": "Wentylator wywiewu 1 - błąd uziemienia (A234)"
+      },
+      "alarm_return_fan_inverter1_6425": {
+        "name": "Wentylator wywiewu 1 - błąd przegrzania silnika (A235)"
+      },
+      "alarm_return_fan_inverter1_6445": {
+        "name": "Wentylator wywiewu 1 - przetężenie prądowe (A236)"
+      },
+      "alarm_return_fan_inverter2_6404": {
+        "name": "Wentylator wywiewu 2 - przetężenie prądowe (A237)"
+      },
+      "alarm_return_fan_inverter2_6405": {
+        "name": "Wentylator wywiewu 2 - przekroczenie napięcia DC (A238)"
+      },
+      "alarm_return_fan_inverter2_6406": {
+        "name": "Wentylator wywiewu 2 - złe parametry napięcia zasilającego (A239)"
+      },
+      "alarm_return_fan_inverter2_6407": {
+        "name": "Wentylator wywiewu 2 - przeciążenie przemiennika (A240)"
+      },
+      "alarm_return_fan_inverter2_6408": {
+        "name": "Wentylator wywiewu 2 - zbyt niskie napięcie (A241)"
+      },
+      "alarm_return_fan_inverter2_6409": {
+        "name": "Wentylator wywiewu 2 - przegrzanie (A242)"
+      },
+      "alarm_return_fan_inverter2_640a": {
+        "name": "Wentylator wywiewu 2 - przeciążenie silnika (A243)"
+      },
+      "alarm_return_fan_inverter2_640d": {
+        "name": "Wentylator wywiewu 2 - zewnętrzny błąd - ESTOP (A244)"
+      },
+      "alarm_return_fan_inverter2_6412": {
+        "name": "Wentylator wywiewu 2 - programowe przekroczenie prądu obciążenia (A245)"
+      },
+      "alarm_return_fan_inverter2_6413": {
+        "name": "Wentylator wywiewu 2 - brak fazy wyjściowej lub brak obciążenia (A246)"
+      },
+      "alarm_return_fan_inverter2_6415": {
+        "name": "Wentylator wywiewu 2 - bieg jałowy (A247)"
+      },
+      "alarm_return_fan_inverter2_6416": {
+        "name": "Wentylator wywiewu 2 - zbyt małe obciążenie przemiennika (A248)"
+      },
+      "alarm_return_fan_inverter2_641c": {
+        "name": "Wentylator wywiewu 2 - błąd uziemienia (A249)"
+      },
+      "alarm_return_fan_inverter2_6425": {
+        "name": "Wentylator wywiewu 2 - błąd przegrzania silnika (A250)"
+      },
+      "alarm_return_fan_inverter2_6445": {
+        "name": "Wentylator wywiewu 2 - przetężenie prądowe (A251)"
+      },
+      "alarm_return_fan_inverter3_6404": {
+        "name": "Wentylator wywiewu 3 - przetężenie prądowe (A252)"
+      },
+      "alarm_return_fan_inverter3_6405": {
+        "name": "Wentylator wywiewu 3 - przekroczenie napięcia DC (A253)"
+      },
+      "alarm_return_fan_inverter3_6406": {
+        "name": "Wentylator wywiewu 3 - złe parametry napięcia zasilającego (A254)"
+      },
+      "alarm_return_fan_inverter3_6407": {
+        "name": "Wentylator wywiewu 3 - przeciążenie przemiennika (A255)"
+      },
+      "alarm_return_fan_inverter3_6408": {
+        "name": "Wentylator wywiewu 3 - zbyt niskie napięcie (A256)"
+      },
+      "alarm_return_fan_inverter3_6409": {
+        "name": "Wentylator wywiewu 3 - przegrzanie (A257)"
+      },
+      "alarm_return_fan_inverter3_640a": {
+        "name": "Wentylator wywiewu 3 - przeciążenie silnika (A258)"
+      },
+      "alarm_return_fan_inverter3_640d": {
+        "name": "Wentylator wywiewu 3 - zewnętrzny błąd - ESTOP (A259)"
+      },
+      "alarm_return_fan_inverter3_6412": {
+        "name": "Wentylator wywiewu 3 - programowe przekroczenie prądu obciążenia (A260)"
+      },
+      "alarm_return_fan_inverter3_6413": {
+        "name": "Wentylator wywiewu 3 - brak fazy wyjściowej lub brak obciążenia (A261)"
+      },
+      "alarm_return_fan_inverter3_6415": {
+        "name": "Wentylator wywiewu 3 - bieg jałowy (A262)"
+      },
+      "alarm_return_fan_inverter3_6416": {
+        "name": "Wentylator wywiewu 3 - zbyt małe obciążenie przemiennika (A263)"
+      },
+      "alarm_return_fan_inverter3_641c": {
+        "name": "Wentylator wywiewu 3 - błąd uziemienia (A264)"
+      },
+      "alarm_return_fan_inverter3_6425": {
+        "name": "Wentylator wywiewu 3 - błąd przegrzania silnika (A265)"
+      },
+      "alarm_return_fan_inverter3_6445": {
+        "name": "Wentylator wywiewu 3 - przetężenie prądowe (A266)"
+      },
+      "alarm_return_fan_inverter4_6404": {
+        "name": "Wentylator wywiewu 4 - przetężenie prądowe (A267)"
+      },
+      "alarm_return_fan_inverter4_6405": {
+        "name": "Wentylator wywiewu 4 - przekroczenie napięcia DC (A268)"
+      },
+      "alarm_return_fan_inverter4_6406": {
+        "name": "Wentylator wywiewu 4 - złe parametry napięcia zasilającego (A269)"
+      },
+      "alarm_return_fan_inverter4_6407": {
+        "name": "Wentylator wywiewu 4 - przeciążenie przemiennika (A270)"
+      },
+      "alarm_return_fan_inverter4_6408": {
+        "name": "Wentylator wywiewu 4 - zbyt niskie napięcie (A271)"
+      },
+      "alarm_return_fan_inverter4_6409": {
+        "name": "Wentylator wywiewu 4 - przegrzanie (A272)"
+      },
+      "alarm_return_fan_inverter4_640a": {
+        "name": "Wentylator wywiewu 4 - przeciążenie silnika (A273)"
+      },
+      "alarm_return_fan_inverter4_640d": {
+        "name": "Wentylator wywiewu 4 - zewnętrzny błąd - ESTOP (A274)"
+      },
+      "alarm_return_fan_inverter4_6412": {
+        "name": "Wentylator wywiewu 4 - programowe przekroczenie prądu obciążenia (A275)"
+      },
+      "alarm_return_fan_inverter4_6413": {
+        "name": "Wentylator wywiewu 4 - brak fazy wyjściowej lub brak obciążenia (A276)"
+      },
+      "alarm_return_fan_inverter4_6415": {
+        "name": "Wentylator wywiewu 4 - bieg jałowy (A277)"
+      },
+      "alarm_return_fan_inverter4_6416": {
+        "name": "Wentylator wywiewu 4 - zbyt małe obciążenie przemiennika (A278)"
+      },
+      "alarm_return_fan_inverter4_641c": {
+        "name": "Wentylator wywiewu 4 - błąd uziemienia (A279)"
+      },
+      "alarm_return_fan_inverter4_6425": {
+        "name": "Wentylator wywiewu 4 - błąd przegrzania silnika (A280)"
+      },
+      "alarm_return_fan_inverter4_6445": {
+        "name": "Wentylator wywiewu 4 - przetężenie prądowe (A281)"
+      },
+      "alarm_heat_exchanger_protect": {
+        "name": "Ochrona odzysku energii aktywna (A282)"
+      },
+      "alarm_uv_lamp_work_hrs": {
+        "name": "Maksymalny czas pracy lampy UV (A283)"
+      },
+      "alarm_uv_lamp_fault": {
+        "name": "UV lamp awaria (A284)"
+      },
+      "en_hum_reg_msk": {
+        "name": "Regulacja wilgotności aktywna"
+      },
+      "en_mix_damp": {
+        "name": "En mix damp"
+      },
+      "en_heat_exchg": {
+        "name": "En heat exchg"
+      },
+      "en_cooler1": {
+        "name": "Chłodnica nr 1 aktywna"
+      },
+      "en_cooler2": {
+        "name": "Chłodnica nr 2 aktywna"
+      },
+      "en_cooler3": {
+        "name": "Chłodnica nr 3 aktywna"
+      },
+      "en_heater1": {
+        "name": "En heater1"
+      },
+      "en_heater2": {
+        "name": "En heater2"
+      },
+      "en_heater3": {
+        "name": "En heater3"
+      },
+      "en_heat_exchg_1016": {
+        "name": "En heat exchg"
+      },
+      "en_humidification": {
+        "name": "Nawilżacz aktywny"
+      },
+      "en_mix_damp_1018": {
+        "name": "En mix damp"
+      },
+      "en_pc1": {
+        "name": "Pompa ciepła nr 1 aktywna"
+      },
+      "en_pc1_1020": {
+        "name": "Pompa ciepła nr 1 aktywna"
+      },
+      "en_pc1_1021": {
+        "name": "Pompa ciepła nr 1 aktywna"
+      },
+      "en_pc2": {
+        "name": "Pompa ciepła nr 2 aktywna"
+      },
+      "en_pc2_1023": {
+        "name": "Pompa ciepła nr 2 aktywna"
+      },
+      "en_pc2_1024": {
+        "name": "Pompa ciepła nr 2 aktywna"
+      },
+      "en_return_fan": {
+        "name": "Wentylator wywiewu aktywny"
+      },
+      "en_supply_fan": {
+        "name": "Wentylator nawiewu aktywny"
+      },
+      "msk_cool_img": {
+        "name": "Sygnalizacja pracy chłodnic"
+      },
+      "msk_heat_img": {
+        "name": "Msk heat img"
+      },
+      "msk_hum_img": {
+        "name": "Sygnalizacja pracy nawilżacza"
+      },
+      "msk_dehum_img": {
+        "name": "Msk dehum img"
+      },
+      "msk_heat_exchg_img": {
+        "name": "Sygnalizacja pracy odzysku energii"
+      },
+      "msk_hum_ok": {
+        "name": "Sygnalizacja braku wysterowania regulatora wilgotności"
+      },
+      "msk_temp_ok": {
+        "name": "Sygnalizacja braku wysterowania regulatora temperatury"
+      },
+      "msk_fan_ok": {
+        "name": "Sygnalizacja braku wysterowania wentylatorów"
+      },
+      "msk_heat_exchg_ok": {
+        "name": "Sygnalizacja braku wysterowania odzysku energii"
+      },
+      "msk_mix_damp_ok": {
+        "name": "Msk mix damp OK"
+      },
+      "do_alarm_dout_val": {
+        "name": "Sygnalizacja alarmu krytycznego (zatrzymania centrali)"
+      },
+      "en_heater4": {
+        "name": "En heater4"
+      },
+      "en_cooler4": {
+        "name": "Chłodnica nr 4 aktywna"
+      },
+      "en_pc3": {
+        "name": "Pompa ciepła nr 3 aktywna"
+      },
+      "en_pc3_1045": {
+        "name": "Pompa ciepła nr 3 aktywna"
+      },
+      "do_heater1_do1_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 1"
+      },
+      "do_heater1_do2_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 1"
+      },
+      "do_heater1_do3_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 1"
+      },
+      "do_heater1_do4_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 1"
+      },
+      "do_heater2_do1_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 2"
+      },
+      "do_heater2_do2_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 2"
+      },
+      "do_heater2_do3_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 2"
+      },
+      "do_heater2_do4_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 2"
+      },
+      "do_heater3_do1_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 3"
+      },
+      "do_heater3_do2_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 3"
+      },
+      "do_heater3_do3_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 3"
+      },
+      "do_heater3_do4_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 3"
+      },
+      "do_heater4_do1_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 4"
+      },
+      "do_heater4_do2_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 4"
+      },
+      "do_heater4_do3_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 4"
+      },
+      "do_heater4_do4_val": {
+        "name": "Wyjście sterujące nagrzewnicy nr 4"
+      },
+      "do_cooler1_do1_val": {
+        "name": "Wyjście sterujące chłodnicy nr 1"
+      },
+      "do_cooler1_do2_val": {
+        "name": "Wyjście sterujące chłodnicy nr 1"
+      },
+      "do_cooler1_do3_val": {
+        "name": "Wyjście sterujące chłodnicy nr 1"
+      },
+      "do_cooler2_do1_val": {
+        "name": "Wyjście sterujące chłodnicy nr 2"
+      },
+      "do_cooler2_do2_val": {
+        "name": "Wyjście sterujące chłodnicy nr 2"
+      },
+      "do_cooler2_do3_val": {
+        "name": "Wyjście sterujące chłodnicy nr 2"
+      },
+      "do_cooler3_do1_val": {
+        "name": "Wyjście sterujące chłodnicy nr 3"
+      },
+      "do_cooler3_do2_val": {
+        "name": "Wyjście sterujące chłodnicy nr 3"
+      },
+      "do_cooler3_do3_val": {
+        "name": "Wyjście sterujące chłodnicy nr 3"
+      },
+      "do_cooler4_do1_val": {
+        "name": "Wyjście sterujące chłodnicy nr 4"
+      },
+      "do_cooler4_do2_val": {
+        "name": "Wyjście sterujące chłodnicy nr 4"
+      },
+      "do_cooler4_do3_val": {
+        "name": "Wyjście sterujące chłodnicy nr 4"
+      },
+      "do_pc1_heat_dout_val": {
+        "name": "Pompa ciepła nr 1 - grzanie"
+      },
+      "do_pc1_cool_dout_val": {
+        "name": "Pompa ciepła nr 1 - chłodzenie"
+      },
+      "do_pc1_com_dout_val": {
+        "name": "Pompa ciepła nr 1 - start"
+      },
+      "do_pc2_heat_dout_val": {
+        "name": "Pompa ciepła nr 2 - grzanie"
+      },
+      "do_pc2_cool_dout_val": {
+        "name": "Pompa ciepła nr 2 - chłodzenie"
+      },
+      "do_pc2_com_dout_val": {
+        "name": "Pompa ciepła nr 2 - start"
+      },
+      "do_pc3_heat_dout_val": {
+        "name": "Pompa ciepła nr 3 - grzanie"
+      },
+      "do_pc3_cool_dout_val": {
+        "name": "Pompa ciepła nr 3 - chłodzenie"
+      },
+      "do_pc3_com_dout_val": {
+        "name": "Pompa ciepła nr 3 - start"
+      },
+      "do_heat_exchg_do1_val": {
+        "name": "Wyjście sterujące odzysku energii"
+      },
+      "do_mix_damp_do1_val": {
+        "name": "Wyjście sterujące komory mieszania"
+      },
+      "do_humidifier_do1_val": {
+        "name": "Start nawilżacza"
+      },
+      "do_supply_fan_do1_val": {
+        "name": "Start wentylatorów nawiewu"
+      },
+      "do_return_fan_do1_val": {
+        "name": "Start wentylatorów wywiewu"
+      },
+      "do_on_off_damp_do1_val": {
+        "name": "Otwarcie przepustnic"
+      },
+      "do_run_dout_val": {
+        "name": "Wyjście sygnalizaci pracy centrali"
+      },
+      "do_filtr_dout_val": {
+        "name": "Wyjście sygnalizacji zabrudzenia filtrów"
+      },
+      "do_alarm_dout_val_45": {
+        "name": "Wyjście sygnalizacji alarmu"
+      },
+      "do_aux1_dout_val": {
+        "name": "Wyjscie sterujące dodatkowej pętli regulacji nr 1"
+      },
+      "do_aux2_dout_val": {
+        "name": "Wyjscie sterujące dodatkowej pętli regulacji nr 2"
+      },
+      "do_aux3_dout_val": {
+        "name": "Wyjscie sterujące dodatkowej pętli regulacji nr 3"
+      },
+      "do_aux4_dout_val": {
+        "name": "Wyjscie sterujące dodatkowej pętli regulacji nr 4"
+      },
+      "unit_cool_heat_mode": {
+        "name": "Tryb grzania i chłodzenia centrali"
+      },
+      "do_aux5_dout_val": {
+        "name": "Wyjscie sterujące dodatkowej pętli regulacji nr 5"
+      },
+      "do_aux6_dout_val": {
+        "name": "Wyjscie sterujące dodatkowej pętli regulacji nr 6"
+      },
+      "do_proport_setter1_val": {
+        "name": "Wyjscie sterujące zadawania zewnętrznego nr 1"
+      },
+      "do_proport_setter2_val": {
+        "name": "Wyjscie sterujące zadawania zewnętrznego nr 2"
+      },
+      "do_heat_cool_com_dout_val": {
+        "name": "Wyjscie sterujące nagrzewnico/chłodnicy - wspólne"
+      },
+      "do_heat_cool_cool_dout_val": {
+        "name": "Wyjscie sterujące nagrzewnico/chłodnicy - chłodzenie"
+      },
+      "do_heat_cool_heat_dout_val": {
+        "name": "Wyjscie sterujące nagrzewnico/chłodnicy - grzanie"
+      },
+      "do_mix_damp1_thr_val": {
+        "name": "Wyjscie sterujące 1 progu komory mieszania"
+      },
+      "do_mix_damp2_thr_val": {
+        "name": "Wyjscie sterujące 2 progu komory mieszania"
+      },
+      "do_mix_damp3_thr_val": {
+        "name": "Wyjscie sterujące 3 progu komory mieszania"
+      }
+    },
+    "switch": {
+      "air_quality_fan_regulation_active": {
+        "name": "Regulacja wentylatorów według jakości powietrza aktywna"
+      },
+      "alarm_reset_by_bms": {
+        "name": "Reset alarmów",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "bms_unit_enable": {
+        "name": "Odblokowanie centrali przez BMS",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "controller_time_save": {
+        "name": "Zapis ustawień czasu sterownika",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "a_freeze_low_supply_temperature_enable": {
+        "name": "Aktywacja zabezpieczenia przed zbyt niską temperaturą nawiewu",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "a_freeze_low_water_temperature_enable": {
+        "name": "Aktywacja zabezpieczenia przed zbyt niską temperaturą wody",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "pre_heating_enable": {
+        "name": "Aktywacja wygrzewania",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_enabled": {
+        "name": "Aktywacja okresu wakacyjnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_enabled": {
+        "name": "Aktywacja okresu wakacyjnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_enabled": {
+        "name": "Aktywacja okresu wakacyjnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_enabled": {
+        "name": "Aktywacja dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_enabled": {
+        "name": "Aktywacja dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_enabled": {
+        "name": "Aktywacja dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_enabled": {
+        "name": "Aktywacja dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_enabled": {
+        "name": "Aktywacja dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_enabled": {
+        "name": "Aktywacja dnia specjalnego",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_enabled": {
+        "name": "Aktywacja strefy dziennej  nr 1",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_enabled": {
+        "name": "Aktywacja strefy dziennej  nr 2",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_enabled": {
+        "name": "Aktywacja strefy dziennej  nr 3",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_enabled": {
+        "name": "Aktywacja strefy dziennej  nr 4",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "unit_season_transition_period_unlock": {
+        "name": "Aktywacja okresu przejściowego 1-Aktywny; 0-Nieaktywny",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "unit_season_bms": {
+        "name": "Wybór sezonu przez BMS",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "auto_season": {
+        "name": "Automatyczne grzanie i chłodzenie",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      },
+      "auto_humidity_dehum": {
+        "name": "Automatyczne osuszanie i nawilżanie",
+        "state": {
+          "off": "Wyłączony",
+          "on": "Włączony"
+        }
+      }
+    }
+  },
   "issues": {
     "active_alarm": {
       "title": "Aktywny alarm Hombee Air {alarm_code}",
-      "description": "{unit} zgłasza {alarm_name}. Opis katalogowy: {description}"
+      "description": "{unit} zgłasza aktywny alarm {alarm_code}."
     }
   },
   "services": {

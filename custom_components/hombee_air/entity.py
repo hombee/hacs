@@ -58,11 +58,16 @@ class HombeeAirRegisterEntity(CoordinatorEntity[HombeeAirCoordinator]):
         self._optimistic_raw: int | bool | None = None
         self._optimistic_deadline: float | None = None
         self._attr_unique_id = f"{DOMAIN}_{runtime.slug}_{register.key}"
-        self._attr_name = register.name
+        self._attr_translation_key = register.key
         self._attr_device_info = device_info(runtime.slug, title)
         self._attr_entity_category = _entity_category(register)
         if register.access_tier == TIER_ADVANCED_WRITABLE:
             self._attr_entity_registry_enabled_default = False
+
+    @property
+    def suggested_object_id(self) -> str:
+        """Keep entity ids stable while display names are translated."""
+        return self._register.name
 
     @property
     def raw_value(self) -> int | bool | None:

@@ -10,6 +10,7 @@ from homeassistant.components.sensor import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .catalog_translations import OPTION_STATE_KEYS
 from .coordinator import HombeeAirConfigEntry, HombeeAirRuntime
 from .entity import HombeeAirRegisterEntity, is_writable
 from .registers import REGISTERS, HombeeAirRegister
@@ -41,7 +42,9 @@ class HombeeAirSensor(HombeeAirRegisterEntity, SensorEntity):
         super().__init__(runtime, register, title)
         if register.options:
             self._attr_device_class = SensorDeviceClass.ENUM
-            self._attr_options = [label for _, label in register.options]
+            self._attr_options = [
+                OPTION_STATE_KEYS[label] for _, label in register.options
+            ]
         else:
             self._attr_native_unit_of_measurement = register.unit
             self._attr_device_class = _device_class(register)
@@ -55,7 +58,11 @@ class HombeeAirSensor(HombeeAirRegisterEntity, SensorEntity):
             return None
         if self._register.options:
             return next(
-                (label for value, label in self._register.options if value == raw),
+                (
+                    OPTION_STATE_KEYS[label]
+                    for value, label in self._register.options
+                    if value == raw
+                ),
                 None,
             )
         return self._register.decode_numeric(raw)

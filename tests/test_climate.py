@@ -320,6 +320,66 @@ async def test_number_entity_survives_stale_immediate_readback(
     assert state.state == "25.1"
 
 
+@pytest.mark.parametrize(
+    ("domain", "key"),
+    [
+        ("sensor", "current_program"),
+        ("binary_sensor", "alarm_room_temp_prb"),
+        ("number", "comfort_heating_temperature_setpoint"),
+        ("select", "manual_supply_fan_gear"),
+        ("switch", "alarm_reset_by_bms"),
+    ],
+)
+async def test_register_entities_use_native_translation_keys(
+    hass: HomeAssistant,
+    mock_client: MockModbusClient,
+    domain: str,
+    key: str,
+) -> None:
+    entity_id = _entity_id_for_domain_and_unique_id(
+        hass, domain, f"hombee_air_test_unit_{key}"
+    )
+    registry_entry = er.async_get(hass).async_get(entity_id)
+
+    assert registry_entry is not None
+    assert registry_entry.translation_key == key
+
+
+async def test_enum_options_use_translation_keys(
+    hass: HomeAssistant, mock_client: MockModbusClient
+) -> None:
+    sensor_id = _entity_id_for_domain_and_unique_id(
+        hass, "sensor", "hombee_air_test_unit_current_program"
+    )
+    select_id = _entity_id_for_domain_and_unique_id(
+        hass, "select", "hombee_air_test_unit_program_mode"
+    )
+
+    sensor_state = hass.states.get(sensor_id)
+    select_state = hass.states.get(select_id)
+    assert sensor_state is not None
+    assert select_state is not None
+    assert sensor_state.state == "comfort"
+    assert select_state.state == "comfort"
+    assert select_state.attributes["options"] == [
+        "off",
+        "standby",
+        "economy",
+        "comfort",
+        "comfort_plus",
+        "auto",
+        "manual",
+    ]
+
+    await hass.services.async_call(
+        "select",
+        "select_option",
+        {"entity_id": select_id, "option": "economy"},
+        blocking=True,
+    )
+    assert ("program_mode", 2) in mock_client.writes
+
+
 async def test_failed_write_rolls_back_optimistic_state(
     hass: HomeAssistant, mock_client: MockModbusClient
 ) -> None:
@@ -390,8 +450,6 @@ async def test_active_alarm_creates_repair_issue_on_setup(
     assert issue.translation_placeholders == {
         "unit": "Hombee Air",
         "alarm_code": "A01",
-        "alarm_name": "room temperature sensor alarm",
-        "description": "alarm czujnika temperatury pomieszczenia",
     }
 
 
@@ -444,8 +502,14 @@ async def test_alarm_repair_issues_clear_on_unload(
 
 
 def _entity_id_for_unique_id(hass: HomeAssistant, unique_id: str) -> str:
+    return _entity_id_for_domain_and_unique_id(hass, "number", unique_id)
+
+
+def _entity_id_for_domain_and_unique_id(
+    hass: HomeAssistant, domain: str, unique_id: str
+) -> str:
     registry = er.async_get(hass)
-    entry = registry.async_get_entity_id("number", DOMAIN, unique_id)
+    entry = registry.async_get_entity_id(domain, DOMAIN, unique_id)
     assert entry is not None
     return entry
 

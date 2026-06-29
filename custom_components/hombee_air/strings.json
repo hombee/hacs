@@ -18,10 +18,2480 @@
       "already_configured": "This installation is already configured"
     }
   },
+  "entity": {
+    "sensor": {
+      "room_temperature": {
+        "name": "Room temperature"
+      },
+      "return_temperature": {
+        "name": "Return temperature"
+      },
+      "supply_temperature": {
+        "name": "Supply temperature"
+      },
+      "exhaust_temperature": {
+        "name": "Exhaust temperature"
+      },
+      "outdoor_temperature": {
+        "name": "Outdoor temperature"
+      },
+      "current_temperature_setpoint": {
+        "name": "Current temperature setpoint"
+      },
+      "current_humidity_setpoint": {
+        "name": "Current humidity setpoint"
+      },
+      "current_co2_setpoint": {
+        "name": "Current CO2 setpoint"
+      },
+      "current_fan_gear": {
+        "name": "Current fan gear",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "current_program": {
+        "name": "Current program",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "unit_status": {
+        "name": "Unit status",
+        "state": {
+          "off_by_alarm": "Off by alarm",
+          "off_by_bms": "Off by BMS",
+          "off_by_digital_input": "Off by digital input",
+          "off_by_key": "Off by key",
+          "frost_protection": "Frost protection",
+          "airing": "Airing",
+          "stopping": "Stopping",
+          "warm_up": "Warm-up",
+          "startup": "Startup",
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "manual": "Manual"
+        }
+      },
+      "supply_fan_request": {
+        "name": "Supply fan request"
+      },
+      "return_fan_request": {
+        "name": "Return fan request"
+      },
+      "room_humidity": {
+        "name": "Room humidity"
+      },
+      "return_humidity": {
+        "name": "Return humidity"
+      },
+      "supply_humidity": {
+        "name": "Supply humidity"
+      },
+      "mix_damper_request": {
+        "name": "Mix damper request"
+      },
+      "humidifier_request": {
+        "name": "Humidifier request"
+      },
+      "ain_room_temp_val": {
+        "name": "AIN room temp"
+      },
+      "ain_afreeze_ret_wat_sens_val": {
+        "name": "AIN afreeze return wat sens"
+      },
+      "ain_ext_hum_val": {
+        "name": "AIN outdoor hum"
+      },
+      "room_hum_absolute": {
+        "name": "Room hum absolute"
+      },
+      "ret_hum_absolute": {
+        "name": "Return hum absolute"
+      },
+      "supply_hum_absolute": {
+        "name": "Supply hum absolute"
+      },
+      "ext_hum_absolute": {
+        "name": "Outdoor hum absolute"
+      },
+      "ret_air_co2_lev_mdb": {
+        "name": "Return air CO2 lev"
+      },
+      "supply_air_pval_mdb": {
+        "name": "Supply air pval"
+      },
+      "return_air_pval_mdb": {
+        "name": "Return air pval"
+      },
+      "supply_air_flow_val_mdb": {
+        "name": "Supply air flow value"
+      },
+      "return_air_flow_val_mdb": {
+        "name": "Return air flow value"
+      },
+      "ain_aux1_prb_val": {
+        "name": "AIN aux1 probe"
+      },
+      "ain_aux1_prb_lim_val": {
+        "name": "AIN aux1 probe lim"
+      },
+      "ain_aux2_prb_val": {
+        "name": "AIN aux2 probe"
+      },
+      "ain_aux2_prb_lim_val": {
+        "name": "AIN aux2 probe lim"
+      },
+      "ain_aux3_prb_val": {
+        "name": "AIN aux3 probe"
+      },
+      "ain_aux3_prb_lim_val": {
+        "name": "AIN aux3 probe lim"
+      },
+      "ain_aux4_prb_val": {
+        "name": "AIN aux4 probe"
+      },
+      "ain_aux4_prb_lim_val": {
+        "name": "AIN aux4 probe lim"
+      },
+      "ain_exh_temp2_val": {
+        "name": "AIN exhaust temp2"
+      },
+      "ain_aux5_prb_val": {
+        "name": "AIN aux5 probe"
+      },
+      "ain_aux5_prb_lim_val": {
+        "name": "AIN aux5 probe lim"
+      },
+      "ain_aux6_prb_val": {
+        "name": "AIN aux6 probe"
+      },
+      "ain_aux6_prb_lim_val": {
+        "name": "AIN aux6 probe lim"
+      },
+      "ain_heat_cool_supply_sens_val": {
+        "name": "AIN heat cool supply sens"
+      },
+      "heater1_req_final": {
+        "name": "Heater1 request final"
+      },
+      "heater2_req_final": {
+        "name": "Heater2 request final"
+      },
+      "heater3_req_final": {
+        "name": "Heater3 request final"
+      },
+      "heater4_req_final": {
+        "name": "Heater4 request final"
+      },
+      "cooler1_req_final": {
+        "name": "Cooler1 request final"
+      },
+      "cooler2_req_final": {
+        "name": "Cooler2 request final"
+      },
+      "cooler3_req_final": {
+        "name": "Cooler3 request final"
+      },
+      "cooler4_req_final": {
+        "name": "Cooler4 request final"
+      },
+      "pc1_cool_req_final": {
+        "name": "PC1 cool request final"
+      },
+      "pc1_heat_req_final": {
+        "name": "PC1 heat request final"
+      },
+      "pc2_cool_req_final": {
+        "name": "PC2 cool request final"
+      },
+      "pc2_heat_req_final": {
+        "name": "PC2 heat request final"
+      },
+      "pc3_cool_req_final": {
+        "name": "PC3 cool request final"
+      },
+      "pc3_heat_req_final": {
+        "name": "PC3 heat request final"
+      },
+      "heat_exchg_req_final": {
+        "name": "Heat exchg request final"
+      },
+      "ao_aux1_yout_val": {
+        "name": "AO aux1 yout"
+      },
+      "ao_aux2_yout_val": {
+        "name": "AO aux2 yout"
+      },
+      "ao_aux3_yout_val": {
+        "name": "AO aux3 yout"
+      },
+      "ao_aux4_yout_val": {
+        "name": "AO aux4 yout"
+      },
+      "ao_aux5_yout_val": {
+        "name": "AO aux5 yout"
+      },
+      "ao_aux6_yout_val": {
+        "name": "AO aux6 yout"
+      },
+      "ao_proport_setter1_val": {
+        "name": "AO proport setter1"
+      },
+      "ao_proport_setter2_val": {
+        "name": "AO proport setter2"
+      },
+      "ao_air_diffuser_yout_val": {
+        "name": "AO air diffuser yout"
+      },
+      "ao_heat_cool_aout_val": {
+        "name": "AO heat cool AOUT"
+      },
+      "temp_to_regulation": {
+        "name": "Temp to regulation"
+      },
+      "hum_to_regulation": {
+        "name": "Hum to regulation"
+      },
+      "msk_fans_req_val": {
+        "name": "Msk fans request value"
+      },
+      "msk_heat_exchg_req_val": {
+        "name": "Msk heat exchg request value"
+      },
+      "msk_hum_req_val": {
+        "name": "Msk hum request value"
+      },
+      "msk_mix_damp_req_val": {
+        "name": "Msk mix damp request value"
+      },
+      "msk_temp_req_val": {
+        "name": "Msk temp request value"
+      },
+      "heating_levels_active": {
+        "name": "Heating levels active"
+      },
+      "cooling_levels_active": {
+        "name": "Cooling levels active"
+      },
+      "p_lan_info_2": {
+        "name": "P lan info[2]"
+      },
+      "p_lan_info_3": {
+        "name": "P lan info[3]"
+      },
+      "work_counter1_work_hrs": {
+        "name": "Work counter1 work hrs"
+      },
+      "work_counter2_work_hrs": {
+        "name": "Work counter2 work hrs"
+      },
+      "work_counter3_work_hrs": {
+        "name": "Work counter3 work hrs"
+      }
+    },
+    "number": {
+      "manual_temperature_setpoint": {
+        "name": "Manual temperature setpoint"
+      },
+      "manual_humidity_setpoint": {
+        "name": "Manual humidity setpoint"
+      },
+      "manual_co2_setpoint": {
+        "name": "Manual CO2 setpoint"
+      },
+      "winter_start_month": {
+        "name": "Winter start month"
+      },
+      "winter_start_day": {
+        "name": "Winter start day"
+      },
+      "summer_start_month": {
+        "name": "Summer start month"
+      },
+      "summer_start_day": {
+        "name": "Summer start day"
+      },
+      "transition_weeks": {
+        "name": "Transition weeks"
+      },
+      "transition_cooling_lock_temperature": {
+        "name": "Cooling lock temperature"
+      },
+      "transition_heating_lock_temperature": {
+        "name": "Heating lock temperature"
+      },
+      "temperature_heat_pid_kp": {
+        "name": "Temperature heat PID Kp"
+      },
+      "temperature_heat_pid_ti": {
+        "name": "Temperature heat PID Ti"
+      },
+      "temperature_heat_pid_td": {
+        "name": "Temperature heat PID Td"
+      },
+      "temperature_heat_deadband": {
+        "name": "Temperature heat deadband"
+      },
+      "humidity_pid_kp": {
+        "name": "Humidity PID Kp"
+      },
+      "humidity_pid_ti": {
+        "name": "Humidity PID Ti"
+      },
+      "humidity_pid_td": {
+        "name": "Humidity PID Td"
+      },
+      "humidity_deadband": {
+        "name": "Humidity deadband"
+      },
+      "air_quality_pid_kp": {
+        "name": "Air quality PID Kp"
+      },
+      "air_quality_pid_ti": {
+        "name": "Air quality PID Ti"
+      },
+      "air_quality_pid_td": {
+        "name": "Air quality PID Td"
+      },
+      "air_quality_deadband": {
+        "name": "Air quality deadband"
+      },
+      "supply_fan_pressure_pid_kp": {
+        "name": "Supply pressure PID Kp"
+      },
+      "supply_fan_pressure_pid_ti": {
+        "name": "Supply pressure PID Ti"
+      },
+      "supply_fan_pressure_pid_td": {
+        "name": "Supply pressure PID Td"
+      },
+      "supply_pressure_deadband": {
+        "name": "Supply pressure deadband"
+      },
+      "return_fan_manual_override": {
+        "name": "Return fan manual override"
+      },
+      "humidifier_manual_override": {
+        "name": "Humidifier manual override"
+      },
+      "supply_fan_manual_override": {
+        "name": "Supply fan manual override"
+      },
+      "controller_minute": {
+        "name": "Controller minute"
+      },
+      "controller_hour": {
+        "name": "Controller hour"
+      },
+      "controller_day": {
+        "name": "Controller day"
+      },
+      "controller_month": {
+        "name": "Controller month"
+      },
+      "controller_year": {
+        "name": "Controller year"
+      },
+      "economy_heating_temperature_setpoint": {
+        "name": "Economy heating temperature"
+      },
+      "economy_cooling_temperature_setpoint": {
+        "name": "Economy cooling temperature"
+      },
+      "comfort_heating_temperature_setpoint": {
+        "name": "Comfort heating temperature"
+      },
+      "comfort_cooling_temperature_setpoint": {
+        "name": "Comfort cooling temperature"
+      },
+      "comfort_plus_heating_temperature_setpoint": {
+        "name": "Comfort+ heating temperature"
+      },
+      "comfort_plus_cooling_temperature_setpoint": {
+        "name": "Comfort+ cooling temperature"
+      },
+      "economy_heating_humidity_setpoint": {
+        "name": "Economy heating humidity"
+      },
+      "economy_cooling_humidity_setpoint": {
+        "name": "Economy cooling humidity"
+      },
+      "comfort_heating_humidity_setpoint": {
+        "name": "Comfort heating humidity"
+      },
+      "comfort_cooling_humidity_setpoint": {
+        "name": "Comfort cooling humidity"
+      },
+      "comfort_plus_heating_humidity_setpoint": {
+        "name": "Comfort+ heating humidity"
+      },
+      "comfort_plus_cooling_humidity_setpoint": {
+        "name": "Comfort+ cooling humidity"
+      },
+      "economy_co2_setpoint": {
+        "name": "Economy CO2"
+      },
+      "comfort_co2_setpoint": {
+        "name": "Comfort CO2"
+      },
+      "comfort_plus_co2_setpoint": {
+        "name": "Comfort+ CO2"
+      },
+      "standby_heating_off_temperature": {
+        "name": "Standby heating off temperature"
+      },
+      "standby_heating_on_temperature": {
+        "name": "Standby heating on temperature"
+      },
+      "standby_cooling_off_temperature": {
+        "name": "Standby cooling off temperature"
+      },
+      "standby_cooling_on_temperature": {
+        "name": "Standby cooling on temperature"
+      },
+      "supply_fan_speed_gear_1": {
+        "name": "Supply speed gear 1"
+      },
+      "supply_fan_speed_gear_2": {
+        "name": "Supply speed gear 2"
+      },
+      "supply_fan_speed_gear_3": {
+        "name": "Supply speed gear 3"
+      },
+      "return_fan_speed_gear_1": {
+        "name": "Return speed gear 1"
+      },
+      "return_fan_speed_gear_2": {
+        "name": "Return speed gear 2"
+      },
+      "return_fan_speed_gear_3": {
+        "name": "Return speed gear 3"
+      },
+      "supply_fan_pressure_gear_1": {
+        "name": "Supply pressure gear 1"
+      },
+      "supply_fan_pressure_gear_2": {
+        "name": "Supply pressure gear 2"
+      },
+      "supply_fan_pressure_gear_3": {
+        "name": "Supply pressure gear 3"
+      },
+      "return_fan_pressure_gear_1": {
+        "name": "Return pressure gear 1"
+      },
+      "return_fan_pressure_gear_2": {
+        "name": "Return pressure gear 2"
+      },
+      "return_fan_pressure_gear_3": {
+        "name": "Return pressure gear 3"
+      },
+      "supply_fan_airflow_gear_1": {
+        "name": "Supply airflow gear 1"
+      },
+      "supply_fan_airflow_gear_2": {
+        "name": "Supply airflow gear 2"
+      },
+      "supply_fan_airflow_gear_3": {
+        "name": "Supply airflow gear 3"
+      },
+      "return_fan_airflow_gear_1": {
+        "name": "Return airflow gear 1"
+      },
+      "return_fan_airflow_gear_2": {
+        "name": "Return airflow gear 2"
+      },
+      "return_fan_airflow_gear_3": {
+        "name": "Return airflow gear 3"
+      },
+      "supply_air_flow_reg_deadband": {
+        "name": "Supply air flow reg deadband"
+      },
+      "pid_return_fan_pressure_kp": {
+        "name": "PID return fan pressure Kp"
+      },
+      "pid_return_fan_pressure_ti": {
+        "name": "PID return fan pressure Ti"
+      },
+      "pid_return_fan_pressure_td": {
+        "name": "PID return fan pressure Td"
+      },
+      "return_pressure_reg_deadband": {
+        "name": "Return pressure reg deadband"
+      },
+      "return_air_flow_reg_deadband": {
+        "name": "Return air flow reg deadband"
+      },
+      "pid_temperature_cooling_kp": {
+        "name": "PID temperature cooling Kp"
+      },
+      "pid_temperature_cooling_ti": {
+        "name": "PID temperature cooling Ti"
+      },
+      "pid_temperature_cooling_td": {
+        "name": "PID temperature cooling Td"
+      },
+      "temperature_reg_cooling_deadband": {
+        "name": "Temperature reg cooling deadband"
+      },
+      "winter_min_duct_temperature": {
+        "name": "Winter min duct temperature"
+      },
+      "winter_max_duct_temperature": {
+        "name": "Winter max duct temperature"
+      },
+      "summer_min_duct_temperature": {
+        "name": "Summer min duct temperature"
+      },
+      "summer_max_duct_temperature": {
+        "name": "Summer max duct temperature"
+      },
+      "winter_min_duct_humidity": {
+        "name": "Winter min duct humidity"
+      },
+      "winter_max_duct_humidity": {
+        "name": "Winter max duct humidity"
+      },
+      "summer_min_duct_humidity": {
+        "name": "Summer min duct humidity"
+      },
+      "summer_max_duct_humidity": {
+        "name": "Summer max duct humidity"
+      },
+      "min_set_temperature_winter": {
+        "name": "Min set temperature winter"
+      },
+      "max_set_temperature_winter": {
+        "name": "Max set temperature winter"
+      },
+      "min_set_temperature_summer": {
+        "name": "Min set temperature summer"
+      },
+      "max_set_temperature_summer": {
+        "name": "Max set temperature summer"
+      },
+      "min_supply_fan_set_value": {
+        "name": "Min supply fan set value"
+      },
+      "max_supply_fan_set_value": {
+        "name": "Max supply fan set value"
+      },
+      "min_return_fan_set_value": {
+        "name": "Min return fan set value"
+      },
+      "max_return_fan_set_value": {
+        "name": "Max return fan set value"
+      },
+      "supply_fan_start_delay": {
+        "name": "Supply fan start delay"
+      },
+      "return_fan_start_delay": {
+        "name": "Return fan start delay"
+      },
+      "fans_off_delay": {
+        "name": "Fans off delay"
+      },
+      "air_flow_sw_run_alarm_delay": {
+        "name": "Air flow sw run alarm delay"
+      },
+      "heating_reg_split_ratio": {
+        "name": "Heating reg split ratio"
+      },
+      "cooling_reg_split_ratio": {
+        "name": "Cooling reg split ratio"
+      },
+      "humid_reg_split_ratio": {
+        "name": "Humid reg split ratio"
+      },
+      "dehumid_reg_split_ratio": {
+        "name": "Dehumid reg split ratio"
+      },
+      "h_ex_delta_temperature": {
+        "name": "H ex delta temperature"
+      },
+      "h_ex_hister_temperature": {
+        "name": "H ex hister temperature"
+      },
+      "mix_damper_delta_temperature": {
+        "name": "Mix damper delta temperature"
+      },
+      "mix_damper_hister_temperature": {
+        "name": "Mix damper hister temperature"
+      },
+      "a_freeze_low_supply_temperature": {
+        "name": "A freeze low supply temperature"
+      },
+      "a_freeze_low_supply_temperature_alarm_delay": {
+        "name": "A freeze low supply temperature alarm delay"
+      },
+      "a_freeze_low_supply_temperature_hister": {
+        "name": "A freeze low supply temperature hister"
+      },
+      "a_freeze_return_water_min_temperature": {
+        "name": "A freeze return water min temperature"
+      },
+      "a_freeze_return_water_alarm_delay": {
+        "name": "A freeze return water alarm delay"
+      },
+      "a_freeze_return_water_min_temperature_hister": {
+        "name": "A freeze return water min temperature hister"
+      },
+      "pre_heating_time_curve_t_0": {
+        "name": "Pre heating time curve t 0"
+      },
+      "pre_heating_time_curve_y_0": {
+        "name": "Pre heating time curve y 0"
+      },
+      "pre_heating_time_curve_t_1": {
+        "name": "Pre heating time curve t 1"
+      },
+      "pre_heating_time_curve_y_1": {
+        "name": "Pre heating time curve y 1"
+      },
+      "a_freeze_min_valve_open_curve_t_0": {
+        "name": "A freeze min valve open curve t 0"
+      },
+      "a_freeze_min_valve_open_curve_y_0": {
+        "name": "A freeze min valve open curve y 0"
+      },
+      "a_freeze_min_valve_open_curve_t_1": {
+        "name": "A freeze min valve open curve t 1"
+      },
+      "a_freeze_min_valve_open_curve_y_1": {
+        "name": "A freeze min valve open curve y 1"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_start_day": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 0 start day"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_start_month": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 0 start month"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_end_day": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 0 end day"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_end_month": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 0 end month"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_start_day": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 1 start day"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_start_month": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 1 start month"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_end_day": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 1 end day"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_end_month": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 1 end month"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_start_day": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 2 start day"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_start_month": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 2 start month"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_end_day": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 2 end day"
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_end_month": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 2 end month"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_special_day": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 0 special day"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_special_month": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 0 special month"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_special_day": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 1 special day"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_special_month": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 1 special month"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_special_day": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 2 special day"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_special_month": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 2 special month"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_special_day": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 3 special day"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_special_month": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 3 special month"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_special_day": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 4 special day"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_special_month": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 4 special month"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_special_day": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 5 special day"
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_special_month": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 5 special month"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_hours": {
+        "name": "Scheduler on off unit scheduler 1 event msk 0 hours"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_minutes": {
+        "name": "Scheduler on off unit scheduler 1 event msk 0 minutes"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_hours": {
+        "name": "Scheduler on off unit scheduler 1 event msk 1 hours"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_minutes": {
+        "name": "Scheduler on off unit scheduler 1 event msk 1 minutes"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_hours": {
+        "name": "Scheduler on off unit scheduler 1 event msk 2 hours"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_minutes": {
+        "name": "Scheduler on off unit scheduler 1 event msk 2 minutes"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_hours": {
+        "name": "Scheduler on off unit scheduler 1 event msk 3 hours"
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_minutes": {
+        "name": "Scheduler on off unit scheduler 1 event msk 3 minutes"
+      },
+      "scheduler_on_off_unit_scheduler_1_save_data": {
+        "name": "Scheduler on off unit scheduler 1 save data"
+      },
+      "mix_damper_preset_cooling_economy": {
+        "name": "Mix damper preset cooling economy"
+      },
+      "mix_damper_preset_cooling_precomfort": {
+        "name": "Mix damper preset cooling precomfort"
+      },
+      "mix_damper_preset_cooling_comfort": {
+        "name": "Mix damper preset cooling comfort"
+      },
+      "mix_damper_preset_cooling_standby": {
+        "name": "Mix damper preset cooling standby"
+      },
+      "mix_damper_preset_cooling_manual": {
+        "name": "Mix damper preset cooling manual"
+      },
+      "mix_damper_preset_heating_economy": {
+        "name": "Mix damper preset heating economy"
+      },
+      "mix_damper_preset_heating_precomfort": {
+        "name": "Mix damper preset heating precomfort"
+      },
+      "mix_damper_preset_heating_comfort": {
+        "name": "Mix damper preset heating comfort"
+      },
+      "mix_damper_preset_heating_standby": {
+        "name": "Mix damper preset heating standby"
+      },
+      "mix_damper_preset_heating_manual": {
+        "name": "Mix damper preset heating manual"
+      },
+      "aux_regulator_1_setpoint": {
+        "name": "Aux regulator 1 setpoint"
+      },
+      "aux_regulator_2_setpoint": {
+        "name": "Aux regulator 2 setpoint"
+      },
+      "aux_regulator_3_setpoint": {
+        "name": "Aux regulator 3 setpoint"
+      },
+      "aux_regulator_4_setpoint": {
+        "name": "Aux regulator 4 setpoint"
+      },
+      "aux_regulator_5_setpoint": {
+        "name": "Aux regulator 5 setpoint"
+      },
+      "aux_regulator_6_setpoint": {
+        "name": "Aux regulator 6 setpoint"
+      },
+      "unit_season_transition_period_delay": {
+        "name": "Unit season transition period delay"
+      },
+      "heater_1_manual_override": {
+        "name": "Heater 1 manual override"
+      },
+      "heater_2_manual_override": {
+        "name": "Heater 2 manual override"
+      },
+      "heater_3_manual_override": {
+        "name": "Heater 3 manual override"
+      },
+      "heater_4_manual_override": {
+        "name": "Heater 4 manual override"
+      },
+      "cooler_1_manual_override": {
+        "name": "Cooler 1 manual override"
+      },
+      "cooler_2_manual_override": {
+        "name": "Cooler 2 manual override"
+      },
+      "cooler_3_manual_override": {
+        "name": "Cooler 3 manual override"
+      },
+      "cooler_4_manual_override": {
+        "name": "Cooler 4 manual override"
+      },
+      "heat_pump_1_heating_manual_override": {
+        "name": "Heat pump 1 heating manual override"
+      },
+      "heat_pump_1_cooling_manual_override": {
+        "name": "Heat pump 1 cooling manual override"
+      },
+      "heat_pump_2_heating_manual_override": {
+        "name": "Heat pump 2 heating manual override"
+      },
+      "heat_pump_2_cooling_manual_override": {
+        "name": "Heat pump 2 cooling manual override"
+      },
+      "heat_pump_3_heating_manual_override": {
+        "name": "Heat pump 3 heating manual override"
+      },
+      "heat_pump_3_cooling_manual_override": {
+        "name": "Heat pump 3 cooling manual override"
+      },
+      "mix_damper_manual_override": {
+        "name": "Mix damper manual override"
+      },
+      "heat_exchanger_manual_override": {
+        "name": "Heat exchanger manual override"
+      },
+      "aux_reg_1_manual_override": {
+        "name": "Aux reg 1 manual override"
+      },
+      "aux_reg_2_manual_override": {
+        "name": "Aux reg 2 manual override"
+      },
+      "aux_reg_3_manual_override": {
+        "name": "Aux reg 3 manual override"
+      },
+      "aux_reg_4_manual_override": {
+        "name": "Aux reg 4 manual override"
+      },
+      "aux_reg_5_manual_override": {
+        "name": "Aux reg 5 manual override"
+      },
+      "aux_reg_6_manual_override": {
+        "name": "Aux reg 6 manual override"
+      },
+      "heating_cooling_manual_override": {
+        "name": "Heating cooling manual override"
+      },
+      "air_diffuser_manual_override": {
+        "name": "Air diffuser manual override"
+      },
+      "on_off_damper_manual_override": {
+        "name": "On off damper manual override"
+      }
+    },
+    "select": {
+      "manual_supply_fan_gear": {
+        "name": "Manual supply fan gear",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "program_mode": {
+        "name": "Program mode",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "season_source": {
+        "name": "Season source",
+        "state": {
+          "pgd1": "PGD1",
+          "bms": "BMS",
+          "digital_input": "Digital input",
+          "calendar": "Calendar",
+          "outdoor_temperature": "Outdoor temperature"
+        }
+      },
+      "temperature_lead_sensor": {
+        "name": "Temperature lead sensor",
+        "state": {
+          "supply": "Supply",
+          "return": "Return",
+          "room": "Room"
+        }
+      },
+      "humidity_lead_sensor": {
+        "name": "Humidity lead sensor",
+        "state": {
+          "return": "Return",
+          "room": "Room"
+        }
+      },
+      "standby_direction": {
+        "name": "Standby direction",
+        "state": {
+          "cooling": "Cooling",
+          "heating": "Heating",
+          "summer_winter": "Summer/winter"
+        }
+      },
+      "economy_program_fan_gear": {
+        "name": "Economy fan gear",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "comfort_program_fan_gear": {
+        "name": "Comfort fan gear",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "comfort_plus_program_fan_gear": {
+        "name": "Comfort+ fan gear",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "standby_program_fan_gear": {
+        "name": "Standby fan gear",
+        "state": {
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 0 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 1 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 2 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 0 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 1 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 2 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 3 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 4 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 5 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 event msk 0 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 event msk 1 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 event msk 2 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_unit_status": {
+        "name": "Scheduler on off unit scheduler 1 event msk 3 unit status",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "economy": "Economy",
+          "comfort": "Comfort",
+          "comfort_plus": "Comfort+",
+          "auto": "Auto",
+          "manual": "Manual"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_day": {
+        "name": "Scheduler on off unit scheduler 1 day",
+        "state": {
+          "monday": "Monday",
+          "tuesday": "Tuesday",
+          "wednesday": "Wednesday",
+          "thursday": "Thursday",
+          "friday": "Friday",
+          "saturday": "Saturday",
+          "sunday": "Sunday"
+        }
+      }
+    },
+    "binary_sensor": {
+      "fans_running": {
+        "name": "Fans running"
+      },
+      "return_fan_airflow_regulation_active": {
+        "name": "Return fan airflow regulation active"
+      },
+      "return_fan_pressure_regulation_active": {
+        "name": "Return fan pressure regulation active"
+      },
+      "return_fan_speed_regulation_active": {
+        "name": "Return fan speed regulation active"
+      },
+      "supply_fan_airflow_regulation_active": {
+        "name": "Supply fan airflow regulation active"
+      },
+      "supply_fan_pressure_regulation_active": {
+        "name": "Supply fan pressure regulation active"
+      },
+      "supply_fan_speed_regulation_active": {
+        "name": "Supply fan speed regulation active"
+      },
+      "fan_capacity_regulation_active": {
+        "name": "Temperature-based fan capacity regulation status"
+      },
+      "dirty_filter": {
+        "name": "Dirty filter"
+      },
+      "alarm_room_temp_prb": {
+        "name": "Room temperature sensor alarm (A01)"
+      },
+      "alarm_ret_temp_prb": {
+        "name": "Return temperature sensor alarm (A02)"
+      },
+      "alarm_supply_temp_prb": {
+        "name": "Supply temperature sensor alarm (A03)"
+      },
+      "alarm_exh_temp_prb": {
+        "name": "Heat recovery outlet temperature sensor alarm (A04)"
+      },
+      "alarm_ext_temp_prb": {
+        "name": "Outdoor temperature sensor alarm (A05)"
+      },
+      "alarm_room_hum_prb": {
+        "name": "Room humidity sensor alarm (A06)"
+      },
+      "alarm_ret_hum_prb": {
+        "name": "Return humidity sensor alarm (A07)"
+      },
+      "alarm_supply_hum": {
+        "name": "Supply humidity sensor alarm (A08)"
+      },
+      "alarm_ext_hum_prb": {
+        "name": "Outdoor humidity sensor alarm (A09)"
+      },
+      "alarm_ret_air_co2_lev_prb": {
+        "name": "CO2 transmitter alarm (A10)"
+      },
+      "alarm_supply_air_p_prb": {
+        "name": "Supply pressure transmitter alarm (A11)"
+      },
+      "alarm_ret_air_p_prb": {
+        "name": "Return pressure transmitter alarm (A12)"
+      },
+      "alarm_afreeze_temp_prb": {
+        "name": "Return water temperature sensor alarm (A13)"
+      },
+      "alarm_fire_alarm": {
+        "name": "Fire alarm (A14)"
+      },
+      "alarm_critic_alarm": {
+        "name": "Critical alarm (A15)"
+      },
+      "alarm_afreeze_signal": {
+        "name": "Antifreeze thermostat alarm (A16)"
+      },
+      "alarm_afreeze_ret_wat_temp": {
+        "name": "Antifreeze low medium temperature alarm (A17)"
+      },
+      "alarm_afreeze_low_supply_temp": {
+        "name": "Antifreeze low supply temperature alarm (A18)"
+      },
+      "alarm_heater_ovld": {
+        "name": "Heater overheating thermostat (A19)"
+      },
+      "alarm_fans_ovld": {
+        "name": "Fan alarm summary (A20)"
+      },
+      "alarm_supply_fan_ovld": {
+        "name": "Supply fan alarm (A21)"
+      },
+      "alarm_ret_fan_ovld": {
+        "name": "Return fan alarm (A22)"
+      },
+      "alarm_air_flw_sw": {
+        "name": "Fan pressure loss summary (A23)"
+      },
+      "alarm_supply_air_flw_sw": {
+        "name": "Supply fan pressure loss (A24)"
+      },
+      "alarm_ret_air_flw_sw": {
+        "name": "Return fan pressure loss (A25)"
+      },
+      "alarm_heat_exchg_alrm": {
+        "name": "Heat recovery alarm (A26)"
+      },
+      "alarm_pc1_defrost": {
+        "name": "Heat pump PC1 defrost (A27)"
+      },
+      "alarm_pc2_defrost": {
+        "name": "Heat pump PC2 defrost (A28)"
+      },
+      "alarm_supply_filtr1": {
+        "name": "Supply filter 1 dirty (A29)"
+      },
+      "alarm_supply_filtr2": {
+        "name": "Supply filter 2 dirty (A30)"
+      },
+      "alarm_return_filtr1": {
+        "name": "Return filter 1 dirty (A31)"
+      },
+      "alarm_return_filtr2": {
+        "name": "Return filter 2 dirty (A32)"
+      },
+      "alarm_hepa_filtr1": {
+        "name": "HEPA filter 1 dirty (A33)"
+      },
+      "alarm_hepa_filtr2": {
+        "name": "HEPA filter 2 dirty (A34)"
+      },
+      "alarm_hepa_filtr3": {
+        "name": "HEPA filter 3 dirty (A35)"
+      },
+      "alarm_hepa_filtr4": {
+        "name": "HEPA filter 4 dirty (A36)"
+      },
+      "alarm_filtr_work_hrs": {
+        "name": "Maximum filter operating time (A37)"
+      },
+      "alarm_non_critic": {
+        "name": "Non-critical alarm (A38)"
+      },
+      "alarm_cooler1": {
+        "name": "Cooling unit 1 alarm (A39)"
+      },
+      "alarm_inv_supply1": {
+        "name": "Supply inverter 1 alarm (A40)"
+      },
+      "alarm_inv_return1": {
+        "name": "Return inverter 1 alarm (A41)"
+      },
+      "alarm_inv_supply2": {
+        "name": "Supply inverter 2 alarm (A42)"
+      },
+      "alarm_inv_return2": {
+        "name": "Return inverter 2 alarm (A43)"
+      },
+      "alarm_ec_supply1": {
+        "name": "Supply EC motor 1 alarm (A44)"
+      },
+      "alarm_ec_return1": {
+        "name": "Return EC motor 1 alarm (A45)"
+      },
+      "alarm_ec_supply2": {
+        "name": "Supply EC motor 2 alarm (A46)"
+      },
+      "alarm_ec_return2": {
+        "name": "Return EC motor 2 alarm (A47)"
+      },
+      "alarm_ec_supply3": {
+        "name": "Supply EC motor 3 alarm (A48)"
+      },
+      "alarm_ec_return3": {
+        "name": "Return EC motor 3 alarm (A49)"
+      },
+      "alarm_ec_supply4": {
+        "name": "Supply EC motor 4 alarm (A50)"
+      },
+      "alarm_ec_return4": {
+        "name": "Return EC motor 4 alarm (A51)"
+      },
+      "alarm_ec_supply5": {
+        "name": "Supply EC motor 5 alarm (A52)"
+      },
+      "alarm_ec_return5": {
+        "name": "Return EC motor 5 alarm (A53)"
+      },
+      "alarm_ec_supply6": {
+        "name": "Supply EC motor 6 alarm (A54)"
+      },
+      "alarm_ec_return6": {
+        "name": "Return EC motor 6 alarm (A55)"
+      },
+      "alarm_th_tune_temp_prb": {
+        "name": "Th-Tune temperature sensor alarm (A56)"
+      },
+      "alarm_th_tune_hum_prb": {
+        "name": "Th-Tune humidity sensor alarm (A57)"
+      },
+      "alarm_u_pc3_io_offline": {
+        "name": "I/O extension offline (A58)"
+      },
+      "alarm_supply_fan1_modbus_offline": {
+        "name": "Supply fan inverter 1 offline (A59)"
+      },
+      "alarm_return_fan1_modbus_offline": {
+        "name": "Return fan inverter 1 offline (A60)"
+      },
+      "alarm_supply_fan2_modbus_offline": {
+        "name": "Supply fan inverter 2 offline (A61)"
+      },
+      "alarm_return_fan2_modbus_offline": {
+        "name": "Return fan inverter 2 offline (A62)"
+      },
+      "alarm_supply_ecfan1_modbus_offline": {
+        "name": "Supply EC fan 1 offline (A63)"
+      },
+      "alarm_return_ecfan1_modbus_offline": {
+        "name": "Return EC fan 1 offline (A64)"
+      },
+      "alarm_supply_ecfan2_modbus_offline": {
+        "name": "Supply EC fan 2 offline (A65)"
+      },
+      "alarm_return_ecfan2_modbus_offline": {
+        "name": "Return EC fan 2 offline (A66)"
+      },
+      "alarm_supply_ecfan3_modbus_offline": {
+        "name": "Supply EC fan 3 offline (A67)"
+      },
+      "alarm_return_ecfan3_modbus_offline": {
+        "name": "Return EC fan 3 offline (A68)"
+      },
+      "alarm_supply_ecfan4_modbus_offline": {
+        "name": "Supply EC fan 4 offline (A69)"
+      },
+      "alarm_return_ecfan4_modbus_offline": {
+        "name": "Return EC fan 4 offline (A70)"
+      },
+      "alarm_supply_ecfan5_modbus_offline": {
+        "name": "Supply EC fan 5 offline (A71)"
+      },
+      "alarm_return_ecfan5_modbus_offline": {
+        "name": "Return EC fan 5 offline (A72)"
+      },
+      "alarm_supply_ecfan6_modbus_offline": {
+        "name": "Supply EC fan 6 offline (A73)"
+      },
+      "alarm_return_ecfan6_modbus_offline": {
+        "name": "Return EC fan 6 offline (A74)"
+      },
+      "alarm_hepa_filtr5": {
+        "name": "HEPA filter 5 dirty (A75)"
+      },
+      "alarm_hepa_filtr6": {
+        "name": "HEPA filter 6 dirty (A76)"
+      },
+      "alarm_hepa_filtr7": {
+        "name": "HEPA filter 7 dirty (A77)"
+      },
+      "alarm_hepa_filtr8": {
+        "name": "HEPA filter 8 dirty (A78)"
+      },
+      "alarm_retain": {
+        "name": "Non-volatile memory write error (A79)"
+      },
+      "alarm_err_retain_write": {
+        "name": "Non-volatile memory write error (A80)"
+      },
+      "alarm_ec_return7": {
+        "name": "Return EC motor 7 alarm (A82)"
+      },
+      "alarm_ec_return8": {
+        "name": "Return EC motor 8 alarm (A84)"
+      },
+      "alarm_ec_supply7": {
+        "name": "Supply EC motor 7 alarm (A81)"
+      },
+      "alarm_ec_supply8": {
+        "name": "Supply EC motor 8 alarm (A83)"
+      },
+      "alarm_supply_ecfan7_modbus_offline": {
+        "name": "Supply EC fan 7 offline (A85)"
+      },
+      "alarm_supply_ecfan8_modbus_offline": {
+        "name": "Supply EC fan 8 offline (A87)"
+      },
+      "alarm_return_ecfan7_modbus_offline": {
+        "name": "Return EC fan 7 offline (A86)"
+      },
+      "alarm_return_ecfan8_modbus_offline": {
+        "name": "Return EC fan 8 offline (A88)"
+      },
+      "alarm_pc3_defrost": {
+        "name": "Heat pump PC3 defrost (A89)"
+      },
+      "alarm_supply_fan_work_hrs": {
+        "name": "Maximum supply fan operating time (A90)"
+      },
+      "alarm_return_fan_work_hrs": {
+        "name": "Maximum return fan operating time (A91)"
+      },
+      "alarm_heater1_work_hrs": {
+        "name": "Maximum heater 1 operating time (A92)"
+      },
+      "alarm_heater2_work_hrs": {
+        "name": "Maximum heater 2 operating time (A93)"
+      },
+      "alarm_heater3_work_hrs": {
+        "name": "Maximum heater 3 operating time (A94)"
+      },
+      "alarm_heater4_work_hrs": {
+        "name": "Maximum heater 4 operating time (A95)"
+      },
+      "alarm_cooler1_work_hrs": {
+        "name": "Maximum cooler 1 operating time (A96)"
+      },
+      "alarm_cooler2_work_hrs": {
+        "name": "Maximum cooler 2 operating time (A97)"
+      },
+      "alarm_cooler3_work_hrs": {
+        "name": "Maximum cooler 3 operating time (A98)"
+      },
+      "alarm_cooler4_work_hrs": {
+        "name": "Maximum cooler 4 operating time (A99)"
+      },
+      "alarm_aux1_prb": {
+        "name": "Control loop 1 main sensor alarm (A116)"
+      },
+      "alarm_aux1_prb_lim": {
+        "name": "Control loop 1 auxiliary sensor alarm (A117)"
+      },
+      "alarm_aux1_reg_din": {
+        "name": "Control loop 1 alarm (A112)"
+      },
+      "alarm_aux2_prb": {
+        "name": "Control loop 2 main sensor alarm (A118)"
+      },
+      "alarm_aux2_prb_lim": {
+        "name": "Control loop 2 auxiliary sensor alarm (A119)"
+      },
+      "alarm_aux2_reg_din": {
+        "name": "Control loop 2 alarm (A113)"
+      },
+      "alarm_aux3_prb": {
+        "name": "Control loop 3 main sensor alarm (A120)"
+      },
+      "alarm_aux3_prb_lim": {
+        "name": "Control loop 3 auxiliary sensor alarm (A121)"
+      },
+      "alarm_aux3_reg_din": {
+        "name": "Control loop 3 alarm (A114)"
+      },
+      "alarm_aux4_prb": {
+        "name": "Control loop 4 main sensor alarm (A122)"
+      },
+      "alarm_aux4_prb_lim": {
+        "name": "Control loop 4 auxiliary sensor alarm (A123)"
+      },
+      "alarm_aux4_reg_din": {
+        "name": "Control loop 4 alarm (A115)"
+      },
+      "alarm_cooler2": {
+        "name": "Cooling unit 2 alarm (A132)"
+      },
+      "alarm_cooler3": {
+        "name": "Cooling unit 3 alarm (A133)"
+      },
+      "alarm_dampers_work_hrs": {
+        "name": "Maximum damper operating time (A101)"
+      },
+      "alarm_emerson_pcalarm": {
+        "name": "Heat pump controller alarm (A109)"
+      },
+      "alarm_emerson_pcoffline": {
+        "name": "Heat pump controller offline (A110)"
+      },
+      "alarm_heat_exchg_driver_alarm": {
+        "name": "Rotary heat exchanger driver alarm (A107)"
+      },
+      "alarm_heat_exchg_driver_offline": {
+        "name": "Rotary heat exchanger driver offline (A108)"
+      },
+      "alarm_heat_exchg_work_hrs": {
+        "name": "Maximum heat recovery operating time (A102)"
+      },
+      "alarm_humidifier": {
+        "name": "Humidifier alarm (A111)"
+      },
+      "alarm_humidifier_work_hrs": {
+        "name": "Maximum humidifier operating time (A103)"
+      },
+      "alarm_inv_return3": {
+        "name": "Return inverter 3 alarm (A125)"
+      },
+      "alarm_inv_return4": {
+        "name": "Return inverter 4 alarm (A127)"
+      },
+      "alarm_inv_supply3": {
+        "name": "Supply inverter 3 alarm (A124)"
+      },
+      "alarm_inv_supply4": {
+        "name": "Supply inverter 4 alarm (A126)"
+      },
+      "alarm_main_temp_sens": {
+        "name": "Main control sensor alarm (A134)"
+      },
+      "alarm_mix_damp_work_hrs": {
+        "name": "Maximum mixing damper operating time (A100)"
+      },
+      "alarm_pc1_work_hrs": {
+        "name": "Maximum heat pump PC1 operating time (A104)"
+      },
+      "alarm_pc2_work_hrs": {
+        "name": "Maximum heat pump PC2 operating time (A105)"
+      },
+      "alarm_pc3_work_hrs": {
+        "name": "Maximum heat pump PC3 operating time (A106)"
+      },
+      "alarm_return_fan3_modbus_offline": {
+        "name": "Return fan inverter 3 offline (A129)"
+      },
+      "alarm_return_fan4_modbus_offline": {
+        "name": "Return fan inverter 4 offline (A131)"
+      },
+      "alarm_supply_fan3_modbus_offline": {
+        "name": "Supply fan inverter 3 offline (A128)"
+      },
+      "alarm_supply_fan4_modbus_offline": {
+        "name": "Supply fan inverter 4 offline (A130)"
+      },
+      "alarm_exh_temp_prb2": {
+        "name": "Heat recovery outlet temperature sensor 2 alarm (A135)"
+      },
+      "alarm_aux5_reg_din": {
+        "name": "Control loop 5 alarm (A136)"
+      },
+      "alarm_aux6_reg_din": {
+        "name": "Control loop 6 alarm (A137)"
+      },
+      "alarm_aux5_prb": {
+        "name": "Control loop 5 main sensor alarm (A138)"
+      },
+      "alarm_aux5_prb_lim": {
+        "name": "Control loop 5 auxiliary sensor alarm (A139)"
+      },
+      "alarm_aux6_prb": {
+        "name": "Control loop 6 main sensor alarm (A140)"
+      },
+      "alarm_aux6_prb_lim": {
+        "name": "Control loop 6 auxiliary sensor alarm (A141)"
+      },
+      "alarm_sc_ui8_offline": {
+        "name": "SC-UI8AO4DO4 module offline (A142)"
+      },
+      "alarm_heat_cool_work_hrs": {
+        "name": "Maximum heating-cooling coil operating time (A143)"
+      },
+      "alarm_cooler4": {
+        "name": "Cooling unit 4 alarm (A144)"
+      },
+      "alarm_programmable1": {
+        "name": "Programmable alarm 1 (A145)"
+      },
+      "alarm_programmable2": {
+        "name": "Programmable alarm 2 (A146)"
+      },
+      "alarm_programmable3": {
+        "name": "Programmable alarm 3 (A147)"
+      },
+      "alarm_programmable4": {
+        "name": "Programmable alarm 4 (A148)"
+      },
+      "alarm_free_sensor1": {
+        "name": "Additional sensor 1 alarm (A149)"
+      },
+      "alarm_free_sensor2": {
+        "name": "Additional sensor 2 alarm (A150)"
+      },
+      "alarm_free_sensor3": {
+        "name": "Additional sensor 3 alarm (A151)"
+      },
+      "alarm_heat_pump1": {
+        "name": "Heat pump 1 alarm (A152)"
+      },
+      "alarm_heat_pump2": {
+        "name": "Heat pump 2 alarm (A153)"
+      },
+      "alarm_heat_pump3": {
+        "name": "Heat pump 3 alarm (A154)"
+      },
+      "alarm_supply_filter1_press": {
+        "name": "Supply filter 1 dirty (A155)"
+      },
+      "alarm_supply_filter2_press": {
+        "name": "Supply filter 2 dirty (A156)"
+      },
+      "alarm_return_filter1_press": {
+        "name": "Return filter 1 dirty (A157)"
+      },
+      "alarm_return_filter2_press": {
+        "name": "Return filter 2 dirty (A158)"
+      },
+      "alarm_heater_pump_dry_run": {
+        "name": "Heater pump dry run (A159)"
+      },
+      "alarm_cooler_pump_dry_run": {
+        "name": "Cooler pump dry run (A160)"
+      },
+      "alarm_high_supply_temp": {
+        "name": "High supply temperature (A161)"
+      },
+      "alarm_supply_fan_inverter1_6404": {
+        "name": "Supply fan inverter 1 overcurrent (A162)"
+      },
+      "alarm_supply_fan_inverter1_6405": {
+        "name": "Supply fan inverter 1 DC overvoltage (A163)"
+      },
+      "alarm_supply_fan_inverter1_6406": {
+        "name": "Supply fan inverter 1 supply voltage fault (A164)"
+      },
+      "alarm_supply_fan_inverter1_6407": {
+        "name": "Supply fan inverter 1 inverter overload (A165)"
+      },
+      "alarm_supply_fan_inverter1_6408": {
+        "name": "Supply fan inverter 1 undervoltage (A166)"
+      },
+      "alarm_supply_fan_inverter1_6409": {
+        "name": "Supply fan inverter 1 overheating (A167)"
+      },
+      "alarm_supply_fan_inverter1_640a": {
+        "name": "Supply fan inverter 1 motor overload (A168)"
+      },
+      "alarm_supply_fan_inverter1_640d": {
+        "name": "Supply fan inverter 1 external fault - ESTOP (A169)"
+      },
+      "alarm_supply_fan_inverter1_6412": {
+        "name": "Supply fan inverter 1 programmed load current exceeded (A170)"
+      },
+      "alarm_supply_fan_inverter1_6413": {
+        "name": "Supply fan inverter 1 output phase loss or no load (A171)"
+      },
+      "alarm_supply_fan_inverter1_6415": {
+        "name": "Supply fan inverter 1 idle run (A172)"
+      },
+      "alarm_supply_fan_inverter1_6416": {
+        "name": "Supply fan inverter 1 inverter underload (A173)"
+      },
+      "alarm_supply_fan_inverter1_641c": {
+        "name": "Supply fan inverter 1 ground fault (A174)"
+      },
+      "alarm_supply_fan_inverter1_6425": {
+        "name": "Supply fan inverter 1 motor overheating fault (A175)"
+      },
+      "alarm_supply_fan_inverter1_6445": {
+        "name": "Supply fan inverter 1 overcurrent (A176)"
+      },
+      "alarm_supply_fan_inverter2_6404": {
+        "name": "Supply fan inverter 2 overcurrent (A177)"
+      },
+      "alarm_supply_fan_inverter2_6405": {
+        "name": "Supply fan inverter 2 DC overvoltage (A178)"
+      },
+      "alarm_supply_fan_inverter2_6406": {
+        "name": "Supply fan inverter 2 supply voltage fault (A179)"
+      },
+      "alarm_supply_fan_inverter2_6407": {
+        "name": "Supply fan inverter 2 inverter overload (A180)"
+      },
+      "alarm_supply_fan_inverter2_6408": {
+        "name": "Supply fan inverter 2 undervoltage (A181)"
+      },
+      "alarm_supply_fan_inverter2_6409": {
+        "name": "Supply fan inverter 2 overheating (A182)"
+      },
+      "alarm_supply_fan_inverter2_640a": {
+        "name": "Supply fan inverter 2 motor overload (A183)"
+      },
+      "alarm_supply_fan_inverter2_640d": {
+        "name": "Supply fan inverter 2 external fault - ESTOP (A184)"
+      },
+      "alarm_supply_fan_inverter2_6412": {
+        "name": "Supply fan inverter 2 programmed load current exceeded (A185)"
+      },
+      "alarm_supply_fan_inverter2_6413": {
+        "name": "Supply fan inverter 2 output phase loss or no load (A186)"
+      },
+      "alarm_supply_fan_inverter2_6415": {
+        "name": "Supply fan inverter 2 idle run (A187)"
+      },
+      "alarm_supply_fan_inverter2_6416": {
+        "name": "Supply fan inverter 2 inverter underload (A188)"
+      },
+      "alarm_supply_fan_inverter2_641c": {
+        "name": "Supply fan inverter 2 ground fault (A189)"
+      },
+      "alarm_supply_fan_inverter2_6425": {
+        "name": "Supply fan inverter 2 motor overheating fault (A190)"
+      },
+      "alarm_supply_fan_inverter2_6445": {
+        "name": "Supply fan inverter 2 overcurrent (A191)"
+      },
+      "alarm_supply_fan_inverter3_6404": {
+        "name": "Supply fan inverter 3 overcurrent (A192)"
+      },
+      "alarm_supply_fan_inverter3_6405": {
+        "name": "Supply fan inverter 3 DC overvoltage (A193)"
+      },
+      "alarm_supply_fan_inverter3_6406": {
+        "name": "Supply fan inverter 3 supply voltage fault (A194)"
+      },
+      "alarm_supply_fan_inverter3_6407": {
+        "name": "Supply fan inverter 3 inverter overload (A195)"
+      },
+      "alarm_supply_fan_inverter3_6408": {
+        "name": "Supply fan inverter 3 undervoltage (A196)"
+      },
+      "alarm_supply_fan_inverter3_6409": {
+        "name": "Supply fan inverter 3 overheating (A197)"
+      },
+      "alarm_supply_fan_inverter3_640a": {
+        "name": "Supply fan inverter 3 motor overload (A198)"
+      },
+      "alarm_supply_fan_inverter3_640d": {
+        "name": "Supply fan inverter 3 external fault - ESTOP (A199)"
+      },
+      "alarm_supply_fan_inverter3_6412": {
+        "name": "Supply fan inverter 3 programmed load current exceeded (A200)"
+      },
+      "alarm_supply_fan_inverter3_6413": {
+        "name": "Supply fan inverter 3 output phase loss or no load (A201)"
+      },
+      "alarm_supply_fan_inverter3_6415": {
+        "name": "Supply fan inverter 3 idle run (A202)"
+      },
+      "alarm_supply_fan_inverter3_6416": {
+        "name": "Supply fan inverter 3 inverter underload (A203)"
+      },
+      "alarm_supply_fan_inverter3_641c": {
+        "name": "Supply fan inverter 3 ground fault (A204)"
+      },
+      "alarm_supply_fan_inverter3_6425": {
+        "name": "Supply fan inverter 3 motor overheating fault (A205)"
+      },
+      "alarm_supply_fan_inverter3_6445": {
+        "name": "Supply fan inverter 3 overcurrent (A206)"
+      },
+      "alarm_supply_fan_inverter4_6404": {
+        "name": "Supply fan inverter 4 overcurrent (A207)"
+      },
+      "alarm_supply_fan_inverter4_6405": {
+        "name": "Supply fan inverter 4 DC overvoltage (A208)"
+      },
+      "alarm_supply_fan_inverter4_6406": {
+        "name": "Supply fan inverter 4 supply voltage fault (A209)"
+      },
+      "alarm_supply_fan_inverter4_6407": {
+        "name": "Supply fan inverter 4 inverter overload (A210)"
+      },
+      "alarm_supply_fan_inverter4_6408": {
+        "name": "Supply fan inverter 4 undervoltage (A211)"
+      },
+      "alarm_supply_fan_inverter4_6409": {
+        "name": "Supply fan inverter 4 overheating (A212)"
+      },
+      "alarm_supply_fan_inverter4_640a": {
+        "name": "Supply fan inverter 4 motor overload (A213)"
+      },
+      "alarm_supply_fan_inverter4_640d": {
+        "name": "Supply fan inverter 4 external fault - ESTOP (A214)"
+      },
+      "alarm_supply_fan_inverter4_6412": {
+        "name": "Supply fan inverter 4 programmed load current exceeded (A215)"
+      },
+      "alarm_supply_fan_inverter4_6413": {
+        "name": "Supply fan inverter 4 output phase loss or no load (A216)"
+      },
+      "alarm_supply_fan_inverter4_6415": {
+        "name": "Supply fan inverter 4 idle run (A217)"
+      },
+      "alarm_supply_fan_inverter4_6416": {
+        "name": "Supply fan inverter 4 inverter underload (A218)"
+      },
+      "alarm_supply_fan_inverter4_641c": {
+        "name": "Supply fan inverter 4 ground fault (A219)"
+      },
+      "alarm_supply_fan_inverter4_6425": {
+        "name": "Supply fan inverter 4 motor overheating fault (A220)"
+      },
+      "alarm_supply_fan_inverter4_6445": {
+        "name": "Supply fan inverter 4 overcurrent (A221)"
+      },
+      "alarm_return_fan_inverter1_6404": {
+        "name": "Return fan inverter 1 overcurrent (A222)"
+      },
+      "alarm_return_fan_inverter1_6405": {
+        "name": "Return fan inverter 1 DC overvoltage (A223)"
+      },
+      "alarm_return_fan_inverter1_6406": {
+        "name": "Return fan inverter 1 supply voltage fault (A224)"
+      },
+      "alarm_return_fan_inverter1_6407": {
+        "name": "Return fan inverter 1 inverter overload (A225)"
+      },
+      "alarm_return_fan_inverter1_6408": {
+        "name": "Return fan inverter 1 undervoltage (A226)"
+      },
+      "alarm_return_fan_inverter1_6409": {
+        "name": "Return fan inverter 1 overheating (A227)"
+      },
+      "alarm_return_fan_inverter1_640a": {
+        "name": "Return fan inverter 1 motor overload (A228)"
+      },
+      "alarm_return_fan_inverter1_640d": {
+        "name": "Return fan inverter 1 external fault - ESTOP (A229)"
+      },
+      "alarm_return_fan_inverter1_6412": {
+        "name": "Return fan inverter 1 programmed load current exceeded (A230)"
+      },
+      "alarm_return_fan_inverter1_6413": {
+        "name": "Return fan inverter 1 output phase loss or no load (A231)"
+      },
+      "alarm_return_fan_inverter1_6415": {
+        "name": "Return fan inverter 1 idle run (A232)"
+      },
+      "alarm_return_fan_inverter1_6416": {
+        "name": "Return fan inverter 1 inverter underload (A233)"
+      },
+      "alarm_return_fan_inverter1_641c": {
+        "name": "Return fan inverter 1 ground fault (A234)"
+      },
+      "alarm_return_fan_inverter1_6425": {
+        "name": "Return fan inverter 1 motor overheating fault (A235)"
+      },
+      "alarm_return_fan_inverter1_6445": {
+        "name": "Return fan inverter 1 overcurrent (A236)"
+      },
+      "alarm_return_fan_inverter2_6404": {
+        "name": "Return fan inverter 2 overcurrent (A237)"
+      },
+      "alarm_return_fan_inverter2_6405": {
+        "name": "Return fan inverter 2 DC overvoltage (A238)"
+      },
+      "alarm_return_fan_inverter2_6406": {
+        "name": "Return fan inverter 2 supply voltage fault (A239)"
+      },
+      "alarm_return_fan_inverter2_6407": {
+        "name": "Return fan inverter 2 inverter overload (A240)"
+      },
+      "alarm_return_fan_inverter2_6408": {
+        "name": "Return fan inverter 2 undervoltage (A241)"
+      },
+      "alarm_return_fan_inverter2_6409": {
+        "name": "Return fan inverter 2 overheating (A242)"
+      },
+      "alarm_return_fan_inverter2_640a": {
+        "name": "Return fan inverter 2 motor overload (A243)"
+      },
+      "alarm_return_fan_inverter2_640d": {
+        "name": "Return fan inverter 2 external fault - ESTOP (A244)"
+      },
+      "alarm_return_fan_inverter2_6412": {
+        "name": "Return fan inverter 2 programmed load current exceeded (A245)"
+      },
+      "alarm_return_fan_inverter2_6413": {
+        "name": "Return fan inverter 2 output phase loss or no load (A246)"
+      },
+      "alarm_return_fan_inverter2_6415": {
+        "name": "Return fan inverter 2 idle run (A247)"
+      },
+      "alarm_return_fan_inverter2_6416": {
+        "name": "Return fan inverter 2 inverter underload (A248)"
+      },
+      "alarm_return_fan_inverter2_641c": {
+        "name": "Return fan inverter 2 ground fault (A249)"
+      },
+      "alarm_return_fan_inverter2_6425": {
+        "name": "Return fan inverter 2 motor overheating fault (A250)"
+      },
+      "alarm_return_fan_inverter2_6445": {
+        "name": "Return fan inverter 2 overcurrent (A251)"
+      },
+      "alarm_return_fan_inverter3_6404": {
+        "name": "Return fan inverter 3 overcurrent (A252)"
+      },
+      "alarm_return_fan_inverter3_6405": {
+        "name": "Return fan inverter 3 DC overvoltage (A253)"
+      },
+      "alarm_return_fan_inverter3_6406": {
+        "name": "Return fan inverter 3 supply voltage fault (A254)"
+      },
+      "alarm_return_fan_inverter3_6407": {
+        "name": "Return fan inverter 3 inverter overload (A255)"
+      },
+      "alarm_return_fan_inverter3_6408": {
+        "name": "Return fan inverter 3 undervoltage (A256)"
+      },
+      "alarm_return_fan_inverter3_6409": {
+        "name": "Return fan inverter 3 overheating (A257)"
+      },
+      "alarm_return_fan_inverter3_640a": {
+        "name": "Return fan inverter 3 motor overload (A258)"
+      },
+      "alarm_return_fan_inverter3_640d": {
+        "name": "Return fan inverter 3 external fault - ESTOP (A259)"
+      },
+      "alarm_return_fan_inverter3_6412": {
+        "name": "Return fan inverter 3 programmed load current exceeded (A260)"
+      },
+      "alarm_return_fan_inverter3_6413": {
+        "name": "Return fan inverter 3 output phase loss or no load (A261)"
+      },
+      "alarm_return_fan_inverter3_6415": {
+        "name": "Return fan inverter 3 idle run (A262)"
+      },
+      "alarm_return_fan_inverter3_6416": {
+        "name": "Return fan inverter 3 inverter underload (A263)"
+      },
+      "alarm_return_fan_inverter3_641c": {
+        "name": "Return fan inverter 3 ground fault (A264)"
+      },
+      "alarm_return_fan_inverter3_6425": {
+        "name": "Return fan inverter 3 motor overheating fault (A265)"
+      },
+      "alarm_return_fan_inverter3_6445": {
+        "name": "Return fan inverter 3 overcurrent (A266)"
+      },
+      "alarm_return_fan_inverter4_6404": {
+        "name": "Return fan inverter 4 overcurrent (A267)"
+      },
+      "alarm_return_fan_inverter4_6405": {
+        "name": "Return fan inverter 4 DC overvoltage (A268)"
+      },
+      "alarm_return_fan_inverter4_6406": {
+        "name": "Return fan inverter 4 supply voltage fault (A269)"
+      },
+      "alarm_return_fan_inverter4_6407": {
+        "name": "Return fan inverter 4 inverter overload (A270)"
+      },
+      "alarm_return_fan_inverter4_6408": {
+        "name": "Return fan inverter 4 undervoltage (A271)"
+      },
+      "alarm_return_fan_inverter4_6409": {
+        "name": "Return fan inverter 4 overheating (A272)"
+      },
+      "alarm_return_fan_inverter4_640a": {
+        "name": "Return fan inverter 4 motor overload (A273)"
+      },
+      "alarm_return_fan_inverter4_640d": {
+        "name": "Return fan inverter 4 external fault - ESTOP (A274)"
+      },
+      "alarm_return_fan_inverter4_6412": {
+        "name": "Return fan inverter 4 programmed load current exceeded (A275)"
+      },
+      "alarm_return_fan_inverter4_6413": {
+        "name": "Return fan inverter 4 output phase loss or no load (A276)"
+      },
+      "alarm_return_fan_inverter4_6415": {
+        "name": "Return fan inverter 4 idle run (A277)"
+      },
+      "alarm_return_fan_inverter4_6416": {
+        "name": "Return fan inverter 4 inverter underload (A278)"
+      },
+      "alarm_return_fan_inverter4_641c": {
+        "name": "Return fan inverter 4 ground fault (A279)"
+      },
+      "alarm_return_fan_inverter4_6425": {
+        "name": "Return fan inverter 4 motor overheating fault (A280)"
+      },
+      "alarm_return_fan_inverter4_6445": {
+        "name": "Return fan inverter 4 overcurrent (A281)"
+      },
+      "alarm_heat_exchanger_protect": {
+        "name": "Heat recovery protection active (A282)"
+      },
+      "alarm_uv_lamp_work_hrs": {
+        "name": "Maximum UV lamp operating time (A283)"
+      },
+      "alarm_uv_lamp_fault": {
+        "name": "UV lamp fault (A284)"
+      },
+      "en_hum_reg_msk": {
+        "name": "En hum reg"
+      },
+      "en_mix_damp": {
+        "name": "En mix damp"
+      },
+      "en_heat_exchg": {
+        "name": "En heat exchg"
+      },
+      "en_cooler1": {
+        "name": "En cooler1"
+      },
+      "en_cooler2": {
+        "name": "En cooler2"
+      },
+      "en_cooler3": {
+        "name": "En cooler3"
+      },
+      "en_heater1": {
+        "name": "En heater1"
+      },
+      "en_heater2": {
+        "name": "En heater2"
+      },
+      "en_heater3": {
+        "name": "En heater3"
+      },
+      "en_heat_exchg_1016": {
+        "name": "En heat exchg"
+      },
+      "en_humidification": {
+        "name": "En humidification"
+      },
+      "en_mix_damp_1018": {
+        "name": "En mix damp"
+      },
+      "en_pc1": {
+        "name": "En PC1"
+      },
+      "en_pc1_1020": {
+        "name": "En PC1"
+      },
+      "en_pc1_1021": {
+        "name": "En PC1"
+      },
+      "en_pc2": {
+        "name": "En PC2"
+      },
+      "en_pc2_1023": {
+        "name": "En PC2"
+      },
+      "en_pc2_1024": {
+        "name": "En PC2"
+      },
+      "en_return_fan": {
+        "name": "En return fan"
+      },
+      "en_supply_fan": {
+        "name": "En supply fan"
+      },
+      "msk_cool_img": {
+        "name": "Msk cool img"
+      },
+      "msk_heat_img": {
+        "name": "Msk heat img"
+      },
+      "msk_hum_img": {
+        "name": "Msk hum img"
+      },
+      "msk_dehum_img": {
+        "name": "Msk dehum img"
+      },
+      "msk_heat_exchg_img": {
+        "name": "Msk heat exchg img"
+      },
+      "msk_hum_ok": {
+        "name": "Msk hum ok"
+      },
+      "msk_temp_ok": {
+        "name": "Msk temp ok"
+      },
+      "msk_fan_ok": {
+        "name": "Msk fan ok"
+      },
+      "msk_heat_exchg_ok": {
+        "name": "Msk heat exchg ok"
+      },
+      "msk_mix_damp_ok": {
+        "name": "Msk mix damp OK"
+      },
+      "do_alarm_dout_val": {
+        "name": "DO alarm DOUT"
+      },
+      "en_heater4": {
+        "name": "En heater4"
+      },
+      "en_cooler4": {
+        "name": "En cooler4"
+      },
+      "en_pc3": {
+        "name": "En PC3"
+      },
+      "en_pc3_1045": {
+        "name": "En PC3"
+      },
+      "do_heater1_do1_val": {
+        "name": "DO heater1 DO1"
+      },
+      "do_heater1_do2_val": {
+        "name": "DO heater1 DO2"
+      },
+      "do_heater1_do3_val": {
+        "name": "DO heater1 DO3"
+      },
+      "do_heater1_do4_val": {
+        "name": "DO heater1 DO4"
+      },
+      "do_heater2_do1_val": {
+        "name": "DO heater2 DO1"
+      },
+      "do_heater2_do2_val": {
+        "name": "DO heater2 DO2"
+      },
+      "do_heater2_do3_val": {
+        "name": "DO heater2 DO3"
+      },
+      "do_heater2_do4_val": {
+        "name": "DO heater2 DO4"
+      },
+      "do_heater3_do1_val": {
+        "name": "DO heater3 DO1"
+      },
+      "do_heater3_do2_val": {
+        "name": "DO heater3 DO2"
+      },
+      "do_heater3_do3_val": {
+        "name": "DO heater3 DO3"
+      },
+      "do_heater3_do4_val": {
+        "name": "DO heater3 DO4"
+      },
+      "do_heater4_do1_val": {
+        "name": "DO heater4 DO1"
+      },
+      "do_heater4_do2_val": {
+        "name": "DO heater4 DO2"
+      },
+      "do_heater4_do3_val": {
+        "name": "DO heater4 DO3"
+      },
+      "do_heater4_do4_val": {
+        "name": "DO heater4 DO4"
+      },
+      "do_cooler1_do1_val": {
+        "name": "DO cooler1 DO1"
+      },
+      "do_cooler1_do2_val": {
+        "name": "DO cooler1 DO2"
+      },
+      "do_cooler1_do3_val": {
+        "name": "DO cooler1 DO3"
+      },
+      "do_cooler2_do1_val": {
+        "name": "DO cooler2 DO1"
+      },
+      "do_cooler2_do2_val": {
+        "name": "DO cooler2 DO2"
+      },
+      "do_cooler2_do3_val": {
+        "name": "DO cooler2 DO3"
+      },
+      "do_cooler3_do1_val": {
+        "name": "DO cooler3 DO1"
+      },
+      "do_cooler3_do2_val": {
+        "name": "DO cooler3 DO2"
+      },
+      "do_cooler3_do3_val": {
+        "name": "DO cooler3 DO3"
+      },
+      "do_cooler4_do1_val": {
+        "name": "DO cooler4 DO1"
+      },
+      "do_cooler4_do2_val": {
+        "name": "DO cooler4 DO2"
+      },
+      "do_cooler4_do3_val": {
+        "name": "DO cooler4 DO3"
+      },
+      "do_pc1_heat_dout_val": {
+        "name": "DO PC1 heat DOUT"
+      },
+      "do_pc1_cool_dout_val": {
+        "name": "DO PC1 cool DOUT"
+      },
+      "do_pc1_com_dout_val": {
+        "name": "DO PC1 com DOUT"
+      },
+      "do_pc2_heat_dout_val": {
+        "name": "DO PC2 heat DOUT"
+      },
+      "do_pc2_cool_dout_val": {
+        "name": "DO PC2 cool DOUT"
+      },
+      "do_pc2_com_dout_val": {
+        "name": "DO PC2 com DOUT"
+      },
+      "do_pc3_heat_dout_val": {
+        "name": "DO PC3 heat DOUT"
+      },
+      "do_pc3_cool_dout_val": {
+        "name": "DO PC3 cool DOUT"
+      },
+      "do_pc3_com_dout_val": {
+        "name": "DO PC3 com DOUT"
+      },
+      "do_heat_exchg_do1_val": {
+        "name": "DO heat exchg DO1"
+      },
+      "do_mix_damp_do1_val": {
+        "name": "DO mix damp DO1"
+      },
+      "do_humidifier_do1_val": {
+        "name": "DO humidifier DO1"
+      },
+      "do_supply_fan_do1_val": {
+        "name": "DO supply fan DO1"
+      },
+      "do_return_fan_do1_val": {
+        "name": "DO return fan DO1"
+      },
+      "do_on_off_damp_do1_val": {
+        "name": "DO on off damp DO1"
+      },
+      "do_run_dout_val": {
+        "name": "DO run DOUT"
+      },
+      "do_filtr_dout_val": {
+        "name": "DO filtr DOUT"
+      },
+      "do_alarm_dout_val_45": {
+        "name": "DO alarm DOUT"
+      },
+      "do_aux1_dout_val": {
+        "name": "DO aux1 digital output"
+      },
+      "do_aux2_dout_val": {
+        "name": "DO aux2 digital output"
+      },
+      "do_aux3_dout_val": {
+        "name": "DO aux3 digital output"
+      },
+      "do_aux4_dout_val": {
+        "name": "DO aux4 digital output"
+      },
+      "unit_cool_heat_mode": {
+        "name": "Unit cool heat mode"
+      },
+      "do_aux5_dout_val": {
+        "name": "DO aux5 digital output"
+      },
+      "do_aux6_dout_val": {
+        "name": "DO aux6 digital output"
+      },
+      "do_proport_setter1_val": {
+        "name": "DO proport setter1"
+      },
+      "do_proport_setter2_val": {
+        "name": "DO proport setter2"
+      },
+      "do_heat_cool_com_dout_val": {
+        "name": "DO heat cool com DOUT"
+      },
+      "do_heat_cool_cool_dout_val": {
+        "name": "DO heat cool cool DOUT"
+      },
+      "do_heat_cool_heat_dout_val": {
+        "name": "DO heat cool heat DOUT"
+      },
+      "do_mix_damp1_thr_val": {
+        "name": "DO mix damp1 thr"
+      },
+      "do_mix_damp2_thr_val": {
+        "name": "DO mix damp2 thr"
+      },
+      "do_mix_damp3_thr_val": {
+        "name": "DO mix damp3 thr"
+      }
+    },
+    "switch": {
+      "air_quality_fan_regulation_active": {
+        "name": "Air-quality fan regulation active"
+      },
+      "alarm_reset_by_bms": {
+        "name": "Reset alarms",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "bms_unit_enable": {
+        "name": "BMS unit enable",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "controller_time_save": {
+        "name": "Save controller time",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "a_freeze_low_supply_temperature_enable": {
+        "name": "A freeze low supply temperature enable",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "a_freeze_low_water_temperature_enable": {
+        "name": "A freeze low water temperature enable",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "pre_heating_enable": {
+        "name": "Pre heating enable",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_0_enabled": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 0 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_1_enabled": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 1 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_vacation_schedule_2_enabled": {
+        "name": "Scheduler on off unit scheduler 1 vacation schedule 2 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_0_enabled": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 0 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_1_enabled": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 1 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_2_enabled": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 2 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_3_enabled": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 3 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_4_enabled": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 4 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_special_days_schedule_5_enabled": {
+        "name": "Scheduler on off unit scheduler 1 special days schedule 5 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_0_enabled": {
+        "name": "Scheduler on off unit scheduler 1 event msk 0 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_1_enabled": {
+        "name": "Scheduler on off unit scheduler 1 event msk 1 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_2_enabled": {
+        "name": "Scheduler on off unit scheduler 1 event msk 2 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "scheduler_on_off_unit_scheduler_1_event_msk_3_enabled": {
+        "name": "Scheduler on off unit scheduler 1 event msk 3 enabled",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "unit_season_transition_period_unlock": {
+        "name": "Unit season transition period unlock",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "unit_season_bms": {
+        "name": "Unit season BMS",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "auto_season": {
+        "name": "Auto season",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      },
+      "auto_humidity_dehum": {
+        "name": "Auto humidity dehum",
+        "state": {
+          "off": "Off",
+          "on": "On"
+        }
+      }
+    }
+  },
   "issues": {
     "active_alarm": {
       "title": "Active Hombee Air alarm {alarm_code}",
-      "description": "{unit} reports {alarm_name}. Catalog description: {description}"
+      "description": "{unit} reports active alarm {alarm_code}."
     }
   },
   "services": {

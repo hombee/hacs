@@ -79,8 +79,6 @@ def _async_reconcile_alarm_issues(
             translation_placeholders={
                 "unit": title,
                 "alarm_code": register.alarm_code or "",
-                "alarm_name": _alarm_name(register),
-                "description": register.description,
             },
         )
 
@@ -88,9 +86,3 @@ def _async_reconcile_alarm_issues(
         ir.async_delete_issue(hass, DOMAIN, issue_id)
 
     runtime.active_alarm_issue_ids = set(active_issues)
-
-
-def _alarm_name(register: HombeeAirRegister) -> str:
-    if register.alarm_code is None:
-        return register.name
-    return register.name.removesuffix(f" ({register.alarm_code})")

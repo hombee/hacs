@@ -7,6 +7,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .catalog_translations import OPTION_STATE_KEYS
 from .coordinator import HombeeAirConfigEntry, HombeeAirRuntime
 from .entity import HombeeAirRegisterEntity, is_writable
 from .registers import REGISTERS, HombeeAirRegister
@@ -36,7 +37,7 @@ class HombeeAirSelect(HombeeAirRegisterEntity, SelectEntity):
         title: str,
     ) -> None:
         super().__init__(runtime, register, title)
-        self._attr_options = [label for _, label in register.options]
+        self._attr_options = [OPTION_STATE_KEYS[label] for _, label in register.options]
 
     @property
     def current_option(self) -> str | None:
@@ -44,17 +45,29 @@ class HombeeAirSelect(HombeeAirRegisterEntity, SelectEntity):
         if not isinstance(raw, int):
             return None
         return next(
-            (label for value, label in self._register.options if value == raw),
+            (
+                OPTION_STATE_KEYS[label]
+                for value, label in self._register.options
+                if value == raw
+            ),
             None,
         )
 
     async def async_select_option(self, option: str) -> None:
-        raw = next(
-            (value for value, label in self._register.options if label == option),
-            None,
-        )
+        raw = _raw_value_for_option(self._register, option)
         if raw is None:
             raise HomeAssistantError(
                 f"Unknown option for {self._register.key}: {option}"
             )
         await self.async_write_raw(raw)
+
+
+def _raw_value_for_option(register: HombeeAirRegister, option: str) -> int | None:
+    return next(
+        (
+            value
+            for value, label in register.options
+            if OPTION_STATE_KEYS[label] == option
+        ),
+        None,
+    )

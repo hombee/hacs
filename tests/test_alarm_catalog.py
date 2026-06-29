@@ -44,11 +44,14 @@ def test_alarm_catalog_covers_plc_alarm_codes() -> None:
     assert all(
         register.name.endswith(f" ({register.alarm_code})") for register in alarms
     )
-    assert all(not register.description.startswith("A") for register in alarms)
+    assert all(register.name[0].isupper() for register in alarms)
+    assert all(register.description[0].isupper() for register in alarms)
     assert all(
-        segment == "ESTOP" or not segment[:1].isupper()
+        index == 0 or segment == "ESTOP" or not segment[:1].isupper()
         for register in alarms
-        for segment in _alarm_description_segments(register.description)
+        for index, segment in enumerate(
+            _alarm_description_segments(register.description)
+        )
     )
     assert all(
         abbreviation not in register.description
@@ -65,8 +68,8 @@ def test_new_plc_alarm_names_are_mapped() -> None:
     }
 
     assert alarms_by_code[151].address == 250
-    assert alarms_by_code[151].name == "additional sensor 3 alarm (A151)"
+    assert alarms_by_code[151].name == "Additional sensor 3 alarm (A151)"
     assert alarms_by_code[152].address == 251
-    assert alarms_by_code[152].name == "heat pump 1 alarm (A152)"
+    assert alarms_by_code[152].name == "Heat pump 1 alarm (A152)"
     assert alarms_by_code[284].address == 383
     assert alarms_by_code[284].name == "UV lamp fault (A284)"
