@@ -345,7 +345,7 @@ async def test_register_entities_use_native_translation_keys(
     assert registry_entry.translation_key == key
 
 
-async def test_enum_options_use_translation_keys_and_accept_legacy_labels(
+async def test_enum_options_use_translation_keys(
     hass: HomeAssistant, mock_client: MockModbusClient
 ) -> None:
     sensor_id = _entity_id_for_domain_and_unique_id(
@@ -378,14 +378,6 @@ async def test_enum_options_use_translation_keys_and_accept_legacy_labels(
         blocking=True,
     )
     assert ("program_mode", 2) in mock_client.writes
-
-    await hass.services.async_call(
-        "select",
-        "select_option",
-        {"entity_id": select_id, "option": "Comfort+"},
-        blocking=True,
-    )
-    assert ("program_mode", 4) in mock_client.writes
 
 
 async def test_failed_write_rolls_back_optimistic_state(

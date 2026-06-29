@@ -53,13 +53,6 @@ class HombeeAirSelect(HombeeAirRegisterEntity, SelectEntity):
             None,
         )
 
-    async def async_handle_select_option(self, option: str) -> None:
-        if _raw_value_for_option(self._register, option) is None:
-            raise HomeAssistantError(
-                f"Unknown option for {self._register.key}: {option}"
-            )
-        await self.async_select_option(option)
-
     async def async_select_option(self, option: str) -> None:
         raw = _raw_value_for_option(self._register, option)
         if raw is None:
@@ -74,7 +67,7 @@ def _raw_value_for_option(register: HombeeAirRegister, option: str) -> int | Non
         (
             value
             for value, label in register.options
-            if OPTION_STATE_KEYS[label] == option or label == option
+            if OPTION_STATE_KEYS[label] == option
         ),
         None,
     )
