@@ -15,6 +15,7 @@ MODBUS_UNIT_ID = 1
 
 FAST_SCAN_INTERVAL = timedelta(seconds=10)
 SLOW_SCAN_INTERVAL = timedelta(seconds=60)
+CONTROLLER_TIME_SYNC_THRESHOLD = timedelta(minutes=15)
 
 # Minimum spacing between any two Modbus operations (parity with the
 # previous Home Assistant modbus hub configuration).
