@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+from datetime import UTC, datetime
 from typing import Any
 from unittest.mock import patch
 
@@ -13,6 +14,7 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import issue_registry as ir
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from custom_components.hombee_air import controller_time
 from custom_components.hombee_air.const import DOMAIN
 from custom_components.hombee_air.modbus_client import HombeeAirModbusError
 from custom_components.hombee_air.registers import REGISTERS_BY_KEY, HombeeAirRegister
@@ -32,6 +34,14 @@ _BASE_RAW: dict[str, int | bool] = {
     "msk_cool_img": False,
     "msk_dehum_img": False,
     "fans_running": True,
+}
+
+_CLOCK_RAW: dict[str, int | bool] = {
+    "controller_year": 26,
+    "controller_month": 7,
+    "controller_day": 1,
+    "controller_hour": 12,
+    "controller_minute": 30,
 }
 
 
@@ -420,6 +430,49 @@ async def test_write_register_service_validates_catalog(
             },
             blocking=True,
         )
+
+
+async def test_controller_time_sync_writes_clock_when_drift_exceeds_threshold(
+    hass: HomeAssistant,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        controller_time.dt_util,
+        "now",
+        lambda: datetime(2026, 7, 1, 12, 30, tzinfo=UTC),
+    )
+
+    client, _entry = await _setup_mock_client(
+        hass,
+        {
+            **_CLOCK_RAW,
+            "controller_minute": 0,
+        },
+    )
+
+    assert client.writes == [
+        ("controller_year", 26),
+        ("controller_month", 7),
+        ("controller_day", 1),
+        ("controller_hour", 12),
+        ("controller_minute", 30),
+        ("controller_time_save", 1),
+    ]
+
+
+async def test_controller_time_sync_ignores_small_drift(
+    hass: HomeAssistant,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        controller_time.dt_util,
+        "now",
+        lambda: datetime(2026, 7, 1, 12, 44, tzinfo=UTC),
+    )
+
+    client, _entry = await _setup_mock_client(hass, _CLOCK_RAW)
+
+    assert client.writes == []
 
 
 async def test_alarm_binary_sensor_is_diagnostic_problem(

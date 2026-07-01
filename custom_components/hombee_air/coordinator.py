@@ -7,6 +7,7 @@ refresh every minute and immediately after writes.
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -80,6 +81,8 @@ class HombeeAirRuntime:
     fast: HombeeAirCoordinator
     slow: HombeeAirCoordinator
     alarm_issue_remove_listener: Callable[[], None] | None = None
+    controller_time_remove_listener: Callable[[], None] | None = None
+    controller_time_sync_task: asyncio.Task[None] | None = None
     active_alarm_issue_ids: set[str] = field(default_factory=set)
 
     def coordinator_for(self, register: HombeeAirRegister) -> HombeeAirCoordinator:

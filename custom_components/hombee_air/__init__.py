@@ -10,6 +10,10 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
 
 from .const import CONF_INSTALLATION_ID, DEFAULT_PORT, DOMAIN, installation_slug
+from .controller_time import (
+    async_start_controller_time_sync,
+    async_stop_controller_time_sync,
+)
 from .coordinator import (
     HombeeAirConfigEntry,
     HombeeAirRuntime,
@@ -59,6 +63,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HombeeAirConfigEntry) ->
     await runtime.fast.async_config_entry_first_refresh()
     await runtime.slow.async_config_entry_first_refresh()
     entry.runtime_data = runtime
+    async_start_controller_time_sync(hass, runtime)
     async_start_alarm_issues(hass, runtime, entry.title)
 
     device_registry = dr.async_get(hass)
@@ -77,6 +82,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: HombeeAirConfigEntry) -
     if unloaded:
         runtime = entry.runtime_data
         async_stop_alarm_issues(hass, runtime)
+        await async_stop_controller_time_sync(runtime)
         await runtime.client.async_close()
     return unloaded
 
