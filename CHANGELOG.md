@@ -1,3 +1,5 @@
+## [1.4.0](https://github.com/hombee/hacs/compare/v1.3.0...v1.4.0) (2026-07-01)
+
 ## [1.3.0](https://github.com/hombee/hacs/compare/v1.2.0...v1.3.0) (2026-06-29)
 
 ## [1.2.0](https://github.com/hombee/hacs/compare/v1.1.0...v1.2.0) (2026-06-28)
