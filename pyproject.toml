@@ -8,7 +8,7 @@ version = "0.0.0"
 description = "Hombee Home Assistant Community Store integrations."
 requires-python = ">=3.12"
 dependencies = [
-  "pymodbus>=3.11,<4",
+  "pymodbus>=3.14.0,<4",
   "voluptuous>=0.15,<1",
 ]
 
