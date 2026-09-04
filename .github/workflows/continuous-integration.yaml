@@ -19,7 +19,7 @@ concurrency:
 jobs:
   python:
     name: Python quality and tests
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -46,7 +46,7 @@ jobs:
         run: uv run --locked pytest
   home-assistant:
     name: Home Assistant compatibility
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -59,7 +59,7 @@ jobs:
         uses: home-assistant/actions/hassfest@master
   docker:
     name: Home Assistant Docker smoke
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -69,7 +69,7 @@ jobs:
   release:
     name: Release dry run
     if: github.event_name != 'push'
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -88,7 +88,7 @@ jobs:
         run: bun run release -- --dry-run --no-ci
   security:
     name: Security audit
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
