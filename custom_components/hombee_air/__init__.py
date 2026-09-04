@@ -44,6 +44,7 @@ AIR_PLATFORMS = [
     Platform.SWITCH,
 ]
 MANAGED_LIGHTING_PLATFORMS = [Platform.LIGHT]
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 SERVICE_WRITE_REGISTER = "write_register"
 SERVICE_WRITE_COIL = "write_coil"
