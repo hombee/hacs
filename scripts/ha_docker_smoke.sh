@@ -39,7 +39,14 @@ PY
   '
 
 contract_dir="$(mktemp -d "${PWD}/.ha-docker.XXXXXX")"
-trap 'rm -rf "$contract_dir"' EXIT
+cleanup() {
+  docker run --rm \
+    -v "$contract_dir:/config" \
+    "$image" \
+    chown -R "$(id -u):$(id -g)" /config >/dev/null 2>&1 || true
+  rm -rf "$contract_dir"
+}
+trap cleanup EXIT
 mkdir -p "$contract_dir/custom_components"
 cp -R custom_components/hombee_air "$contract_dir/custom_components/"
 cp -R \
