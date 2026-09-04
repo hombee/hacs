@@ -34,6 +34,9 @@ async def test_user_flow_creates_entry(hass: HomeAssistant) -> None:
             DOMAIN, context={"source": SOURCE_USER}
         )
         result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"next_step_id": "air"}
+        )
+        result = await hass.config_entries.flow.async_configure(
             result["flow_id"], _USER_INPUT
         )
     assert result["type"] is FlowResultType.CREATE_ENTRY
@@ -53,6 +56,9 @@ async def test_user_flow_shows_error_when_unreachable(
             DOMAIN, context={"source": SOURCE_USER}
         )
         result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"next_step_id": "air"}
+        )
+        result = await hass.config_entries.flow.async_configure(
             result["flow_id"], _USER_INPUT
         )
     assert result["type"] is FlowResultType.FORM
@@ -68,7 +74,30 @@ async def test_duplicate_installation_aborts(hass: HomeAssistant) -> None:
             DOMAIN, context={"source": SOURCE_USER}
         )
         result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"next_step_id": "air"}
+        )
+        result = await hass.config_entries.flow.async_configure(
             result["flow_id"], _USER_INPUT
         )
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == "already_configured"
+
+
+async def test_user_flow_creates_singleton_managed_lighting_entry(
+    hass: HomeAssistant,
+) -> None:
+    with patch(
+        "custom_components.hombee_air.async_setup_entry",
+        return_value=True,
+    ):
+        result = await hass.config_entries.flow.async_init(
+            DOMAIN, context={"source": SOURCE_USER}
+        )
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"next_step_id": "managed_lighting"}
+        )
+
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert result["title"] == "Hombee managed lighting"
+    assert result["result"].unique_id == "managed_lighting"
+    assert result["data"] == {"entry_kind": "managed_lighting"}

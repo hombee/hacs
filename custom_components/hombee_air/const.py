@@ -9,6 +9,19 @@ from datetime import timedelta
 DOMAIN = "hombee_air"
 
 CONF_INSTALLATION_ID = "installation_id"
+CONF_ENTRY_KIND = "entry_kind"
+
+ENTRY_KIND_AIR = "air"
+ENTRY_KIND_MANAGED_LIGHTING = "managed_lighting"
+MANAGED_LIGHTING_UNIQUE_ID = "managed_lighting"
+
+DEFAULT_WARM_KELVIN = 2200
+DEFAULT_COOL_KELVIN = 5000
+DEFAULT_TRANSITION_SECONDS = 1.0
+MANAGED_LIGHT_RECONCILE_INTERVAL = timedelta(minutes=1)
+
+WS_RECONCILE_MANAGED_LIGHTS = f"{DOMAIN}/managed_lights/reconcile"
+WS_LIST_MANAGED_LIGHTS = f"{DOMAIN}/managed_lights/list"
 
 DEFAULT_PORT = 502
 MODBUS_UNIT_ID = 1

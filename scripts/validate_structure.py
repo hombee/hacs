@@ -83,8 +83,8 @@ def main() -> int:
         errors.append("manifest must pin pymodbus with an upper bound")
 
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
-    if hacs.get("name") != "Hombee Air":
-        errors.append("hacs.json name must be Hombee Air")
+    if hacs.get("name") != "Hombee":
+        errors.append("hacs.json name must be Hombee")
     if "render_readme" in hacs:
         errors.append("hacs.json must not use unsupported render_readme")
 

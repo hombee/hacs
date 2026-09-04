@@ -1,0 +1,15 @@
+homeassistant:
+  name: Hombee managed light contract
+  unit_system: metric
+  time_zone: Europe/Warsaw
+
+hombee_managed_light_test:
+
+light:
+  - platform: hombee_managed_light_test
+
+logger:
+  default: info
+  logs:
+    custom_components.hombee_air: debug
+    custom_components.hombee_managed_light_test: debug

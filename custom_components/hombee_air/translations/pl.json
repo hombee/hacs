@@ -2,6 +2,13 @@
   "config": {
     "step": {
       "user": {
+        "title": "Skonfiguruj Hombee",
+        "menu_options": {
+          "air": "Połącz centralę Hombee Air",
+          "managed_lighting": "Włącz oświetlenie zarządzane przez Hombee"
+        }
+      },
+      "air": {
         "title": "Połącz z Hombee Air",
         "data": {
           "host": "Host",
