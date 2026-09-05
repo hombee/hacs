@@ -49,46 +49,23 @@ enabled for the daytime curve; without solar data the warm temperature is used.
 
 ## Updates
 
-HACS tracks GitHub Releases from this repository. Users install the integration
-once, then receive updates through the normal HACS update flow whenever a new
-release tag is published.
-
-The release workflow uses conventional commits to decide the next version,
-updates `custom_components/hombee/manifest.json`, creates the GitHub
-Release, and lets HACS distribute the updated integration archive.
+Install updates through HACS when a new GitHub Release is available.
 
 ## Development
 
-The development environment requires Python 3.14.2 or newer to run the Home
-Assistant test suite. Direct Python dependencies use minimum versions without exact
-pins or upper bounds. uv excludes prereleases and overrides the Home Assistant
-test plugin's pytest and pytest-asyncio pins so those runners can stay current.
-Upstream requirements still govern other transitive dependencies. Home
-Assistant also constrains pymodbus at runtime, so the manifest allows its
-required version while the development lockfile tests the latest stable release.
+Install dependencies and run the checks:
 
-All direct Bun dependencies use caret ranges, allowing minor and patch updates
-within their current major versions. The conventional commits preset stays on
-9.x until the release-notes generator supports conventional-changelog-writer 9
-or newer. Upgrade the generator and preset together, then verify release-note
-generation before merging.
+```bash
+uv sync --locked --extra dev
+bun install --frozen-lockfile
+uv run --locked ruff check .
+uv run --locked black --check .
+uv run --locked pytest
+```
 
-Dependabot checks daily and groups updates for each ecosystem. All CI runs,
-including scheduled runs, install Python and npm dependencies from the committed
-lockfiles without updating them. Dependency updates arrive through Dependabot
-PRs. Node tracks the latest stable release. To refresh the lockfiles locally:
+To update dependencies:
 
 ```bash
 uv lock --upgrade
 bun update
 ```
-
-```bash
-uv sync --python 3.14 --extra dev
-uv run ruff check .
-uv run black --check .
-uv run pytest
-```
-
-The CI pipeline also validates the repository with HACS, Hassfest, security
-audits, and a Home Assistant Docker smoke test.
