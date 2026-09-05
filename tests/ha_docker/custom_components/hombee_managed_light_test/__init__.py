@@ -12,11 +12,12 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import area_registry as ar
 from homeassistant.helpers import entity_registry as er
 
-from custom_components.hombee_air.const import DOMAIN as HOMBEE_DOMAIN
-from custom_components.hombee_air.managed_lighting import (
+from custom_components.hombee.const import DOMAIN as HOMBEE_DOMAIN
+from custom_components.hombee.managed_lighting import (
     ManagedLightingManager,
-    ManagedLightSpec,
 )
+
+from .light import ContractPhysicalLight
 
 DOMAIN = "hombee_managed_light_test"
 PUBLIC_ENTITY_ID = "light.contract_physical"
@@ -82,14 +83,6 @@ async def _async_assert_contract(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     manager = entry.runtime_data
     assert isinstance(manager, ManagedLightingManager)
-
-    spec = ManagedLightSpec(
-        source_entity_id=PUBLIC_ENTITY_ID,
-        warm_kelvin=2200,
-        cool_kelvin=5000,
-        transition_seconds=1,
-    )
-    await manager.async_reconcile(1, [spec])
 
     logical_entry = registry.async_get(PUBLIC_ENTITY_ID)
     assert logical_entry is not None
@@ -159,13 +152,93 @@ async def _async_assert_contract(hass: HomeAssistant) -> None:
     )
     assert calls == [{"color_temp_kelvin": 2200}]
 
-    await manager.async_reconcile(1, [spec])
+    await manager.async_discover()
     assert len(manager.entities) == 1
-    await manager.async_reconcile(2, [])
-    restored_entry = registry.async_get(PUBLIC_ENTITY_ID)
-    assert restored_entry is not None
-    assert restored_entry.id == source_entry.id
-    assert restored_entry.hidden_by is None
+
+    await _assert_global_policy(hass, entry, source_entry.id)
+
+
+async def _assert_global_policy(hass: HomeAssistant, entry, source_id: str) -> None:
+    manager = entry.runtime_data
+    logical = manager.entities[source_id]
+    calls = hass.data[DOMAIN]["turn_on_calls"]
+    registry = er.async_get(hass)
+    calls.clear()
+    await hass.services.async_call(
+        "light",
+        "turn_on",
+        {"flash": "short"},
+        target={ATTR_ENTITY_ID: PUBLIC_ENTITY_ID},
+        blocking=True,
+    )
+    assert calls == [{"flash": "short"}]
+    assert not manager.mappings[source_id].manual_override
+    calls.clear()
+    await hass.services.async_call(
+        "light",
+        "turn_on",
+        {"brightness": 90, "transition": 5},
+        target={ATTR_ENTITY_ID: PUBLIC_ENTITY_ID},
+        blocking=True,
+    )
+    assert calls == [{"brightness": 90, "transition": 5, "color_temp_kelvin": 2200}]
+    calls.clear()
+    await hass.services.async_call(
+        "light",
+        "turn_on",
+        {"transition": 5, "effect": "pulse", "flash": "short"},
+        target={ATTR_ENTITY_ID: PUBLIC_ENTITY_ID},
+        blocking=True,
+    )
+    assert calls == [{"transition": 5, "effect": "pulse", "flash": "short"}]
+
+    await hass.services.async_call(
+        "switch",
+        "turn_off",
+        target={ATTR_ENTITY_ID: "switch.hombee_circadian_lighting"},
+        blocking=True,
+    )
+    calls.clear()
+    await hass.services.async_call(
+        "light",
+        "turn_on",
+        {"brightness": 90},
+        target={ATTR_ENTITY_ID: PUBLIC_ENTITY_ID},
+        blocking=True,
+    )
+    await logical.async_reconcile_temperature()
+    assert calls == [{"brightness": 90}]
+    assert not manager.enabled
+
+    assert await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+    manager = entry.runtime_data
+    assert not manager.enabled
+    assert len(manager.entities) == 1
+    await hass.services.async_call(
+        "switch",
+        "turn_on",
+        target={ATTR_ENTITY_ID: "switch.hombee_circadian_lighting"},
+        blocking=True,
+    )
+    assert manager.enabled
+    assert calls[-1]["color_temp_kelvin"] == 2200
+
+    added = ContractPhysicalLight()
+    added._attr_unique_id = "late_light"
+    added._attr_name = "Late light"
+    hass.data[DOMAIN]["add_entities"]([added])
+    await hass.async_block_till_done(wait_background_tasks=True)
+    assert len(manager.entities) == 2
+    assert registry.async_get("light.late_light").platform == HOMBEE_DOMAIN
+
+    await hass.config_entries.async_remove(entry.entry_id)
+    await hass.async_block_till_done(wait_background_tasks=True)
+    restored = registry.async_get(PUBLIC_ENTITY_ID)
+    assert restored is not None
+    assert restored.platform == DOMAIN
+    assert restored.hidden_by is None
+    assert hass.states.get("light.contract_physical_physical") is None
 
 
 def _write_result(result: dict) -> None:

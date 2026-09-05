@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from custom_components.hombee_air.modbus_client import build_read_plan
-from custom_components.hombee_air.registers import (
+from custom_components.hombee.modbus_client import build_read_plan
+from custom_components.hombee.registers import (
     KIND_COIL,
     KIND_HOLDING_REGISTER,
     KIND_INPUT_REGISTER,

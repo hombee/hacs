@@ -11,12 +11,12 @@ from time import monotonic
 
 import pytest
 
-from custom_components.hombee_air import modbus_client
-from custom_components.hombee_air.modbus_client import (
+from custom_components.hombee import modbus_client
+from custom_components.hombee.modbus_client import (
     HombeeAirModbusClient,
     HombeeAirModbusError,
 )
-from custom_components.hombee_air.registers import REGISTERS_BY_KEY
+from custom_components.hombee.registers import REGISTERS_BY_KEY
 
 _PACING = 0.05
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from custom_components.hombee_air.registers import (
+from custom_components.hombee.registers import (
     KIND_DISCRETE_INPUT,
     REGISTERS,
 )

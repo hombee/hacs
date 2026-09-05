@@ -2,15 +2,20 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Mapping
+import asyncio
+import logging
+from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timedelta
 from typing import Any
 
 from homeassistant.components.light import DOMAIN as LIGHT_DOMAIN
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, State, callback
+from homeassistant.const import EVENT_STATE_CHANGED
+from homeassistant.core import Event, HomeAssistant, State, callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.storage import Store
@@ -27,10 +32,12 @@ from .light import HombeeManagedLight
 
 STORAGE_VERSION = 1
 STORAGE_KEY_PREFIX = f"{DOMAIN}.managed_lighting"
+LIGHTING_UPDATED = f"{DOMAIN}_lighting_updated"
+_LOGGER = logging.getLogger(__name__)
 
 
 class ManagedLightingError(ValueError):
-    """Raised when a managed-light manifest cannot be applied safely."""
+    """Raised when a physical light cannot be managed safely."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -125,7 +132,9 @@ class ManagedLightingManager:
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         self.hass = hass
         self.entry = entry
-        self.revision = 0
+        self.enabled = True
+        self._discovery_lock = asyncio.Lock()
+        self._cancel_discovery: Callable[[], None] | None = None
         self.mappings: dict[str, ManagedLightMapping] = {}
         self.entities: dict[str, Any] = {}
         self._add_entities: AddEntitiesCallback | None = None
@@ -139,7 +148,7 @@ class ManagedLightingManager:
     async def async_load(self) -> None:
         """Loads mappings and starts periodic temperature reconciliation."""
         raw = await self._store.async_load() or {}
-        self.revision = int(raw.get("revision", 0))
+        self.enabled = bool(raw.get("enabled", True))
         for item in raw.get("lights", []):
             if isinstance(item, Mapping):
                 mapping = ManagedLightMapping.from_dict(item)
@@ -153,6 +162,9 @@ class ManagedLightingManager:
 
     async def async_unload(self) -> None:
         """Stops manager-owned callbacks."""
+        if self._cancel_discovery is not None:
+            self._cancel_discovery()
+            self._cancel_discovery = None
         if self._cancel_interval is not None:
             self._cancel_interval()
             self._cancel_interval = None
@@ -163,61 +175,66 @@ class ManagedLightingManager:
     ) -> None:
         """Connects the light platform and restores persisted entities."""
         self._add_entities = async_add_entities
+        registry = er.async_get(self.hass)
         for mapping in tuple(self.mappings.values()):
-            await self._async_activate_mapping(mapping)
+            if _entry_by_registry_id(registry, mapping.source_registry_id) is None:
+                await self._async_remove_mapping(mapping)
+            else:
+                await self._async_activate_mapping(mapping)
+        self._cancel_discovery = self.hass.bus.async_listen(
+            EVENT_STATE_CHANGED, self._source_added
+        )
+        await self.async_discover()
 
-    async def async_reconcile(
-        self, revision: int, specs: Iterable[ManagedLightSpec]
-    ) -> dict[str, Any]:
-        """Applies a complete desired-state manifest."""
-        if revision < self.revision:
-            raise ManagedLightingError(
-                f"Manifest revision {revision} is older than {self.revision}"
+    @callback
+    def _source_added(self, event: Event) -> None:
+        entity_id = event.data.get("entity_id", "")
+        if (
+            entity_id.startswith("light.")
+            and (state := event.data.get("new_state")) is not None
+            and "color_temp" in state.attributes.get("supported_color_modes", [])
+            and self._mapping_for_requested_entity(entity_id) is None
+        ):
+            self.entry.async_create_background_task(
+                self.hass, self.async_discover(), "Discover Hombee lights"
             )
 
-        desired_source_ids: set[str] = set()
-        for spec in specs:
-            self._validate_spec(spec)
-            existing = self._mapping_for_requested_entity(spec.source_entity_id)
-            if existing is None:
-                mapping = await self._async_prepare_mapping(spec)
-            else:
-                mapping = replace(
-                    existing,
-                    warm_kelvin=spec.warm_kelvin,
-                    cool_kelvin=spec.cool_kelvin,
-                    transition_seconds=spec.transition_seconds,
-                )
-                self.mappings[mapping.source_registry_id] = mapping
-            desired_source_ids.add(mapping.source_registry_id)
-            await self._async_activate_mapping(mapping)
+    async def async_discover(self) -> None:
+        """Wrap registered CCT lights as they become available."""
+        async with self._discovery_lock:
+            registry = er.async_get(self.hass)
+            for source in tuple(registry.entities.values()):
+                if (
+                    source.domain != LIGHT_DOMAIN
+                    or source.platform in {DOMAIN, "group"}
+                    or source.disabled_by is not None
+                    or source.id in self.mappings
+                ):
+                    continue
+                state = self.hass.states.get(source.entity_id)
+                if state is None or "color_temp" not in state.attributes.get(
+                    "supported_color_modes", []
+                ):
+                    continue
+                try:
+                    mapping = await self._async_prepare_mapping(
+                        ManagedLightSpec(source_entity_id=source.entity_id)
+                    )
+                    await self._async_activate_mapping(mapping)
+                except ManagedLightingError, HomeAssistantError:
+                    _LOGGER.exception("Cannot manage light %s", source.entity_id)
+            await self._async_save()
 
-        for source_registry_id in set(self.mappings) - desired_source_ids:
-            await self._async_remove_mapping(self.mappings[source_registry_id])
-
-        self.revision = revision
+    async def async_set_enabled(self, enabled: bool) -> None:
+        """Persist the global policy, shared by all managed lights."""
+        self.enabled = enabled
+        if enabled:
+            for source_id in tuple(self.mappings):
+                self.set_manual_override(source_id, False)
         await self._async_save()
-        return self.as_dict()
-
-    def as_dict(self) -> dict[str, Any]:
-        """Returns the active public-to-physical mapping."""
-        return {
-            "revision": self.revision,
-            "lights": [
-                {
-                    "source_registry_id": mapping.source_registry_id,
-                    "public_entity_id": mapping.public_entity_id,
-                    "physical_entity_id": mapping.physical_entity_id,
-                    "warm_kelvin": mapping.warm_kelvin,
-                    "cool_kelvin": mapping.cool_kelvin,
-                    "transition_seconds": mapping.transition_seconds,
-                    "manual_override": mapping.manual_override,
-                }
-                for mapping in sorted(
-                    self.mappings.values(), key=lambda value: value.public_entity_id
-                )
-            ],
-        }
+        async_dispatcher_send(self.hass, LIGHTING_UPDATED)
+        if enabled:
+            await self._async_reconcile_temperatures(dt_util.now())
 
     def current_kelvin(self, mapping: ManagedLightMapping) -> int:
         """Calculates and clamps the requested temperature for a mapping."""
@@ -276,8 +293,8 @@ class ManagedLightingManager:
 
         public_entity_id = spec.source_entity_id
         object_id = public_entity_id.split(".", 1)[1]
-        physical_entity_id = _available_entity_id(
-            registry, LIGHT_DOMAIN, f"{object_id}_physical"
+        physical_entity_id = registry.async_get_available_entity_id(
+            LIGHT_DOMAIN, f"{object_id}_physical"
         )
         mapping = ManagedLightMapping(
             source_registry_id=source_entry.id,
@@ -363,6 +380,13 @@ class ManagedLightingManager:
         self._add_entities([entity])
         await self.hass.async_block_till_done()
 
+    async def async_remove(self) -> None:
+        """Restore physical entity IDs when the integration is removed."""
+        await self.async_unload()
+        for mapping in tuple(self.mappings.values()):
+            await self._async_remove_mapping(mapping)
+        await self._store.async_remove()
+
     async def _async_remove_mapping(self, mapping: ManagedLightMapping) -> None:
         registry = er.async_get(self.hass)
         entity = self.entities.pop(mapping.source_registry_id, None)
@@ -396,7 +420,10 @@ class ManagedLightingManager:
 
     async def _async_reconcile_temperatures(self, _now: datetime) -> None:
         for entity in tuple(self.entities.values()):
-            await entity.async_reconcile_temperature()
+            try:
+                await entity.async_reconcile_temperature()
+            except HomeAssistantError:
+                _LOGGER.exception("Cannot update light %s", entity.entity_id)
 
     def _mapping_for_requested_entity(
         self, entity_id: str
@@ -406,25 +433,12 @@ class ManagedLightingManager:
                 return mapping
         return None
 
-    @staticmethod
-    def _validate_spec(spec: ManagedLightSpec) -> None:
-        if not spec.source_entity_id.startswith(f"{LIGHT_DOMAIN}."):
-            raise ManagedLightingError(
-                f"Managed source must be a light entity: {spec.source_entity_id}"
-            )
-        if not 1500 <= spec.warm_kelvin <= 10000:
-            raise ManagedLightingError("warm_kelvin must be between 1500 and 10000")
-        if not 1500 <= spec.cool_kelvin <= 10000:
-            raise ManagedLightingError("cool_kelvin must be between 1500 and 10000")
-        if not 0 <= spec.transition_seconds <= 300:
-            raise ManagedLightingError("transition_seconds must be between 0 and 300")
-
     async def _async_save(self) -> None:
         await self._store.async_save(self._storage_data())
 
     def _storage_data(self) -> dict[str, Any]:
         return {
-            "revision": self.revision,
+            "enabled": self.enabled,
             "lights": [asdict(mapping) for mapping in self.mappings.values()],
         }
 
@@ -436,16 +450,6 @@ def _entry_by_registry_id(
         (entry for entry in registry.entities.values() if entry.id == registry_id),
         None,
     )
-
-
-def _available_entity_id(
-    registry: er.EntityRegistry, domain: str, suggested_object_id: str
-) -> str:
-    """Uses the current registry API with a pre-2026 fallback."""
-    current_api = getattr(registry, "async_get_available_entity_id", None)
-    if current_api is not None:
-        return current_api(domain, suggested_object_id)
-    return registry.async_generate_entity_id(domain, suggested_object_id)
 
 
 def _datetime_attribute(state: State | None, key: str) -> datetime | None:

@@ -13,27 +13,26 @@ docker run --rm --pull always \
 import importlib
 
 modules = [
-    "custom_components.hombee_air",
-    "custom_components.hombee_air.binary_sensor",
-    "custom_components.hombee_air.climate",
-    "custom_components.hombee_air.config_flow",
-    "custom_components.hombee_air.coordinator",
-    "custom_components.hombee_air.light",
-    "custom_components.hombee_air.managed_lighting",
-    "custom_components.hombee_air.modbus_client",
-    "custom_components.hombee_air.number",
-    "custom_components.hombee_air.select",
-    "custom_components.hombee_air.sensor",
-    "custom_components.hombee_air.switch",
-    "custom_components.hombee_air.websocket",
+    "custom_components.hombee",
+    "custom_components.hombee.binary_sensor",
+    "custom_components.hombee.climate",
+    "custom_components.hombee.config_flow",
+    "custom_components.hombee.coordinator",
+    "custom_components.hombee.light",
+    "custom_components.hombee.managed_lighting",
+    "custom_components.hombee.modbus_client",
+    "custom_components.hombee.number",
+    "custom_components.hombee.select",
+    "custom_components.hombee.sensor",
+    "custom_components.hombee.switch",
 ]
 
 for module in modules:
     importlib.import_module(module)
 
-from custom_components.hombee_air.const import DOMAIN
+from custom_components.hombee.const import DOMAIN
 
-assert DOMAIN == "hombee_air"
+assert DOMAIN == "hombee"
 print("Home Assistant Docker import smoke passed")
 PY
   '
@@ -48,7 +47,7 @@ cleanup() {
 }
 trap cleanup EXIT
 mkdir -p "$contract_dir/custom_components"
-cp -R custom_components/hombee_air "$contract_dir/custom_components/"
+cp -R custom_components/hombee "$contract_dir/custom_components/"
 cp -R \
   tests/ha_docker/custom_components/hombee_managed_light_test \
   "$contract_dir/custom_components/"

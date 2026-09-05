@@ -14,11 +14,11 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import issue_registry as ir
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.hombee_air import controller_time
-from custom_components.hombee_air.const import DOMAIN
-from custom_components.hombee_air.modbus_client import HombeeAirModbusError
-from custom_components.hombee_air.registers import REGISTERS_BY_KEY, HombeeAirRegister
-from custom_components.hombee_air.repairs import active_alarm_issue_id
+from custom_components.hombee import controller_time
+from custom_components.hombee.const import DOMAIN
+from custom_components.hombee.modbus_client import HombeeAirModbusError
+from custom_components.hombee.registers import REGISTERS_BY_KEY, HombeeAirRegister
+from custom_components.hombee.repairs import active_alarm_issue_id
 
 CLIMATE_ENTITY = "climate.hombee_air"
 
@@ -106,7 +106,7 @@ async def _setup_mock_client(
     )
     entry.add_to_hass(hass)
     with patch(
-        "custom_components.hombee_air.HombeeAirModbusClient",
+        "custom_components.hombee.HombeeAirModbusClient",
         return_value=client,
     ):
         assert await hass.config_entries.async_setup(entry.entry_id)
@@ -314,7 +314,7 @@ async def test_number_entity_survives_stale_immediate_readback(
 ) -> None:
     mock_client.reflect_writes = False
     entity_id = _entity_id_for_unique_id(
-        hass, "hombee_air_test_unit_comfort_heating_temperature_setpoint"
+        hass, "hombee_test_unit_comfort_heating_temperature_setpoint"
     )
 
     await hass.services.async_call(
@@ -347,7 +347,7 @@ async def test_register_entities_use_native_translation_keys(
     key: str,
 ) -> None:
     entity_id = _entity_id_for_domain_and_unique_id(
-        hass, domain, f"hombee_air_test_unit_{key}"
+        hass, domain, f"hombee_test_unit_{key}"
     )
     registry_entry = er.async_get(hass).async_get(entity_id)
 
@@ -359,10 +359,10 @@ async def test_enum_options_use_translation_keys(
     hass: HomeAssistant, mock_client: MockModbusClient
 ) -> None:
     sensor_id = _entity_id_for_domain_and_unique_id(
-        hass, "sensor", "hombee_air_test_unit_current_program"
+        hass, "sensor", "hombee_test_unit_current_program"
     )
     select_id = _entity_id_for_domain_and_unique_id(
-        hass, "select", "hombee_air_test_unit_program_mode"
+        hass, "select", "hombee_test_unit_program_mode"
     )
 
     sensor_state = hass.states.get(sensor_id)

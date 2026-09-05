@@ -6,15 +6,15 @@ import json
 from pathlib import Path
 from typing import Any
 
-from custom_components.hombee_air.catalog_translations import (
+from custom_components.hombee.catalog_translations import (
     OPTION_STATE_KEYS,
     POLISH_ENTITY_NAMES,
     POLISH_OPTION_STATES,
 )
-from custom_components.hombee_air.entity import is_writable
-from custom_components.hombee_air.registers import REGISTERS, HombeeAirRegister
+from custom_components.hombee.entity import is_writable
+from custom_components.hombee.registers import REGISTERS, HombeeAirRegister
 
-COMPONENT_PATH = Path("custom_components/hombee_air")
+COMPONENT_PATH = Path("custom_components/hombee")
 
 
 def _load_translation(path: Path) -> dict[str, Any]:

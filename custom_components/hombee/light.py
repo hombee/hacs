@@ -10,6 +10,7 @@ from homeassistant.components.light import (
     ATTR_COLOR_TEMP_KELVIN,
     ATTR_EFFECT,
     ATTR_EFFECT_LIST,
+    ATTR_FLASH,
     ATTR_HS_COLOR,
     ATTR_MAX_COLOR_TEMP_KELVIN,
     ATTR_MIN_COLOR_TEMP_KELVIN,
@@ -21,6 +22,7 @@ from homeassistant.components.light import (
     ATTR_XY_COLOR,
     ColorMode,
     LightEntity,
+    LightEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON, STATE_UNAVAILABLE
@@ -71,6 +73,15 @@ class HombeeManagedLight(LightEntity):
         """Mirrors physical-light availability."""
         state = self._source_state
         return state is not None and state.state != STATE_UNAVAILABLE
+
+    @property
+    def supported_features(self) -> LightEntityFeature:
+        """Expose only features the physical light can execute."""
+        return LightEntityFeature(self._attribute("supported_features") or 0) & (
+            LightEntityFeature.TRANSITION
+            | LightEntityFeature.EFFECT
+            | LightEntityFeature.FLASH
+        )
 
     @property
     def is_on(self) -> bool:
@@ -174,7 +185,12 @@ class HombeeManagedLight(LightEntity):
         """Turns on the source with color temperature in the first call."""
         service_data = dict(kwargs)
         has_explicit_color = bool(_EXPLICIT_COLOR_KEYS.intersection(service_data))
-        if not has_explicit_color and not self.mapping.manual_override:
+        if (
+            self.manager.enabled
+            and not has_explicit_color
+            and ATTR_FLASH not in service_data
+            and not self.mapping.manual_override
+        ):
             service_data[ATTR_COLOR_TEMP_KELVIN] = self.manager.current_kelvin(
                 self.mapping
             )
@@ -203,7 +219,7 @@ class HombeeManagedLight(LightEntity):
 
     async def async_reconcile_temperature(self) -> None:
         """Updates an active source without changing its power state."""
-        if not self.is_on or self.mapping.manual_override:
+        if not self.manager.enabled or not self.is_on or self.mapping.manual_override:
             return
         await self.hass.services.async_call(
             "light",
