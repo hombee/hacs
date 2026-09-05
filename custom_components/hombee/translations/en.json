@@ -25,6 +25,71 @@
       "already_configured": "This installation is already configured"
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Lighting settings",
+        "menu_options": {
+          "default_profile": "Default daily profile",
+          "room": "Room profile and sensor",
+          "light": "Individual lamp settings"
+        }
+      },
+      "room": {
+        "title": "Choose a room",
+        "data": {
+          "area_id": "Room",
+          "use_default": "Restore the default profile"
+        }
+      },
+      "profile": {
+        "title": "Brightness profile",
+        "description": "Times use Home Assistant's time zone. Brightness is used without a fresh lux reading. A room sensor measures the combined daylight and lamp light. Clear the sensor to use the daily schedule. The default profile cannot use a sensor.",
+        "data": {
+          "wake_time": "Wake time, HH:MM",
+          "sleep_time": "Sleep time, HH:MM",
+          "wake_ramp_minutes": "Morning transition, minutes",
+          "wind_down_minutes": "Evening transition, minutes",
+          "day_brightness": "Day brightness, %",
+          "evening_brightness": "Relax brightness, %",
+          "night_brightness": "Night brightness, %",
+          "task_brightness": "Reading and cooking brightness, %",
+          "day_lux": "Day illuminance, lx",
+          "evening_lux": "Relax illuminance, lx",
+          "night_lux": "Night illuminance, lx",
+          "task_lux": "Reading and cooking illuminance, lx",
+          "illuminance_sensor": "Room illuminance sensor",
+          "sensor_max_age": "Maximum sensor age, seconds"
+        }
+      },
+      "light": {
+        "title": "Choose a lamp",
+        "data": {
+          "light": "Lamp"
+        }
+      },
+      "light_settings": {
+        "title": "Lamp settings",
+        "description": "Limits apply to automatic changes. Explicit brightness and scene settings take priority. Color adaptation requires a lamp with color temperature support.",
+        "data": {
+          "adapt_brightness": "Automatic brightness",
+          "adapt_color": "Automatic color temperature",
+          "min_brightness": "Minimum automatic brightness, %",
+          "max_brightness": "Maximum automatic brightness, %",
+          "transition_seconds": "Transition, seconds"
+        }
+      }
+    },
+    "error": {
+      "invalid_profile": "Check the values and HH:MM times. Morning and evening transitions must fit between wake and sleep.",
+      "invalid_limits": "Use brightness limits from 1 to 100 with minimum no greater than maximum.",
+      "invalid_area": "This room no longer exists."
+    },
+    "abort": {
+      "lighting_not_loaded": "Load Hombee managed lighting before editing its settings.",
+      "no_lights": "No managed lamps are available."
+    }
+  },
   "entity": {
     "sensor": {
       "room_temperature": {
@@ -1156,6 +1221,17 @@
           "friday": "Friday",
           "saturday": "Saturday",
           "sunday": "Sunday"
+        }
+      },
+      "lighting_activity": {
+        "name": "{room} lighting activity",
+        "state": {
+          "inherit": "Home default",
+          "auto": "Daily schedule",
+          "reading": "Reading",
+          "cooking": "Cooking",
+          "relax": "Relax",
+          "night": "Night"
         }
       }
     },
@@ -2492,6 +2568,12 @@
           "off": "Off",
           "on": "On"
         }
+      },
+      "circadian_lighting": {
+        "name": "Circadian lighting"
+      },
+      "adaptive_brightness": {
+        "name": "Adaptive brightness"
       }
     }
   },
@@ -2535,6 +2617,20 @@
         "state": {
           "name": "State",
           "description": "Coil state to write."
+        }
+      }
+    },
+    "resume_adaptation": {
+      "name": "Resume automatic lighting",
+      "description": "Clears manual overrides for the selected attributes. Keeps inactive lamps off.",
+      "fields": {
+        "brightness": {
+          "name": "Brightness",
+          "description": "Resume automatic brightness."
+        },
+        "color": {
+          "name": "Color temperature",
+          "description": "Resume automatic color temperature."
         }
       }
     }

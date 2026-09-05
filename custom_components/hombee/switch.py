@@ -10,10 +10,10 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, LIGHTING_UPDATED
 from .coordinator import HombeeAirConfigEntry
 from .entity import HombeeAirRegisterEntity, is_writable
-from .managed_lighting import LIGHTING_UPDATED, ManagedLightingManager
+from .managed_lighting import ManagedLightingManager
 from .registers import REGISTERS
 
 
@@ -25,7 +25,9 @@ async def async_setup_entry(
     """Sets up switches for writable boolean registers."""
     runtime = entry.runtime_data
     if isinstance(runtime, ManagedLightingManager):
-        async_add_entities([HombeeCircadianSwitch(runtime)])
+        async_add_entities(
+            [HombeeCircadianSwitch(runtime), HombeeBrightnessSwitch(runtime)]
+        )
         return
     async_add_entities(
         HombeeAirSwitch(runtime, register, entry.title)
@@ -53,6 +55,7 @@ class HombeeCircadianSwitch(SwitchEntity):
     """Global circadian policy exposed through the standard HA service API."""
 
     _attr_unique_id = "hombee_circadian_lighting"
+    _attr_translation_key = "circadian_lighting"
     _attr_name = "Circadian lighting"
     _attr_has_entity_name = True
     _attr_should_poll = False
@@ -84,3 +87,22 @@ class HombeeCircadianSwitch(SwitchEntity):
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         await self.manager.async_set_enabled(False)
+
+
+class HombeeBrightnessSwitch(HombeeCircadianSwitch):
+    """Global brightness policy, independent of the circadian color switch."""
+
+    _attr_unique_id = "hombee_adaptive_brightness"
+    _attr_translation_key = "adaptive_brightness"
+    _attr_name = "Adaptive brightness"
+    _attr_icon = "mdi:brightness-6"
+
+    @property
+    def is_on(self) -> bool:
+        return self.manager.brightness_enabled
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        await self.manager.async_set_brightness_enabled(True)
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        await self.manager.async_set_brightness_enabled(False)

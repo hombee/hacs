@@ -7,11 +7,12 @@ Home Assistant Community Store integrations maintained by Hombee.
 
 ## Features
 
-- **Managed lighting** creates a public logical light for a physical
-  color-temperature light. The logical light applies the current Hombee
-  temperature in the first physical `light.turn_on` call, so the source does
-  not briefly restore an old color. It keeps manual color changes until the
-  light turns off and reconciles active lights once per minute.
+- **Managed lighting** controls brightness for dimmable lamps and color
+  temperature for lamps that support it. Both attributes are applied in the
+  first physical `light.turn_on` call. Room profiles set daily targets and
+  optional illuminance sensors adjust brightness to the measured light.
+  Manual brightness and color changes remain independent and last until the
+  lamp turns off. Active lights are checked once per minute.
 - **Hombee Air** controls Hombee Air HVAC units over Modbus TCP.
 
 The integration domain is `hombee`. This is a breaking domain change.
@@ -36,7 +37,7 @@ light discovery do not use a reconciliation API.
 6. Choose **Enable Hombee managed lighting** or **Connect a Hombee Air unit**.
 
 After enabling managed lighting, Hombee automatically discovers registered
-color-temperature lights at startup and when new lights appear. Light groups
+dimmable lights at startup and when new lights appear. Light groups
 are excluded to avoid wrapping both a group and its members. No reconciliation
 API call is needed.
 
@@ -44,8 +45,23 @@ Use `switch.hombee_circadian_lighting` to control circadian lighting throughout
 the home through the UI or the standard `switch.turn_on` and `switch.turn_off`
 service API. The setting survives restarts. Disabling it preserves ordinary
 light control and stops automatic temperature writes. Enabling it clears manual
-overrides and updates currently active lights. The `sun` integration must be
+color overrides and updates currently active lights. The `sun` integration must be
 enabled for the daytime curve; without solar data the warm temperature is used.
+
+Brightness has its own `switch.hombee_adaptive_brightness`. Open the managed
+lighting entry's **Configure** menu to change the default daily profile,
+assign a room profile and lux sensor, or set an individual lamp's automatic
+brightness limits. Room activity selectors support reading, cooking, relaxation,
+night lighting, and the daily schedule. All settings survive restarts.
+
+The initial brightness schedule uses 07:00 wake time, 23:00 sleep time, a
+30-minute morning ramp, and a two-hour evening ramp. It starts with 100% day,
+40% relaxation, and 5% night brightness. Adjust these values to your rooms and
+sleep schedule. Existing managed-light installations gain automatic brightness
+when upgrading; turn off the brightness switch to retain manual brightness.
+
+See [the lighting setup guide](docs/lighting.md) for sensor placement, room
+configuration, automation examples, manual control, and troubleshooting.
 
 ## Updates
 

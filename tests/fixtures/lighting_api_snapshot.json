@@ -1,0 +1,82 @@
+{
+  "api_version": 1,
+  "revision": "c6169d78075d5575eaea546b45261c250d5867a214627ba48d2ddbe6ace2b047",
+  "configuration": {
+    "brightness_enabled": true,
+    "color_enabled": true,
+    "profiles": {
+      "default": {
+        "wake_time": "07:00",
+        "sleep_time": "23:00",
+        "wake_ramp_minutes": 30,
+        "wind_down_minutes": 120,
+        "day_brightness": 100,
+        "evening_brightness": 40,
+        "night_brightness": 5,
+        "task_brightness": 100,
+        "day_lux": 300,
+        "evening_lux": 100,
+        "night_lux": 10,
+        "task_lux": 500,
+        "illuminance_sensor": "",
+        "sensor_max_age": 300
+      }
+    },
+    "activities": {
+      "default": "night"
+    },
+    "lights": {
+      "light.kitchen": {
+        "settings": {
+          "adapt_brightness": true,
+          "adapt_color": true,
+          "min_brightness": 1,
+          "max_brightness": 100,
+          "transition_seconds": 1.0
+        },
+        "area_id": "kitchen"
+      }
+    }
+  },
+  "areas": [
+    {
+      "area_id": "kitchen",
+      "name": "Kitchen"
+    }
+  ],
+  "lights": [
+    {
+      "entity_id": "light.kitchen",
+      "name": "Kitchen",
+      "area_id": "kitchen",
+      "available": true,
+      "is_on": false,
+      "supports_color_temperature": false,
+      "brightness": null,
+      "brightness_control": "schedule",
+      "color_manual_override": false,
+      "brightness_manual_override": false,
+      "lighting_activity": "night",
+      "target_brightness": 13,
+      "target_illuminance": 10,
+      "illuminance_sensor": null
+    }
+  ],
+  "sensors": [
+    {
+      "entity_id": "sensor.kitchen_lux",
+      "area_id": null,
+      "name": "kitchen lux",
+      "value": 25.0,
+      "unit": "lx",
+      "last_reported": "2026-09-05T12:00:00+00:00"
+    }
+  ],
+  "offset": 0,
+  "limit": 200,
+  "totals": {
+    "areas": 1,
+    "lights": 1,
+    "sensors": 1
+  }
+}

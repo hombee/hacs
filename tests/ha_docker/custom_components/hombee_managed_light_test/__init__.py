@@ -6,6 +6,7 @@ import json
 import traceback
 from pathlib import Path
 
+from homeassistant.components.light import ColorMode
 from homeassistant.config_entries import SOURCE_USER
 from homeassistant.const import ATTR_ENTITY_ID, EVENT_HOMEASSISTANT_STARTED
 from homeassistant.core import HomeAssistant, callback
@@ -83,6 +84,7 @@ async def _async_assert_contract(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     manager = entry.runtime_data
     assert isinstance(manager, ManagedLightingManager)
+    await manager.async_set_activity("default", "night")
 
     logical_entry = registry.async_get(PUBLIC_ENTITY_ID)
     assert logical_entry is not None
@@ -150,7 +152,7 @@ async def _async_assert_contract(hass: HomeAssistant) -> None:
         target={ATTR_ENTITY_ID: PUBLIC_ENTITY_ID},
         blocking=True,
     )
-    assert calls == [{"color_temp_kelvin": 2200}]
+    assert calls == [{"color_temp_kelvin": 2200, "brightness": 13}]
 
     await manager.async_discover()
     assert len(manager.entities) == 1
@@ -222,15 +224,23 @@ async def _assert_global_policy(hass: HomeAssistant, entry, source_id: str) -> N
         blocking=True,
     )
     assert manager.enabled
-    assert calls[-1]["color_temp_kelvin"] == 2200
+    assert not manager.mappings[source_id].manual_override
+    assert hass.states.get(PUBLIC_ENTITY_ID).attributes["color_temp_kelvin"] == 2200
 
     added = ContractPhysicalLight()
     added._attr_unique_id = "late_light"
     added._attr_name = "Late light"
+    added._attr_supported_color_modes = {ColorMode.BRIGHTNESS}
+    added._attr_color_mode = ColorMode.BRIGHTNESS
     hass.data[DOMAIN]["add_entities"]([added])
     await hass.async_block_till_done(wait_background_tasks=True)
     assert len(manager.entities) == 2
     assert registry.async_get("light.late_light").platform == HOMBEE_DOMAIN
+    calls.clear()
+    await hass.services.async_call(
+        "light", "turn_on", target={ATTR_ENTITY_ID: "light.late_light"}, blocking=True
+    )
+    assert calls == [{"brightness": 13}]
 
     await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done(wait_background_tasks=True)

@@ -25,6 +25,71 @@
       "already_configured": "Ta instalacja jest już skonfigurowana"
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Ustawienia oświetlenia",
+        "menu_options": {
+          "default_profile": "Domyślny profil dobowy",
+          "room": "Profil i czujnik pomieszczenia",
+          "light": "Ustawienia pojedynczej lampy"
+        }
+      },
+      "room": {
+        "title": "Wybierz pomieszczenie",
+        "data": {
+          "area_id": "Pomieszczenie",
+          "use_default": "Przywróć profil domyślny"
+        }
+      },
+      "profile": {
+        "title": "Profil jasności",
+        "description": "Godziny odnoszą się do strefy czasowej Home Assistanta. Jasność procentowa obowiązuje bez świeżego pomiaru luksów. Czujnik w pomieszczeniu mierzy łącznie światło dzienne i światło lamp. Usuń czujnik z formularza, aby używać profilu dobowego. Profil domyślny nie korzysta z czujnika.",
+        "data": {
+          "wake_time": "Godzina pobudki, HH:MM",
+          "sleep_time": "Godzina snu, HH:MM",
+          "wake_ramp_minutes": "Poranne rozjaśnianie, minuty",
+          "wind_down_minutes": "Wieczorne przyciemnianie, minuty",
+          "day_brightness": "Jasność w dzień, %",
+          "evening_brightness": "Jasność podczas odpoczynku, %",
+          "night_brightness": "Jasność w nocy, %",
+          "task_brightness": "Jasność do czytania i gotowania, %",
+          "day_lux": "Natężenie oświetlenia w dzień, lx",
+          "evening_lux": "Natężenie oświetlenia podczas odpoczynku, lx",
+          "night_lux": "Natężenie oświetlenia w nocy, lx",
+          "task_lux": "Natężenie do czytania i gotowania, lx",
+          "illuminance_sensor": "Czujnik natężenia oświetlenia w pomieszczeniu",
+          "sensor_max_age": "Maksymalny wiek pomiaru, sekundy"
+        }
+      },
+      "light": {
+        "title": "Wybierz lampę",
+        "data": {
+          "light": "Lampa"
+        }
+      },
+      "light_settings": {
+        "title": "Ustawienia lampy",
+        "description": "Limity dotyczą zmian automatycznych. Ręcznie wybrana jasność i ustawienia scen mają pierwszeństwo. Regulacja barwy wymaga lampy obsługującej temperaturę barwową.",
+        "data": {
+          "adapt_brightness": "Automatyczna jasność",
+          "adapt_color": "Automatyczna temperatura barwowa",
+          "min_brightness": "Minimalna automatyczna jasność, %",
+          "max_brightness": "Maksymalna automatyczna jasność, %",
+          "transition_seconds": "Czas przejścia, sekundy"
+        }
+      }
+    },
+    "error": {
+      "invalid_profile": "Sprawdź wartości i godziny HH:MM. Poranne i wieczorne przejścia muszą zmieścić się między pobudką a snem.",
+      "invalid_limits": "Podaj limity jasności od 1 do 100. Minimum nie może przekraczać maksimum.",
+      "invalid_area": "To pomieszczenie już nie istnieje."
+    },
+    "abort": {
+      "lighting_not_loaded": "Uruchom zarządzane oświetlenie Hombee przed zmianą ustawień.",
+      "no_lights": "Brak dostępnych lamp zarządzanych przez Hombee."
+    }
+  },
   "entity": {
     "sensor": {
       "room_temperature": {
@@ -1156,6 +1221,17 @@
           "friday": "Piątek",
           "saturday": "Sobota",
           "sunday": "Niedziela"
+        }
+      },
+      "lighting_activity": {
+        "name": "{room}, tryb oświetlenia",
+        "state": {
+          "inherit": "Domyślny tryb domu",
+          "auto": "Profil dobowy",
+          "reading": "Czytanie",
+          "cooking": "Gotowanie",
+          "relax": "Odpoczynek",
+          "night": "Noc"
         }
       }
     },
@@ -2492,6 +2568,12 @@
           "off": "Wyłączony",
           "on": "Włączony"
         }
+      },
+      "circadian_lighting": {
+        "name": "Oświetlenie dobowe"
+      },
+      "adaptive_brightness": {
+        "name": "Automatyczna jasność"
       }
     }
   },
@@ -2535,6 +2617,20 @@
         "state": {
           "name": "Stan",
           "description": "Stan cewki do zapisania."
+        }
+      }
+    },
+    "resume_adaptation": {
+      "name": "Przywróć automatyczne oświetlenie",
+      "description": "Usuwa ręczne ustawienia wybranych parametrów. Pozostawia wyłączone lampy wyłączone.",
+      "fields": {
+        "brightness": {
+          "name": "Jasność",
+          "description": "Przywróć automatyczną jasność."
+        },
+        "color": {
+          "name": "Temperatura barwowa",
+          "description": "Przywróć automatyczną temperaturę barwową."
         }
       }
     }

@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+import asyncio
+from collections import deque
+from datetime import timedelta
 from typing import TYPE_CHECKING, Any
 
+import voluptuous as vol
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
     ATTR_COLOR_MODE,
@@ -23,12 +27,18 @@ from homeassistant.components.light import (
     ColorMode,
     LightEntity,
     LightEntityFeature,
+    brightness_supported,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import STATE_ON, STATE_UNAVAILABLE
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.const import STATE_OFF, STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
+from homeassistant.core import Context, HomeAssistant, callback
+from homeassistant.helpers import entity_platform
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
+from homeassistant.util import dt as dt_util
+
+from .const import LIGHTING_UPDATED
 
 if TYPE_CHECKING:
     from .managed_lighting import ManagedLightingManager, ManagedLightMapping
@@ -52,6 +62,15 @@ async def async_setup_entry(
 ) -> None:
     """Sets up logical lights for a managed-lighting entry."""
     manager = entry.runtime_data
+    platform = entity_platform.async_get_current_platform()
+    platform.async_register_entity_service(
+        "resume_adaptation",
+        {
+            vol.Optional("brightness", default=True): bool,
+            vol.Optional("color", default=True): bool,
+        },
+        "async_resume_adaptation",
+    )
     await manager.async_setup_platform(async_add_entities)
 
 
@@ -67,12 +86,19 @@ class HombeeManagedLight(LightEntity):
         self.mapping = mapping
         self._attr_unique_id = mapping.logical_unique_id
         self._attr_name = mapping.name
+        self._command_lock = asyncio.Lock()
+        self._own_contexts: deque[str] = deque(maxlen=100)
+        self._settled_at = dt_util.utcnow()
+        self._off_requested = False
 
     @property
     def available(self) -> bool:
         """Mirrors physical-light availability."""
         state = self._source_state
-        return state is not None and state.state != STATE_UNAVAILABLE
+        return state is not None and state.state not in {
+            STATE_UNAVAILABLE,
+            STATE_UNKNOWN,
+        }
 
     @property
     def supported_features(self) -> LightEntityFeature:
@@ -108,14 +134,38 @@ class HombeeManagedLight(LightEntity):
         """Mirrors physical-light color capabilities."""
         values = self._attribute(ATTR_SUPPORTED_COLOR_MODES)
         if not isinstance(values, (list, set, tuple)):
-            return {ColorMode.COLOR_TEMP}
+            return {ColorMode.ONOFF}
         modes: set[ColorMode] = set()
         for value in values:
             try:
                 modes.add(ColorMode(value))
             except ValueError:
                 continue
-        return modes or {ColorMode.COLOR_TEMP}
+        return modes or {ColorMode.ONOFF}
+
+    @property
+    def automatic_brightness(self) -> bool:
+        return (
+            self.manager.brightness_enabled
+            and self.mapping.adapt_brightness
+            and not self.mapping.brightness_override
+            and self.effect in {None, "off", "none"}
+            and brightness_supported(self.supported_color_modes)
+        )
+
+    @property
+    def automatic_color(self) -> bool:
+        return (
+            self.manager.enabled
+            and self.mapping.adapt_color
+            and not self.mapping.manual_override
+            and self.effect in {None, "off", "none"}
+            and ColorMode.COLOR_TEMP in self.supported_color_modes
+        )
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        return self.manager.brightness_status(self.mapping)
 
     @property
     def color_temp_kelvin(self) -> int | None:
@@ -174,66 +224,144 @@ class HombeeManagedLight(LightEntity):
     async def async_added_to_hass(self) -> None:
         """Tracks source state so UI state follows the physical light."""
         self.async_on_remove(
+            async_dispatcher_connect(
+                self.hass, LIGHTING_UPDATED, self.async_write_ha_state
+            )
+        )
+        self.async_on_remove(
             async_track_state_change_event(
                 self.hass,
                 self.mapping.physical_entity_id,
                 self._source_state_changed,
             )
         )
+        if self._source_state is not None and self._source_state.state == STATE_OFF:
+            self._clear_overrides()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
-        """Turns on the source with color temperature in the first call."""
-        service_data = dict(kwargs)
-        has_explicit_color = bool(_EXPLICIT_COLOR_KEYS.intersection(service_data))
-        if (
-            self.manager.enabled
-            and not has_explicit_color
-            and ATTR_FLASH not in service_data
-            and not self.mapping.manual_override
-        ):
-            service_data[ATTR_COLOR_TEMP_KELVIN] = self.manager.current_kelvin(
-                self.mapping
-            )
-        await self.hass.services.async_call(
-            "light",
-            "turn_on",
-            service_data,
-            target={"entity_id": self.mapping.physical_entity_id},
-            blocking=True,
-            context=self._context,
-        )
-        if has_explicit_color:
-            self.manager.set_manual_override(self.mapping.source_registry_id, True)
+        """Apply automatic attributes in the first physical command."""
+        async with self._command_lock:
+            self._off_requested = False
+            service_data = dict(kwargs)
+            explicit_color = bool(_EXPLICIT_COLOR_KEYS.intersection(service_data))
+            explicit_brightness = ATTR_BRIGHTNESS in service_data
+            special = ATTR_FLASH in service_data or ATTR_EFFECT in service_data
+            if self.automatic_color and not explicit_color and not special:
+                service_data[ATTR_COLOR_TEMP_KELVIN] = self.manager.current_kelvin(
+                    self.mapping
+                )
+            if self.automatic_brightness and not explicit_brightness and not special:
+                service_data[ATTR_BRIGHTNESS] = self.manager.brightness_target(
+                    self.mapping
+                )
+            await self._async_send("turn_on", service_data)
+            if explicit_color:
+                self.manager.set_manual_override(self.mapping.source_registry_id, True)
+            if explicit_brightness or ATTR_EFFECT in service_data:
+                self.manager.set_brightness_override(
+                    self.mapping.source_registry_id, True
+                )
+            self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turns off the source and resumes circadian control next time."""
-        await self.hass.services.async_call(
-            "light",
-            "turn_off",
-            kwargs,
-            target={"entity_id": self.mapping.physical_entity_id},
-            blocking=True,
-            context=self._context,
-        )
-        self.manager.set_manual_override(self.mapping.source_registry_id, False)
+        self._off_requested = True
+        async with self._command_lock:
+            try:
+                await self._async_send("turn_off", kwargs)
+            except Exception:
+                self._off_requested = False
+                raise
+            self._clear_overrides()
+            self.manager.lux_controllers.pop(self.manager.room_key(self.mapping), None)
+            self.async_write_ha_state()
 
-    async def async_reconcile_temperature(self) -> None:
-        """Updates an active source without changing its power state."""
-        if not self.manager.enabled or not self.is_on or self.mapping.manual_override:
-            return
+    async def async_reconcile_temperature(self, *, force: bool = False) -> None:
+        """Update active lamps, combining changes and skipping redundant commands."""
+        async with self._command_lock:
+            if (
+                not self.available
+                or not self.is_on
+                or self._off_requested
+                or (not force and dt_util.utcnow() < self._settled_at)
+            ):
+                return
+            data: dict[str, Any] = {}
+            if self.automatic_color:
+                kelvin = self.manager.current_kelvin(self.mapping)
+                if (
+                    self.color_temp_kelvin is None
+                    or abs(self.color_temp_kelvin - kelvin) >= 25
+                ):
+                    data[ATTR_COLOR_TEMP_KELVIN] = kelvin
+            if self.automatic_brightness:
+                brightness = self.manager.brightness_target(self.mapping)
+                if self.brightness is None or abs(self.brightness - brightness) >= 2:
+                    data[ATTR_BRIGHTNESS] = brightness
+            if data:
+                if self.supported_features & LightEntityFeature.TRANSITION:
+                    data[ATTR_TRANSITION] = self.mapping.transition_seconds
+                await self._async_send("turn_on", data)
+            self.async_write_ha_state()
+
+    async def _async_send(self, service: str, data: dict[str, Any]) -> None:
+        """Track our own writes, including reports during hardware transitions."""
+        context = Context(parent_id=self._context.id if self._context else None)
+        self._own_contexts.append(context.id)
+        transition = float(data.get(ATTR_TRANSITION, 0))
+        self._settled_at = dt_util.utcnow() + timedelta(seconds=transition + 2)
         await self.hass.services.async_call(
             "light",
-            "turn_on",
-            {
-                ATTR_COLOR_TEMP_KELVIN: self.manager.current_kelvin(self.mapping),
-                ATTR_TRANSITION: self.mapping.transition_seconds,
-            },
+            service,
+            data,
             target={"entity_id": self.mapping.physical_entity_id},
             blocking=True,
+            context=context,
         )
+        self.manager.light_changed(self.mapping, transition)
 
     @callback
-    def _source_state_changed(self, _event: Any) -> None:
+    def _clear_overrides(self) -> None:
+        self.manager.set_manual_override(self.mapping.source_registry_id, False)
+        self.manager.set_brightness_override(self.mapping.source_registry_id, False)
+
+    async def async_resume_adaptation(self, brightness: bool, color: bool) -> None:
+        """Resume selected attributes without turning on an inactive lamp."""
+        if brightness:
+            self.manager.set_brightness_override(self.mapping.source_registry_id, False)
+        if color:
+            self.manager.set_manual_override(self.mapping.source_registry_id, False)
+        await self.async_reconcile_temperature(force=True)
+        self.async_write_ha_state()
+
+    @callback
+    def _source_state_changed(self, event: Any) -> None:
+        old = event.data.get("old_state")
+        new = event.data.get("new_state")
+        if new is not None and new.state == STATE_OFF:
+            self._off_requested = False
+            self._clear_overrides()
+            self.manager.lux_controllers.pop(self.manager.room_key(self.mapping), None)
+        elif (
+            new is not None
+            and old is not None
+            and new.state == old.state == STATE_ON
+            and new.context.id not in self._own_contexts
+            and (
+                new.context.user_id is not None or dt_util.utcnow() >= self._settled_at
+            )
+        ):
+            if new.attributes.get(ATTR_BRIGHTNESS) != old.attributes.get(
+                ATTR_BRIGHTNESS
+            ):
+                self.manager.set_brightness_override(
+                    self.mapping.source_registry_id, True
+                )
+            color_keys = _EXPLICIT_COLOR_KEYS | {ATTR_COLOR_MODE}
+            if any(
+                new.attributes.get(key) != old.attributes.get(key) for key in color_keys
+            ):
+                self.manager.set_manual_override(self.mapping.source_registry_id, True)
         self.async_write_ha_state()
 
     @property

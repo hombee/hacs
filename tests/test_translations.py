@@ -43,9 +43,9 @@ def test_native_entity_translation_files_cover_register_catalog() -> None:
     english = _load_translation(COMPONENT_PATH / "translations/en.json")
     polish = _load_translation(COMPONENT_PATH / "translations/pl.json")
 
-    assert _entity_count(strings) == len(REGISTERS)
-    assert _entity_count(english) == len(REGISTERS)
-    assert _entity_count(polish) == len(REGISTERS)
+    assert _entity_count(strings) == len(REGISTERS) + 3
+    assert _entity_count(english) == len(REGISTERS) + 3
+    assert _entity_count(polish) == len(REGISTERS) + 3
     assert set(POLISH_ENTITY_NAMES) == {register.key for register in REGISTERS}
 
     for register in REGISTERS:

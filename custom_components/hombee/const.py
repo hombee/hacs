@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 DOMAIN = "hombee"
+LIGHTING_UPDATED = f"{DOMAIN}_lighting_updated"
 
 CONF_INSTALLATION_ID = "installation_id"
 CONF_ENTRY_KIND = "entry_kind"
