@@ -3,12 +3,12 @@ set -euo pipefail
 
 image="${HA_DOCKER_IMAGE:-ghcr.io/home-assistant/home-assistant:stable}"
 
-docker run --rm \
+docker run --rm --pull always \
   -e PYTHONPATH=/config \
   -v "$PWD/custom_components:/config/custom_components:ro" \
   "$image" \
   sh -euc '
-    python -m pip install --no-cache-dir "pymodbus>=3.15" >/tmp/hombee-pip-install.log
+    python -m pip install --no-cache-dir "pymodbus>=3.11" >/tmp/hombee-pip-install.log
     python - <<'"'"'PY'"'"'
 import importlib
 
@@ -58,7 +58,7 @@ if ! docker run --rm \
   -v "$contract_dir:/config" \
   "$image" \
   sh -euc '
-    python -m pip install --no-cache-dir "pymodbus>=3.11,<4" >/tmp/hombee-pip-install.log
+    python -m pip install --no-cache-dir "pymodbus>=3.11" >/tmp/hombee-pip-install.log
     python -m homeassistant --config /config
   ' >"$contract_dir/home-assistant.log" 2>&1; then
   tail -n 200 "$contract_dir/home-assistant.log"

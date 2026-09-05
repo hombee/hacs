@@ -49,7 +49,9 @@ The development environment requires Python 3.14.2 or newer to run the Home
 Assistant test suite. Direct dependencies use minimum versions without exact
 pins or upper bounds. uv excludes prereleases and overrides the Home Assistant
 test plugin's pytest and pytest-asyncio pins so those runners can stay current.
-Upstream requirements still govern other transitive dependencies.
+Upstream requirements still govern other transitive dependencies. Home
+Assistant also constrains pymodbus at runtime, so the manifest allows its
+required version while the development lockfile tests the latest stable release.
 
 Dependabot checks daily and groups updates for each ecosystem. Lockfiles record
 the versions tested by CI. Scheduled CI also refreshes dependencies before

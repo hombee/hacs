@@ -79,8 +79,8 @@ def main() -> int:
         errors.append("manifest issue tracker must point at hombee/hacs")
     if VERSION_PATTERN.fullmatch(manifest["version"]) is None:
         errors.append("manifest version must be semantic version x.y.z")
-    if "pymodbus>=3.15" not in manifest["requirements"]:
-        errors.append("manifest must require pymodbus 3.15 or newer")
+    if "pymodbus>=3.11" not in manifest["requirements"]:
+        errors.append("manifest must require pymodbus 3.11 or newer")
 
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     if hacs.get("name") != "Hombee":
