@@ -60,12 +60,18 @@ Release, and lets HACS distribute the updated integration archive.
 ## Development
 
 The development environment requires Python 3.14.2 or newer to run the Home
-Assistant test suite. Direct dependencies use minimum versions without exact
+Assistant test suite. Direct Python dependencies use minimum versions without exact
 pins or upper bounds. uv excludes prereleases and overrides the Home Assistant
 test plugin's pytest and pytest-asyncio pins so those runners can stay current.
 Upstream requirements still govern other transitive dependencies. Home
 Assistant also constrains pymodbus at runtime, so the manifest allows its
 required version while the development lockfile tests the latest stable release.
+
+All direct Bun dependencies use caret ranges, allowing minor and patch updates
+within their current major versions. The conventional commits preset stays on
+9.x until the release-notes generator supports conventional-changelog-writer 9
+or newer. Upgrade the generator and preset together, then verify release-note
+generation before merging.
 
 Dependabot checks daily and groups updates for each ecosystem. All CI runs,
 including scheduled runs, install Python and npm dependencies from the committed
