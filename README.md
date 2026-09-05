@@ -53,10 +53,10 @@ Upstream requirements still govern other transitive dependencies. Home
 Assistant also constrains pymodbus at runtime, so the manifest allows its
 required version while the development lockfile tests the latest stable release.
 
-Dependabot checks daily and groups updates for each ecosystem. Lockfiles record
-the versions tested by CI. Scheduled CI also refreshes dependencies before
-testing, while PR and release builds use the committed lockfiles. Node tracks
-the latest stable release. To refresh the lockfiles locally:
+Dependabot checks daily and groups updates for each ecosystem. All CI runs,
+including scheduled runs, install Python and npm dependencies from the committed
+lockfiles without updating them. Dependency updates arrive through Dependabot
+PRs. Node tracks the latest stable release. To refresh the lockfiles locally:
 
 ```bash
 uv lock --upgrade
