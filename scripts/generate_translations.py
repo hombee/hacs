@@ -14,6 +14,9 @@ from custom_components.hombee.catalog_translations import (  # noqa: E402
     POLISH_OPTION_STATES,
 )
 from custom_components.hombee.entity import is_writable  # noqa: E402
+from custom_components.hombee.lighting_translations import (  # noqa: E402
+    lighting_translations,
+)
 from custom_components.hombee.registers import (  # noqa: E402
     REGISTERS,
     HombeeAirRegister,
@@ -104,9 +107,14 @@ def _with_generated_sections(
         )
     }
     updated["entity"] = _entity_translations(language)
+    lighting = lighting_translations(language)
+    for platform, entries in lighting["entity"].items():
+        updated["entity"].setdefault(platform, {}).update(entries)
+    updated["options"] = lighting["options"]
+    updated.setdefault("services", {}).update(lighting["services"])
     return {
         key: updated[key]
-        for key in ("config", "entity", "issues", "services")
+        for key in ("config", "options", "entity", "issues", "services")
         if key in updated
     }
 

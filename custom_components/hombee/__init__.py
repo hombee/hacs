@@ -29,6 +29,7 @@ from .coordinator import (
     create_runtime,
 )
 from .entity import device_info, is_writable
+from .lighting_api import async_register_lighting_api
 from .managed_lighting import ManagedLightingManager
 from .modbus_client import HombeeAirModbusClient, HombeeAirModbusError
 from .registers import KIND_COIL, KIND_HOLDING_REGISTER, REGISTERS_BY_KEY
@@ -42,7 +43,7 @@ AIR_PLATFORMS = [
     Platform.SENSOR,
     Platform.SWITCH,
 ]
-MANAGED_LIGHTING_PLATFORMS = [Platform.LIGHT, Platform.SWITCH]
+MANAGED_LIGHTING_PLATFORMS = [Platform.LIGHT, Platform.SWITCH, Platform.SELECT]
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 SERVICE_WRITE_REGISTER = "write_register"
@@ -68,12 +69,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Sets up a Hombee feature from a config entry."""
     entry_kind = entry.data.get(CONF_ENTRY_KIND, ENTRY_KIND_AIR)
     if entry_kind == ENTRY_KIND_MANAGED_LIGHTING:
+        async_register_lighting_api(hass)
         manager = ManagedLightingManager(hass, entry)
         await manager.async_load()
         entry.runtime_data = manager
-        await hass.config_entries.async_forward_entry_setups(
-            entry, MANAGED_LIGHTING_PLATFORMS
-        )
+        try:
+            await hass.config_entries.async_forward_entry_setups(
+                entry, MANAGED_LIGHTING_PLATFORMS
+            )
+        except Exception:
+            await manager.async_unload()
+            raise
         return True
     if entry_kind != ENTRY_KIND_AIR:
         raise ServiceValidationError(f"Unknown Hombee entry kind: {entry_kind}")

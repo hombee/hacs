@@ -30,3 +30,18 @@ write_coil:
       required: true
       selector:
         boolean:
+
+resume_adaptation:
+  target:
+    entity:
+      integration: hombee
+      domain: light
+  fields:
+    brightness:
+      default: true
+      selector:
+        boolean:
+    color:
+      default: true
+      selector:
+        boolean:
