@@ -34,6 +34,9 @@ jobs:
         uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
+      - name: Resolve latest stable Python dependencies
+        if: github.event_name == 'schedule'
+        run: uv lock --upgrade
       - name: Install Python dependencies
         run: uv sync --locked --extra dev
       - name: Check formatting
@@ -86,9 +89,12 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
-          node-version: "24.20.0"
+          node-version: "node"
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
+      - name: Resolve latest stable release dependencies
+        if: github.event_name == 'schedule'
+        run: bun update
       - name: Install release dependencies
         run: bun install --frozen-lockfile
       - name: Verify release runtime
@@ -110,6 +116,9 @@ jobs:
         uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
+      - name: Resolve latest stable Python dependencies
+        if: github.event_name == 'schedule'
+        run: uv lock --upgrade
       - name: Install audit tools
         run: uv sync --locked --extra dev
       - name: Run Bandit

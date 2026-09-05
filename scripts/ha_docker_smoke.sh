@@ -8,7 +8,7 @@ docker run --rm \
   -v "$PWD/custom_components:/config/custom_components:ro" \
   "$image" \
   sh -euc '
-    python -m pip install --no-cache-dir "pymodbus>=3.15,<4" >/tmp/hombee-pip-install.log
+    python -m pip install --no-cache-dir "pymodbus>=3.15" >/tmp/hombee-pip-install.log
     python - <<'"'"'PY'"'"'
 import importlib
 
