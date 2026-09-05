@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path()
-COMPONENT_PATH = ROOT / "custom_components" / "hombee_air"
+COMPONENT_PATH = ROOT / "custom_components" / "hombee"
 MANIFEST_PATH = COMPONENT_PATH / "manifest.json"
 IGNORED_PARTS = {".git", ".venv", "node_modules"}
 VERSION_PATTERN = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
@@ -71,8 +71,8 @@ def main() -> int:
             "manifest keys must be ordered as domain, name, then alphabetical order"
         )
 
-    if manifest["domain"] != "hombee_air":
-        errors.append("manifest domain must be hombee_air")
+    if manifest["domain"] != "hombee":
+        errors.append("manifest domain must be hombee")
     if manifest["documentation"] != "https://github.com/hombee/hacs":
         errors.append("manifest documentation must point at hombee/hacs")
     if manifest["issue_tracker"] != "https://github.com/hombee/hacs/issues":

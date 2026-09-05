@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from custom_components.hombee_air.managed_lighting import circadian_kelvin
+from custom_components.hombee.managed_lighting import circadian_kelvin
 
 
 @pytest.mark.parametrize(

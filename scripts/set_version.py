@@ -5,7 +5,7 @@ import re
 import sys
 from pathlib import Path
 
-MANIFEST_PATH = Path("custom_components/hombee_air/manifest.json")
+MANIFEST_PATH = Path("custom_components/hombee/manifest.json")
 VERSION_PATTERN = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 
 

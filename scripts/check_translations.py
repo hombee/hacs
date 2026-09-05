@@ -8,18 +8,18 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from custom_components.hombee_air.catalog_translations import (  # noqa: E402
+from custom_components.hombee.catalog_translations import (  # noqa: E402
     OPTION_STATE_KEYS,
     POLISH_ENTITY_NAMES,
     POLISH_OPTION_STATES,
 )
-from custom_components.hombee_air.entity import is_writable  # noqa: E402
-from custom_components.hombee_air.registers import (  # noqa: E402
+from custom_components.hombee.entity import is_writable  # noqa: E402
+from custom_components.hombee.registers import (  # noqa: E402
     REGISTERS,
     HombeeAirRegister,
 )
 
-COMPONENT_PATH = ROOT / "custom_components/hombee_air"
+COMPONENT_PATH = ROOT / "custom_components/hombee"
 TRANSLATIONS_PATH = COMPONENT_PATH / "translations"
 REQUIRED_LANGUAGES = ("en", "pl")
 

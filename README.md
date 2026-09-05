@@ -14,8 +14,15 @@ Home Assistant Community Store integrations maintained by Hombee.
   light turns off and reconciles active lights once per minute.
 - **Hombee Air** controls Hombee Air HVAC units over Modbus TCP.
 
-The integration keeps the `hombee_air` domain so existing Hombee Air config
-entries continue to load after upgrading.
+The integration domain is `hombee`. This is a breaking domain change.
+Before upgrading an installation with existing `hombee_air` managed lights,
+use the old integration's `hombee_air/managed_lights/list` command to read its
+revision, then send `hombee_air/managed_lights/reconcile` with that revision
+and `lights: []`. This restores the original physical entity IDs. Removing
+the old entry alone does not restore those IDs.
+Then remove the old integration entries, update through HACS, restart HA,
+and add Hombee again, including Air units. New installations and subsequent
+light discovery do not use a reconciliation API.
 
 ## Installation
 
@@ -28,10 +35,17 @@ entries continue to load after upgrading.
    **Hombee**.
 6. Choose **Enable Hombee managed lighting** or **Connect a Hombee Air unit**.
 
-The Hombee app configures managed lights through the admin-only WebSocket
-commands `hombee_air/managed_lights/reconcile` and
-`hombee_air/managed_lights/list`. The reconcile command accepts a complete,
-revisioned manifest and can safely be repeated.
+After enabling managed lighting, Hombee automatically discovers registered
+color-temperature lights at startup and when new lights appear. Light groups
+are excluded to avoid wrapping both a group and its members. No reconciliation
+API call is needed.
+
+Use `switch.hombee_circadian_lighting` to control circadian lighting throughout
+the home through the UI or the standard `switch.turn_on` and `switch.turn_off`
+service API. The setting survives restarts. Disabling it preserves ordinary
+light control and stops automatic temperature writes. Enabling it clears manual
+overrides and updates currently active lights. The `sun` integration must be
+enabled for the daytime curve; without solar data the warm temperature is used.
 
 ## Updates
 
@@ -40,7 +54,7 @@ once, then receive updates through the normal HACS update flow whenever a new
 release tag is published.
 
 The release workflow uses conventional commits to decide the next version,
-updates `custom_components/hombee_air/manifest.json`, creates the GitHub
+updates `custom_components/hombee/manifest.json`, creates the GitHub
 Release, and lets HACS distribute the updated integration archive.
 
 ## Development

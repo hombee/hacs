@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, ClassVar
 
-from homeassistant.components.light import ColorMode, LightEntity
+from homeassistant.components.light import ColorMode, LightEntity, LightEntityFeature
 from homeassistant.helpers.device_registry import DeviceInfo
 
 DOMAIN = "hombee_managed_light_test"
@@ -13,6 +13,7 @@ DOMAIN = "hombee_managed_light_test"
 async def async_setup_platform(hass, _config, async_add_entities, _discovery=None):
     """Adds one color-temperature light."""
     async_add_entities([ContractPhysicalLight()])
+    hass.data[DOMAIN]["add_entities"] = async_add_entities
 
 
 class ContractPhysicalLight(LightEntity):
@@ -26,6 +27,12 @@ class ContractPhysicalLight(LightEntity):
     _attr_max_color_temp_kelvin = 6500
     _attr_is_on = False
     _attr_should_poll = False
+    _attr_supported_features = (
+        LightEntityFeature.TRANSITION
+        | LightEntityFeature.EFFECT
+        | LightEntityFeature.FLASH
+    )
+    _attr_effect_list: ClassVar[list[str]] = ["pulse"]
     _attr_device_info = DeviceInfo(
         identifiers={(DOMAIN, "contract_physical")},
         name="Contract physical device",

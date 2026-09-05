@@ -1,4 +1,4 @@
-"""Config flow for the Hombee Air integration."""
+"""Config flow for the Hombee integration."""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ _USER_SCHEMA = vol.Schema(
 )
 
 
-class HombeeAirConfigFlow(ConfigFlow, domain=DOMAIN):
+class HombeeConfigFlow(ConfigFlow, domain=DOMAIN):
     """Configures Hombee Air or managed lighting."""
 
     VERSION = 1

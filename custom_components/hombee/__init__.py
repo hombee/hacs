@@ -33,7 +33,6 @@ from .managed_lighting import ManagedLightingManager
 from .modbus_client import HombeeAirModbusClient, HombeeAirModbusError
 from .registers import KIND_COIL, KIND_HOLDING_REGISTER, REGISTERS_BY_KEY
 from .repairs import async_start_alarm_issues, async_stop_alarm_issues
-from .websocket import async_register_websocket_commands
 
 AIR_PLATFORMS = [
     Platform.BINARY_SENSOR,
@@ -43,7 +42,7 @@ AIR_PLATFORMS = [
     Platform.SENSOR,
     Platform.SWITCH,
 ]
-MANAGED_LIGHTING_PLATFORMS = [Platform.LIGHT]
+MANAGED_LIGHTING_PLATFORMS = [Platform.LIGHT, Platform.SWITCH]
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 SERVICE_WRITE_REGISTER = "write_register"
@@ -63,12 +62,6 @@ _WRITE_COIL_SCHEMA = vol.Schema(
         vol.Required("state"): cv.boolean,
     }
 )
-
-
-async def async_setup(hass: HomeAssistant, _config: dict) -> bool:
-    """Registers integration-wide commands."""
-    async_register_websocket_commands(hass)
-    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -130,6 +123,14 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await async_stop_controller_time_sync(runtime)
         await runtime.client.async_close()
     return unloaded
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Restore original physical lights when managed lighting is removed."""
+    if entry.data.get(CONF_ENTRY_KIND) == ENTRY_KIND_MANAGED_LIGHTING:
+        manager = ManagedLightingManager(hass, entry)
+        await manager.async_load()
+        await manager.async_remove()
 
 
 def _async_register_services(hass: HomeAssistant) -> None:

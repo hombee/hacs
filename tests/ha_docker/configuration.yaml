@@ -11,5 +11,5 @@ light:
 logger:
   default: info
   logs:
-    custom_components.hombee_air: debug
+    custom_components.hombee: debug
     custom_components.hombee_managed_light_test: debug

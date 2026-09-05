@@ -3,7 +3,7 @@
 Generated from the Dart catalog (hombeeHvacModbusRegisters).
 Do not edit by hand. Regenerate with:
 
-    dart run tool/generate_hombee_air_registers.dart
+    dart run tool/generate_hombee_registers.dart
 """
 
 from __future__ import annotations
