@@ -2,6 +2,13 @@
   "config": {
     "step": {
       "user": {
+        "title": "Set up Hombee",
+        "menu_options": {
+          "air": "Connect a Hombee Air unit",
+          "managed_lighting": "Enable Hombee managed lighting"
+        }
+      },
+      "air": {
         "title": "Connect to Hombee Air",
         "data": {
           "host": "Host",

@@ -1,15 +1,24 @@
-"""Hombee Air: native climate device for the Hombee HVAC unit."""
+"""Hombee Home Assistant integration."""
 
 from __future__ import annotations
 
 import voluptuous as vol
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT, Platform
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
 
-from .const import CONF_INSTALLATION_ID, DEFAULT_PORT, DOMAIN, installation_slug
+from .const import (
+    CONF_ENTRY_KIND,
+    CONF_INSTALLATION_ID,
+    DEFAULT_PORT,
+    DOMAIN,
+    ENTRY_KIND_AIR,
+    ENTRY_KIND_MANAGED_LIGHTING,
+    installation_slug,
+)
 from .controller_time import (
     async_start_controller_time_sync,
     async_stop_controller_time_sync,
@@ -20,11 +29,13 @@ from .coordinator import (
     create_runtime,
 )
 from .entity import device_info, is_writable
+from .managed_lighting import ManagedLightingManager
 from .modbus_client import HombeeAirModbusClient, HombeeAirModbusError
 from .registers import KIND_COIL, KIND_HOLDING_REGISTER, REGISTERS_BY_KEY
 from .repairs import async_start_alarm_issues, async_stop_alarm_issues
+from .websocket import async_register_websocket_commands
 
-PLATFORMS = [
+AIR_PLATFORMS = [
     Platform.BINARY_SENSOR,
     Platform.CLIMATE,
     Platform.NUMBER,
@@ -32,6 +43,8 @@ PLATFORMS = [
     Platform.SENSOR,
     Platform.SWITCH,
 ]
+MANAGED_LIGHTING_PLATFORMS = [Platform.LIGHT]
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 SERVICE_WRITE_REGISTER = "write_register"
 SERVICE_WRITE_COIL = "write_coil"
@@ -52,7 +65,31 @@ _WRITE_COIL_SCHEMA = vol.Schema(
 )
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: HombeeAirConfigEntry) -> bool:
+async def async_setup(hass: HomeAssistant, _config: dict) -> bool:
+    """Registers integration-wide commands."""
+    async_register_websocket_commands(hass)
+    return True
+
+
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Sets up a Hombee feature from a config entry."""
+    entry_kind = entry.data.get(CONF_ENTRY_KIND, ENTRY_KIND_AIR)
+    if entry_kind == ENTRY_KIND_MANAGED_LIGHTING:
+        manager = ManagedLightingManager(hass, entry)
+        await manager.async_load()
+        entry.runtime_data = manager
+        await hass.config_entries.async_forward_entry_setups(
+            entry, MANAGED_LIGHTING_PLATFORMS
+        )
+        return True
+    if entry_kind != ENTRY_KIND_AIR:
+        raise ServiceValidationError(f"Unknown Hombee entry kind: {entry_kind}")
+    return await _async_setup_air_entry(hass, entry)
+
+
+async def _async_setup_air_entry(
+    hass: HomeAssistant, entry: HombeeAirConfigEntry
+) -> bool:
     """Sets up one Hombee Air unit from a config entry."""
     slug = installation_slug(entry.data[CONF_INSTALLATION_ID])
     client = HombeeAirModbusClient(
@@ -71,16 +108,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: HombeeAirConfigEntry) ->
         config_entry_id=entry.entry_id, **device_info(slug, entry.title)
     )
 
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, AIR_PLATFORMS)
     _async_register_services(hass)
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: HombeeAirConfigEntry) -> bool:
-    """Unloads one Hombee Air unit."""
-    unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unloads one Hombee config entry."""
+    runtime = entry.runtime_data
+    if isinstance(runtime, ManagedLightingManager):
+        unloaded = await hass.config_entries.async_unload_platforms(
+            entry, MANAGED_LIGHTING_PLATFORMS
+        )
+        if unloaded:
+            await runtime.async_unload()
+        return unloaded
+
+    unloaded = await hass.config_entries.async_unload_platforms(entry, AIR_PLATFORMS)
     if unloaded:
-        runtime = entry.runtime_data
         async_stop_alarm_issues(hass, runtime)
         await async_stop_controller_time_sync(runtime)
         await runtime.client.async_close()

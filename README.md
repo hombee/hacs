@@ -1,24 +1,37 @@
-# Hombee HACS
+# Hombee for Home Assistant
 
 [![Continuous integration](https://github.com/hombee/hacs/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/hombee/hacs/actions/workflows/continuous-integration.yaml)
 [![Continuous delivery](https://github.com/hombee/hacs/actions/workflows/continuous-delivery.yaml/badge.svg)](https://github.com/hombee/hacs/actions/workflows/continuous-delivery.yaml)
 
 Home Assistant Community Store integrations maintained by Hombee.
 
-## Integrations
+## Features
 
-- **Hombee Air** (`hombee_air`): a local-polling Home Assistant integration for
-  Hombee Air HVAC units over Modbus TCP.
+- **Managed lighting** creates a public logical light for a physical
+  color-temperature light. The logical light applies the current Hombee
+  temperature in the first physical `light.turn_on` call, so the source does
+  not briefly restore an old color. It keeps manual color changes until the
+  light turns off and reconciles active lights once per minute.
+- **Hombee Air** controls Hombee Air HVAC units over Modbus TCP.
+
+The integration keeps the `hombee_air` domain so existing Hombee Air config
+entries continue to load after upgrading.
 
 ## Installation
 
 1. Install HACS in Home Assistant.
 2. Open HACS, choose **Custom repositories**, and add this repository as an
    **Integration** repository.
-3. Install **Hombee Air** from HACS.
+3. Install **Hombee** from HACS.
 4. Restart Home Assistant.
-5. Open **Settings > Devices & services > Add integration**, search for
-   **Hombee Air**, and enter the unit host, name, installation id, and port.
+5. Open **Settings > Devices & services > Add integration** and search for
+   **Hombee**.
+6. Choose **Enable Hombee managed lighting** or **Connect a Hombee Air unit**.
+
+The Hombee app configures managed lights through the admin-only WebSocket
+commands `hombee_air/managed_lights/reconcile` and
+`hombee_air/managed_lights/list`. The reconcile command accepts a complete,
+revisioned manifest and can safely be repeated.
 
 ## Updates
 
