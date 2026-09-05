@@ -19,13 +19,15 @@ concurrency:
 jobs:
   python:
     name: Python quality and tests
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: namespace-profile-hombee-linux-x64-small;job.priority=3
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: useblacksmith/checkout@v1
+        uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          persist-credentials: false
       - name: Set up Python
-        uses: useblacksmith/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version-file: ".python-version"
       - name: Set up uv
@@ -46,11 +48,13 @@ jobs:
         run: uv run --locked pytest
   home-assistant:
     name: Home Assistant compatibility
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: namespace-profile-hombee-linux-x64-small;job.priority=3
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: useblacksmith/checkout@v1
+        uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          persist-credentials: false
       - name: Validate HACS metadata
         uses: hacs/action@main
         with:
@@ -59,23 +63,26 @@ jobs:
         uses: home-assistant/actions/hassfest@master
   docker:
     name: Home Assistant Docker smoke
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: namespace-profile-hombee-linux-x64-small;job.priority=3
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: useblacksmith/checkout@v1
+        uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          persist-credentials: false
       - name: Run Docker smoke test
         run: bash scripts/ha_docker_smoke.sh
   release:
     name: Release dry run
     if: github.event_name != 'push'
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: namespace-profile-hombee-linux-x64-tiny;job.priority=3
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: useblacksmith/checkout@v1
+        uses: namespacelabs/nscloud-checkout-action@v9
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
@@ -88,13 +95,15 @@ jobs:
         run: bun run release -- --dry-run --no-ci
   security:
     name: Security audit
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: namespace-profile-hombee-linux-x64-tiny;job.priority=3
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: useblacksmith/checkout@v1
+        uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          persist-credentials: false
       - name: Set up Python
-        uses: useblacksmith/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version-file: ".python-version"
       - name: Set up uv
