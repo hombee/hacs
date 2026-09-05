@@ -86,7 +86,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
-          node-version: "24.20.0"
+          node-version: "node"
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
       - name: Install release dependencies

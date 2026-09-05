@@ -46,8 +46,22 @@ Release, and lets HACS distribute the updated integration archive.
 ## Development
 
 The development environment requires Python 3.14.2 or newer to run the Home
-Assistant 2026.9 test suite. Pytest follows the exact version required by
-`pytest-homeassistant-custom-component`.
+Assistant test suite. Direct dependencies use minimum versions without exact
+pins or upper bounds. uv excludes prereleases and overrides the Home Assistant
+test plugin's pytest and pytest-asyncio pins so those runners can stay current.
+Upstream requirements still govern other transitive dependencies. Home
+Assistant also constrains pymodbus at runtime, so the manifest allows its
+required version while the development lockfile tests the latest stable release.
+
+Dependabot checks daily and groups updates for each ecosystem. All CI runs,
+including scheduled runs, install Python and npm dependencies from the committed
+lockfiles without updating them. Dependency updates arrive through Dependabot
+PRs. Node tracks the latest stable release. To refresh the lockfiles locally:
+
+```bash
+uv lock --upgrade
+bun update
+```
 
 ```bash
 uv sync --python 3.14 --extra dev

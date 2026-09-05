@@ -2,19 +2,27 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
+    groups:
+      dependencies:
+        patterns:
+          - "*"
     schedule:
-      interval: weekly
+      interval: daily
 
   - package-ecosystem: uv
     directory: /
+    groups:
+      dependencies:
+        patterns:
+          - "*"
     schedule:
-      interval: weekly
-    ignore:
-      # pytest-homeassistant-custom-component pins this test stack exactly.
-      - dependency-name: pytest
-      - dependency-name: pytest-asyncio
+      interval: daily
 
   - package-ecosystem: npm
     directory: /
+    groups:
+      dependencies:
+        patterns:
+          - "*"
     schedule:
-      interval: weekly
+      interval: daily
