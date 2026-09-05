@@ -3,4 +3,4 @@ version = 1
 name = "hacs"
 
 [setup]
-script = "./scripts/update-worktree-origin-main.sh && uv sync --python 3.12 --extra dev && bun install"
+script = "./scripts/update-worktree-origin-main.sh && uv sync --python 3.14 --extra dev && bun install"

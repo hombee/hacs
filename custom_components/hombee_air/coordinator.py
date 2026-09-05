@@ -45,6 +45,7 @@ class HombeeAirCoordinator(DataUpdateCoordinator[dict[str, int | bool]]):
         hass: HomeAssistant,
         entry: HombeeAirConfigEntry,
         client: HombeeAirModbusClient,
+        *,
         name: str,
         plan: tuple[ReadChunk, ...],
         interval: timedelta,

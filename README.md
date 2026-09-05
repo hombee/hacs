@@ -32,8 +32,12 @@ Release, and lets HACS distribute the updated integration archive.
 
 ## Development
 
+The development environment requires Python 3.14.2 or newer to run the Home
+Assistant 2026.9 test suite. Pytest follows the exact version required by
+`pytest-homeassistant-custom-component`.
+
 ```bash
-uv sync --python 3.12 --extra dev
+uv sync --python 3.14 --extra dev
 uv run ruff check .
 uv run black --check .
 uv run pytest
