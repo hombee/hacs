@@ -14,6 +14,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EVENT_STATE_CHANGED
 from homeassistant.core import Event, HomeAssistant, State, callback
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -296,6 +297,17 @@ class ManagedLightingManager:
         physical_entity_id = registry.async_get_available_entity_id(
             LIGHT_DOMAIN, f"{object_id}_physical"
         )
+        # Capture device metadata too: the logical entity's platform registration
+        # can clear its device link, so inherited assignments must be explicit.
+        area_id = source_entry.area_id
+        labels = set(source_entry.labels)
+        if source_entry.device_id is not None and (
+            device := dr.async_get(self.hass).async_get(source_entry.device_id)
+        ):
+            if area_id is None:
+                area_id = device.area_id
+            labels.update(device.labels)
+
         mapping = ManagedLightMapping(
             source_registry_id=source_entry.id,
             public_entity_id=public_entity_id,
@@ -310,10 +322,10 @@ class ManagedLightingManager:
                 if source_entry.hidden_by is not None
                 else None
             ),
-            area_id=source_entry.area_id,
+            area_id=area_id,
             device_id=source_entry.device_id,
             icon=source_entry.icon,
-            labels=tuple(sorted(source_entry.labels)),
+            labels=tuple(sorted(labels)),
         )
         self.mappings[mapping.source_registry_id] = mapping
         await self._async_save()
