@@ -1,3 +1,18 @@
+## [2.0.0](https://github.com/hombee/hacs/compare/v1.4.0...v2.0.0) (2026-09-05)
+
+### ⚠ BREAKING CHANGES
+
+* use the hombee domain and manage lighting automatically
+
+### Features
+
+* add managed logical lights ([0d23852](https://github.com/hombee/hacs/commit/0d238523f75611c17b89333cf71817cc42345e4f))
+* use the hombee domain and manage lighting automatically ([5724f1b](https://github.com/hombee/hacs/commit/5724f1bc9dcca1d50dbe6b91934a10c1fe5c70d1))
+
+### Bug Fixes
+
+* use compatible conventional commits preset ([6eb6602](https://github.com/hombee/hacs/commit/6eb6602975bd3425ee32cf74be55644c3029e064))
+
 ## [1.4.0](https://github.com/hombee/hacs/compare/v1.3.0...v1.4.0) (2026-07-01)
 
 ## [1.3.0](https://github.com/hombee/hacs/compare/v1.2.0...v1.3.0) (2026-06-29)
