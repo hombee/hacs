@@ -17,21 +17,22 @@ concurrency:
 jobs:
   release:
     name: Release
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: namespace-profile-hombee-linux-x64-tiny;job.priority=1
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: useblacksmith/checkout@v1
+        uses: namespacelabs/nscloud-checkout-action@v9
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Set up Python
-        uses: useblacksmith/setup-python@v6
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: "3.14"
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: "24.10.0"
+          node-version: "24.20.0"
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
       - name: Install release dependencies
