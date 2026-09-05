@@ -1,3 +1,9 @@
+## [2.1.0](https://github.com/hombee/hacs/compare/v2.0.1...v2.1.0) (2026-09-05)
+
+### Features
+
+* **lighting:** add adaptive brightness and MCP configuration API ([4747a9a](https://github.com/hombee/hacs/commit/4747a9a4187e98be54c4e924a2a2e5f2c53e9090))
+
 ## [2.0.1](https://github.com/hombee/hacs/compare/v2.0.0...v2.0.1) (2026-09-05)
 
 ### Bug Fixes
