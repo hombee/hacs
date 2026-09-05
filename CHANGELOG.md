@@ -1,3 +1,9 @@
+## [2.0.1](https://github.com/hombee/hacs/compare/v2.0.0...v2.0.1) (2026-09-05)
+
+### Bug Fixes
+
+* preserve device areas and labels on new managed lights ([262e6ec](https://github.com/hombee/hacs/commit/262e6ecef0d139ffb974d5daf099c82313fd4b0c))
+
 ## [2.0.0](https://github.com/hombee/hacs/compare/v1.4.0...v2.0.0) (2026-09-05)
 
 ### ⚠ BREAKING CHANGES
