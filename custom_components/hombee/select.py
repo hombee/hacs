@@ -6,6 +6,7 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import area_registry as ar
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -117,6 +118,14 @@ class HombeeLightingActivity(SelectEntity):
         )
 
     async def async_added_to_hass(self) -> None:
+        registry = er.async_get(self.hass)
+        if (
+            self.key != DEFAULT_PROFILE
+            and ar.async_get(self.hass).async_get_area(self.key) is not None
+            and (entry := registry.async_get(self.entity_id)) is not None
+            and entry.area_id is None
+        ):
+            registry.async_update_entity(self.entity_id, area_id=self.key)
         self.async_on_remove(
             async_dispatcher_connect(
                 self.hass, LIGHTING_UPDATED, self.async_write_ha_state

@@ -514,6 +514,62 @@ async def test_failed_explicit_command_does_not_take_manual_control(hass, monkey
     assert not mapping.manual_override
 
 
+@pytest.mark.parametrize(
+    ("preexisting", "manual_area"),
+    [(False, False), (True, False), (True, True)],
+)
+async def test_activity_select_assigns_room_on_setup(hass, preexisting, manual_area):
+    """Assign new and legacy selectors without replacing a user's area choice."""
+    await _setup_source_light(hass, False)
+    registry = er.async_get(hass)
+    area = ar.async_get(hass).async_create("Kitchen")
+    other_area = ar.async_get(hass).async_create("Study")
+    registry.async_update_entity("light.kitchen", area_id=area.id)
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id=ENTRY_KIND_MANAGED_LIGHTING,
+        data={CONF_ENTRY_KIND: ENTRY_KIND_MANAGED_LIGHTING},
+    )
+    entry.add_to_hass(hass)
+    unique_id = f"hombee_lighting_activity_{area.id}"
+    if preexisting:
+        existing = registry.async_get_or_create(
+            "select",
+            DOMAIN,
+            unique_id,
+            config_entry=entry,
+            suggested_object_id="saved_kitchen_mode",
+        )
+        registry.async_update_entity(
+            existing.entity_id,
+            name="Saved kitchen mode",
+            area_id=other_area.id if manual_area else None,
+        )
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    selector_id = registry.async_get_entity_id("select", DOMAIN, unique_id)
+    assert selector_id is not None
+    selector = registry.async_get(selector_id)
+    assert selector.area_id == (other_area.id if manual_area else area.id)
+    if preexisting:
+        assert selector_id == existing.entity_id
+        assert selector.name == "Saved kitchen mode"
+    default_id = registry.async_get_entity_id(
+        "select", DOMAIN, "hombee_lighting_activity_default"
+    )
+    assert default_id is not None
+    default = registry.async_get(default_id)
+    assert default.area_id is None
+    assert default.device_id == selector.device_id
+    assert dr.async_get(hass).async_get(selector.device_id).area_id is None
+
+    assert await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+    assert registry.async_get(selector_id).area_id == selector.area_id
+    assert registry.async_get(default_id).area_id is None
+
+
 async def test_room_area_edits_and_activity_select_survive_reload(hass):
     await _setup_source_light(hass, False, ColorMode.BRIGHTNESS)
     entry = await _setup_managed(hass)
@@ -525,6 +581,7 @@ async def test_room_area_edits_and_activity_select_survive_reload(hass):
         "select", DOMAIN, f"hombee_lighting_activity_{area.id}"
     )
     assert selector_id is not None
+    assert registry.async_get(selector_id).area_id == area.id
     await hass.services.async_call(
         "select",
         "select_option",
@@ -534,6 +591,7 @@ async def test_room_area_edits_and_activity_select_survive_reload(hass):
     assert await hass.config_entries.async_reload(entry.entry_id)
     await hass.async_block_till_done()
     assert registry.async_get("light.kitchen").area_id == area.id
+    assert registry.async_get(selector_id).area_id == area.id
     mapping = next(iter(entry.runtime_data.mappings.values()))
     assert entry.runtime_data.activity_for(mapping) == "reading"
     await entry.runtime_data.async_configure_profile(area.id, {"night_brightness": 9})
