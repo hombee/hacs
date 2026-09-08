@@ -1,3 +1,9 @@
+## [2.1.1](https://github.com/hombee/hacs/compare/v2.1.0...v2.1.1) (2026-09-08)
+
+### Bug Fixes
+
+* **lighting:** assign room activity selectors to areas ([9a3e447](https://github.com/hombee/hacs/commit/9a3e4478ae2f33bbe95e9811e86e650663feab37))
+
 ## [2.1.0](https://github.com/hombee/hacs/compare/v2.0.1...v2.1.0) (2026-09-05)
 
 ### Features
