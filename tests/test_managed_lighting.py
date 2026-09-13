@@ -2,9 +2,13 @@
 
 import asyncio
 from datetime import UTC, datetime, timedelta
+from zoneinfo import ZoneInfo
 
 import pytest
+from astral import Observer
+from astral.sun import elevation, noon, sunrise, sunset
 from homeassistant.components.light import ColorMode, LightEntity, LightEntityFeature
+from homeassistant.components.sun.const import ELEVATION_HORIZON
 from homeassistant.config_entries import ConfigFlow
 from homeassistant.core import Context, HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
@@ -63,6 +67,137 @@ def test_circadian_curve_matches_shared_solar_policy(
         )
         == expected
     )
+
+
+@pytest.mark.parametrize("time_zone", ["UTC", "Europe/Warsaw", "Asia/Tokyo"])
+def test_circadian_stays_warm_when_next_setting_rolls_over(time_zone):
+    """Keep the sunset target while the horizon state lags by four minutes."""
+    zone = ZoneInfo(time_zone)
+    sunset = datetime(2026, 9, 11, 17, 15, 24, tzinfo=UTC)
+    # Representative solar attributes; only the rollover time is from the report.
+    next_noon = datetime(2026, 9, 12, 10, 35, tzinfo=UTC)
+    next_sunrise = datetime(2026, 9, 12, 4, 10, tzinfo=UTC)
+    next_sunset = sunset + timedelta(days=1, minutes=-2)
+
+    for seconds in (-1, 0, 6, 60, 120, 180, 239, 240, 300):
+        assert (
+            circadian_kelvin(
+                now=(sunset + timedelta(seconds=seconds)).astimezone(zone),
+                above_horizon=seconds < 240,
+                rising=False,
+                next_rising=next_sunrise,
+                next_noon=next_noon,
+                next_setting=sunset if seconds < 0 else next_sunset,
+                warm_kelvin=2200,
+                cool_kelvin=5000,
+            )
+            == 2200
+        )
+
+
+def test_circadian_stays_warm_when_horizon_changes_before_sunrise():
+    """HA's horizon threshold can be reached before next_rising advances."""
+    solar_sunrise = datetime(2026, 9, 11, 4, 4, tzinfo=UTC)
+    for seconds in (-180, -120, -60, -1, 0, 60, 120):
+        assert (
+            circadian_kelvin(
+                now=solar_sunrise + timedelta(seconds=seconds),
+                above_horizon=seconds >= -120,
+                rising=True,
+                next_rising=(
+                    solar_sunrise
+                    if seconds < 0
+                    else solar_sunrise + timedelta(days=1, minutes=2)
+                ),
+                next_noon=datetime(2026, 9, 11, 10, 33, tzinfo=UTC),
+                next_setting=datetime(2026, 9, 11, 17, tzinfo=UTC),
+                warm_kelvin=2200,
+                cool_kelvin=5000,
+            )
+            == 2200
+        )
+
+
+@pytest.mark.parametrize("noon_drift_seconds", [-30, 0, 30])
+def test_circadian_noon_rollover_stays_at_cool_endpoint(noon_drift_seconds):
+    """HA updates next_noon and rising together, even as solar noon drifts."""
+    solar_noon = datetime(2026, 9, 11, 10, 33, tzinfo=UTC)
+    for seconds in (-60, -1, 0, 1, 60):
+        assert (
+            circadian_kelvin(
+                now=solar_noon + timedelta(seconds=seconds),
+                above_horizon=True,
+                rising=seconds < 0,
+                next_rising=datetime(2026, 9, 12, 4, 6, tzinfo=UTC),
+                next_noon=(
+                    solar_noon
+                    if seconds < 0
+                    else solar_noon + timedelta(days=1, seconds=noon_drift_seconds)
+                ),
+                next_setting=datetime(2026, 9, 11, 17, tzinfo=UTC),
+                warm_kelvin=2200,
+                cool_kelvin=5000,
+            )
+            == 5000
+        )
+
+
+@pytest.mark.parametrize(
+    "date",
+    [
+        "2026-03-28",
+        "2026-03-29",
+        "2026-06-21",
+        "2026-09-11",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-12-21",
+    ],
+)
+@pytest.mark.parametrize("time_zone", ["UTC", "Europe/Warsaw", "Asia/Tokyo"])
+def test_circadian_solar_day_is_smooth_minute_by_minute(date, time_zone):
+    """Cover seasons, midnight, DST, and solar events with HA's astronomy library."""
+    observer = Observer(52.23, 21.01)
+    start = datetime.fromisoformat(f"{date}T00:00:00+00:00")
+    tomorrow = start + timedelta(days=1)
+    solar_sunrise = sunrise(observer, start)
+    solar_noon = noon(observer, start)
+    solar_sunset = sunset(observer, start)
+    next_sunrise = sunrise(observer, tomorrow)
+    next_noon = noon(observer, tomorrow)
+    next_sunset = sunset(observer, tomorrow)
+    zone = ZoneInfo(time_zone)
+    values = []
+    for minute in range(24 * 60 + 1):
+        now = start + timedelta(minutes=minute)
+        above_horizon = round(elevation(observer, now), 2) > ELEVATION_HORIZON
+        value = circadian_kelvin(
+            now=now.astimezone(zone),
+            above_horizon=above_horizon,
+            rising=now < solar_noon,
+            next_rising=(
+                solar_sunrise if now < solar_sunrise else next_sunrise
+            ).astimezone(zone),
+            next_noon=(solar_noon if now < solar_noon else next_noon).astimezone(zone),
+            next_setting=(
+                solar_sunset if now < solar_sunset else next_sunset
+            ).astimezone(zone),
+            warm_kelvin=2200,
+            cool_kelvin=5000,
+        )
+        assert 2200 <= value <= 5000
+        if not above_horizon:
+            assert value == 2200
+        if values:
+            # Even the short winter day has a gradual ramp, without flashes.
+            assert abs(value - values[-1]) <= 30, now.isoformat()
+            if now < solar_noon:
+                assert value >= values[-1], now.isoformat()
+            else:
+                assert value <= values[-1], now.isoformat()
+        values.append(value)
+    assert values[0] == values[-1] == 2200
+    assert max(values) == 5000
 
 
 @pytest.mark.parametrize(
@@ -226,6 +361,44 @@ async def _light_action(hass, service="turn_on", **data):
         "light", service, {"entity_id": "light.kitchen", **data}, blocking=True
     )
     await hass.async_block_till_done()
+
+
+@pytest.mark.parametrize("minimum_kelvin", [2000, 2700])
+async def test_sunset_rollover_does_not_cool_physical_light(
+    hass, freezer, minimum_kelvin
+):
+    """Exercise sun attribute parsing, lamp limits, and periodic adaptation."""
+    freezer.move_to("2026-09-11T17:15:23+00:00")
+    attributes = {
+        "rising": False,
+        "next_rising": "2026-09-12T04:10:00+00:00",
+        "next_noon": "2026-09-12T10:35:00+00:00",
+        "next_setting": "2026-09-11T17:15:24+00:00",
+    }
+    hass.states.async_set("sun.sun", "above_horizon", attributes)
+    source = await _setup_source_light(hass, False)
+    source._attr_min_color_temp_kelvin = minimum_kelvin
+    source.async_write_ha_state()
+    entry = await _setup_managed(hass)
+    await _light_action(hass)
+    expected = max(2200, minimum_kelvin)
+    assert source.calls[-1]["color_temp_kelvin"] == expected
+
+    attributes["next_setting"] = "2026-09-12T17:13:24+00:00"
+    for _ in range(3):
+        freezer.tick(timedelta(seconds=65))
+        hass.states.async_set("sun.sun", "above_horizon", attributes)
+        await entry.runtime_data._async_reconcile_temperatures(datetime.now(UTC))
+        await hass.async_block_till_done()
+        assert source.color_temp_kelvin == expected
+
+    # A new turn-on during the same window must also use the warm target.
+    await _light_action(hass, "turn_off")
+    await _light_action(hass)
+    assert source.calls[-1]["color_temp_kelvin"] == expected
+    mapping = next(iter(entry.runtime_data.mappings.values()))
+    assert not mapping.manual_override
+    assert not mapping.brightness_override
 
 
 @pytest.mark.parametrize(
