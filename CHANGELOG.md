@@ -1,3 +1,9 @@
+## [2.1.2](https://github.com/hombee/hacs/compare/v2.1.1...v2.1.2) (2026-09-13)
+
+### Bug Fixes
+
+* **lighting:** prevent color jumps at sunrise and sunset ([b118824](https://github.com/hombee/hacs/commit/b11882400e056870cfd2df98d90097c8992a3253))
+
 ## [2.1.1](https://github.com/hombee/hacs/compare/v2.1.0...v2.1.1) (2026-09-08)
 
 ### Bug Fixes
