@@ -139,10 +139,27 @@ def circadian_kelvin(
 
     current = now.timestamp()
     if rising:
+        # HA's horizon threshold can be reached before sunrise. If the next
+        # sunrise still precedes this morning's noon, the ramp has not started.
+        if (
+            next_rising is not None
+            and next_noon is not None
+            and next_rising.timestamp() < next_noon.timestamp()
+        ):
+            return warm
         start = (next_rising or now + timedelta(days=1)).timestamp() - 86400
         finish = (next_noon or now + timedelta(hours=12)).timestamp()
         phase = (current - start) / max(finish - start, 1)
     else:
+        # HA can advance next_setting before clearing above_horizon. The
+        # afternoon's sunset must precede the next solar noon; a later one
+        # belongs to the next solar day, so keep the completed sunset warm.
+        if (
+            next_noon is not None
+            and next_setting is not None
+            and next_setting.timestamp() > next_noon.timestamp()
+        ):
+            return warm
         start = (next_noon or now + timedelta(hours=12)).timestamp() - 86400
         finish = (next_setting or now + timedelta(days=1)).timestamp()
         phase = (finish - current) / max(finish - start, 1)
