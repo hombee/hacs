@@ -1,3 +1,9 @@
+## [2.2.0](https://github.com/hombee/hacs/compare/v2.1.2...v2.2.0) (2026-09-26)
+
+### Features
+
+* add Hombee Voice providers for native Assist ([5b98ec2](https://github.com/hombee/hacs/commit/5b98ec2b44589db1dc1f9717dc3b865be0353b49))
+
 ## [2.1.2](https://github.com/hombee/hacs/compare/v2.1.1...v2.1.2) (2026-09-13)
 
 ### Bug Fixes
