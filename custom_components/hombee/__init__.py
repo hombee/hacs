@@ -10,6 +10,8 @@ from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
 
+from .assist import ASSIST_ENTRY_KIND, HombeeAssistClient, async_setup_assist_pipeline
+from .assist_api import async_register_assist_api
 from .const import (
     CONF_ENTRY_KIND,
     CONF_INSTALLATION_ID,
@@ -44,6 +46,7 @@ AIR_PLATFORMS = [
     Platform.SWITCH,
 ]
 MANAGED_LIGHTING_PLATFORMS = [Platform.LIGHT, Platform.SWITCH, Platform.SELECT]
+ASSIST_PLATFORMS = [Platform.CONVERSATION, Platform.STT, Platform.TTS]
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 SERVICE_WRITE_REGISTER = "write_register"
@@ -65,9 +68,20 @@ _WRITE_COIL_SCHEMA = vol.Schema(
 )
 
 
+async def async_setup(hass: HomeAssistant, config) -> bool:
+    """Register installation-level APIs independently of feature entries."""
+    async_register_assist_api(hass)
+    return True
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Sets up a Hombee feature from a config entry."""
     entry_kind = entry.data.get(CONF_ENTRY_KIND, ENTRY_KIND_AIR)
+    if entry_kind == ASSIST_ENTRY_KIND:
+        entry.runtime_data = HombeeAssistClient(hass, entry)
+        await hass.config_entries.async_forward_entry_setups(entry, ASSIST_PLATFORMS)
+        await async_setup_assist_pipeline(hass, entry)
+        return True
     if entry_kind == ENTRY_KIND_MANAGED_LIGHTING:
         async_register_lighting_api(hass)
         manager = ManagedLightingManager(hass, entry)
@@ -114,6 +128,8 @@ async def _async_setup_air_entry(
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unloads one Hombee config entry."""
+    if entry.data.get(CONF_ENTRY_KIND) == ASSIST_ENTRY_KIND:
+        return await hass.config_entries.async_unload_platforms(entry, ASSIST_PLATFORMS)
     runtime = entry.runtime_data
     if isinstance(runtime, ManagedLightingManager):
         unloaded = await hass.config_entries.async_unload_platforms(

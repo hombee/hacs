@@ -7,6 +7,9 @@ Home Assistant Community Store integrations maintained by Hombee.
 
 ## Features
 
+- **Hombee Voice** adds cloud transcription, GPT-6 Luna conversation and
+  AI-generated speech to native Home Assistant Assist pipelines. Requires
+  Home Assistant 2026.9 or later and a Hombee Pro association.
 - **Managed lighting** controls brightness for dimmable lamps and color
   temperature for lamps that support it. Both attributes are applied in the
   first physical `light.turn_on` call. Room profiles set daily targets and
@@ -34,7 +37,33 @@ light discovery do not use a reconciliation API.
 4. Restart Home Assistant.
 5. Open **Settings > Devices & services > Add integration** and search for
    **Hombee**.
-6. Choose **Enable Hombee managed lighting** or **Connect a Hombee Air unit**.
+6. Choose managed lighting, a Hombee Air unit, or Hombee Voice.
+
+## Hombee Voice
+
+Open **Pro configuration** in the Hombee app after subscribing. Associate a
+connected Home Assistant instance using an administrator connection and a
+reachable remote URL. Pro includes one instance; additional Home Assistant
+packages increase the allowance. Hombee creates a **Hombee Voice** Assist
+pipeline automatically. Select it on your Assist device or voice satellite.
+
+Voice processing uses `gpt-transcribe`, `gpt-6-luna`, and `gpt-audio-1.5`.
+English and Polish speech are supported. Each audio request is limited to
+30 seconds. Requests send audio, conversation context, and the available
+exposed-entity tools to Hombee's metered OpenAI gateway. Your OpenAI API key
+is never stored in Home Assistant. Spoken replies are AI-generated.
+
+Each instance has a US$2 API allowance per UTC calendar month. The gateway
+reserves the maximum cost before making a model request; interrupted requests
+may keep that reservation. Cloud stages stop when there is insufficient budget.
+Usage resets on the first day of the next month, and removing or reconnecting
+an instance does not reset it. Local Assist intents remain available.
+
+Cancelling renewal preserves paid access until expiry. Expired Pro access
+disables cloud voice; expired additional packages pause assignments beyond the
+remaining allowance, in association order. Remove an association in Pro
+configuration to select another instance. The app explains missing or outdated
+HACS installations and offers refresh after installation or upgrade.
 
 After enabling managed lighting, Hombee automatically discovers registered
 dimmable lights at startup and when new lights appear. Light groups

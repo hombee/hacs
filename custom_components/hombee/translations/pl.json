@@ -5,8 +5,13 @@
         "title": "Skonfiguruj Hombee",
         "menu_options": {
           "air": "Połącz centralę Hombee Air",
-          "managed_lighting": "Włącz oświetlenie zarządzane przez Hombee"
+          "managed_lighting": "Włącz oświetlenie zarządzane przez Hombee",
+          "assist": "Włącz Hombee Voice"
         }
+      },
+      "assist": {
+        "title": "Włącz Hombee Voice",
+        "description": "Po konfiguracji otwórz Hombee > Pro configuration i wybierz tę instancję Home Assistant. Wybierz Hombee Voice dla urządzeń Assist. Mowa jest przetwarzana w chmurze, a odpowiedzi są czytane głosem wygenerowanym przez AI. Każda przypisana instancja obejmuje do 2 USD zużycia API na miesiąc kalendarzowy UTC."
       },
       "air": {
         "title": "Połącz z Hombee Air",
@@ -86,6 +91,7 @@
       "invalid_area": "To pomieszczenie już nie istnieje."
     },
     "abort": {
+      "manage_in_hombee": "Zarządzaj instancją, subskrypcją i limitem chmury w Hombee > Pro configuration. Wybierz udostępnione urządzenia w Home Assistant > Ustawienia > Asystenci głosowi.",
       "lighting_not_loaded": "Uruchom zarządzane oświetlenie Hombee przed zmianą ustawień.",
       "no_lights": "Brak dostępnych lamp zarządzanych przez Hombee."
     }

@@ -5,8 +5,13 @@
         "title": "Set up Hombee",
         "menu_options": {
           "air": "Connect a Hombee Air unit",
-          "managed_lighting": "Enable Hombee managed lighting"
+          "managed_lighting": "Enable Hombee managed lighting",
+          "assist": "Enable Hombee Voice"
         }
+      },
+      "assist": {
+        "title": "Enable Hombee Voice",
+        "description": "After setup, open Hombee > Pro configuration and select this Home Assistant. Choose Hombee Voice for your Assist devices. Speech is processed in the cloud and responses use an AI-generated voice. Each assigned instance includes up to $2 of API usage per UTC calendar month."
       },
       "air": {
         "title": "Connect to Hombee Air",
@@ -86,6 +91,7 @@
       "invalid_area": "This room no longer exists."
     },
     "abort": {
+      "manage_in_hombee": "Manage this instance, subscription and cloud allowance in Hombee > Pro configuration. Select exposed devices in Home Assistant > Settings > Voice assistants.",
       "lighting_not_loaded": "Load Hombee managed lighting before editing its settings.",
       "no_lights": "No managed lamps are available."
     }

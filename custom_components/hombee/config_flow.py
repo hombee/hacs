@@ -14,6 +14,7 @@ from homeassistant.config_entries import (
 from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PORT
 from homeassistant.core import callback
 
+from .assist import ASSIST_ENTRY_KIND, ASSIST_NAME
 from .const import (
     CONF_ENTRY_KIND,
     CONF_INSTALLATION_ID,
@@ -52,6 +53,8 @@ class HombeeConfigFlow(ConfigFlow, domain=DOMAIN):
     @staticmethod
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
+        if config_entry.data.get(CONF_ENTRY_KIND) == ASSIST_ENTRY_KIND:
+            return HombeeAssistOptionsFlow()
         return HombeeLightingOptionsFlow()
 
     async def async_step_user(
@@ -60,7 +63,31 @@ class HombeeConfigFlow(ConfigFlow, domain=DOMAIN):
         """Lets the user select the Hombee feature to configure."""
         return self.async_show_menu(
             step_id="user",
-            menu_options=[ENTRY_KIND_AIR, ENTRY_KIND_MANAGED_LIGHTING],
+            menu_options=[
+                ENTRY_KIND_AIR,
+                ENTRY_KIND_MANAGED_LIGHTING,
+                ASSIST_ENTRY_KIND,
+            ],
+        )
+
+    async def async_step_assist(self, user_input=None) -> ConfigFlowResult:
+        """Make cloud association available without owning Hombee hardware."""
+        await self.async_set_unique_id(ASSIST_ENTRY_KIND)
+        self._abort_if_unique_id_configured()
+        if user_input is not None:
+            return self.async_create_entry(
+                title=ASSIST_NAME, data={CONF_ENTRY_KIND: ASSIST_ENTRY_KIND}
+            )
+        return self.async_show_form(
+            step_id=ASSIST_ENTRY_KIND, data_schema=vol.Schema({})
+        )
+
+    async def async_step_import(self, user_input) -> ConfigFlowResult:
+        """Accept a grant delivered by the authenticated administrator API."""
+        await self.async_set_unique_id(ASSIST_ENTRY_KIND)
+        self._abort_if_unique_id_configured()
+        return self.async_create_entry(
+            title=ASSIST_NAME, data={**user_input, CONF_ENTRY_KIND: ASSIST_ENTRY_KIND}
         )
 
     async def async_step_air(
@@ -92,6 +119,13 @@ class HombeeConfigFlow(ConfigFlow, domain=DOMAIN):
             title="Hombee managed lighting",
             data={CONF_ENTRY_KIND: ENTRY_KIND_MANAGED_LIGHTING},
         )
+
+
+class HombeeAssistOptionsFlow(OptionsFlow):
+    """Cloud association is owned by Hombee Pro configuration."""
+
+    async def async_step_init(self, user_input=None) -> ConfigFlowResult:
+        return self.async_abort(reason="manage_in_hombee")
 
 
 async def _probe(host: str, port: int) -> bool:

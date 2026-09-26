@@ -6,6 +6,10 @@
   ],
   "config_flow": true,
   "dependencies": [
+    "assist_pipeline",
+    "conversation",
+    "stt",
+    "tts",
     "websocket_api"
   ],
   "documentation": "https://github.com/hombee/hacs",
@@ -15,5 +19,5 @@
   "requirements": [
     "pymodbus>=3.11"
   ],
-  "version": "2.1.2"
+  "version": "2.2.0"
 }
