@@ -1,3 +1,9 @@
+## [2.3.0](https://github.com/hombee/hacs/compare/v2.2.0...v2.3.0) (2026-09-27)
+
+### Features
+
+* **assist:** reserve voice turns and repair connections ([6c5ac81](https://github.com/hombee/hacs/commit/6c5ac81634d0cfdb48a4f5055f33138d7cdc53a2))
+
 ## [2.2.0](https://github.com/hombee/hacs/compare/v2.1.2...v2.2.0) (2026-09-26)
 
 ### Features
