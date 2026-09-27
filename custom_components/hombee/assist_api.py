@@ -9,7 +9,12 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import instance_id
 from homeassistant.loader import async_get_integration
 
-from .assist import ASSIST_ENTRY_KIND, ASSIST_PROTOCOL
+from .assist import (
+    ASSIST_ENTRY_KIND,
+    ASSIST_PROTOCOL,
+    assist_pipeline_ready,
+    async_setup_assist_pipeline,
+)
 from .const import CONF_ENTRY_KIND, DOMAIN
 
 
@@ -27,12 +32,24 @@ async def websocket_assist_status(hass, connection, msg) -> None:
     """Return identity and protocol without exposing the installation token."""
     integration = await async_get_integration(hass, DOMAIN)
     entries = hass.config_entries.async_entries(DOMAIN)
+    entry = next(
+        (
+            item
+            for item in entries
+            if item.data.get(CONF_ENTRY_KIND) == ASSIST_ENTRY_KIND
+            and item.state is ConfigEntryState.LOADED
+        ),
+        None,
+    )
+    diagnostic = entry.runtime_data.diagnostic if entry else None
     connection.send_result(
         msg["id"],
         {
             "protocol": ASSIST_PROTOCOL,
             "instanceId": await instance_id.async_get(hass),
             "version": integration.version,
+            "pipelineReady": entry is not None and assist_pipeline_ready(hass, entry),
+            **({"diagnostic": diagnostic} if diagnostic else {}),
             "configured": any(
                 entry.data.get(CONF_ENTRY_KIND) == ASSIST_ENTRY_KIND
                 and bool(entry.data.get("token"))
@@ -88,4 +105,5 @@ async def websocket_assist_configure(hass, connection, msg) -> None:
             "Hombee Voice could not load. Check Home Assistant logs.",
         )
         return
+    await async_setup_assist_pipeline(hass, entry, repair=True)
     connection.send_result(msg["id"], {"configured": True})

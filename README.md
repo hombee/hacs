@@ -54,8 +54,14 @@ exposed-entity tools to Hombee's metered OpenAI gateway. Your OpenAI API key
 is never stored in Home Assistant. Spoken replies are AI-generated.
 
 Each instance has a US$2 API allowance per UTC calendar month. The gateway
-reserves the maximum cost before making a model request; interrupted requests
-may keep that reservation. Cloud stages stop when there is insufficient budget.
+reserves enough for a bounded voice turn before recognition or cloud-controlled
+device actions: one recording, up to five conversation requests, and one spoken
+reply. This protects the spoken reply even if concurrent turns use the remaining
+allowance. Pro configuration separates consumed and reserved amounts, warns at
+80% usage, and shows the reset date in your local time zone. Unused capacity is
+released when speech finishes or after five minutes for interrupted turns.
+Requests with uncertain provider outcomes retain their individual reservations.
+Cloud stages stop when there is insufficient capacity for a complete turn.
 Usage resets on the first day of the next month, and removing or reconnecting
 an instance does not reset it. Local Assist intents remain available.
 
@@ -64,6 +70,21 @@ disables cloud voice; expired additional packages pause assignments beyond the
 remaining allowance, in association order. Remove an association in Pro
 configuration to select another instance. The app explains missing or outdated
 HACS installations and offers refresh after installation or upgrade.
+
+Use **Repair connection** in Pro configuration to renew the scoped token and
+restore the three Hombee pipeline providers after a restore or reinstall.
+It preserves the association, pipeline ID, other pipeline preferences and usage.
+A connection pointing at a different HA identity must be explicitly reassociated.
+Unavailable HA connections must first be restored in Settings > Connections.
+
+Failures create a Home Assistant notification without a model call. Conversation
+failures use bundled English/Polish spoken notices, also without an API call.
+An action may already have completed if a later stage fails; check its state
+before repeating a command. Hombee's latest request diagnostics contain only
+stage, duration, time, error code and support reference. They do not store audio,
+transcripts, prompts, tool arguments or credentials. Home Assistant's own
+conversation history and optional pipeline debug recordings remain under its
+normal settings.
 
 After enabling managed lighting, Hombee automatically discovers registered
 dimmable lights at startup and when new lights appear. Light groups
