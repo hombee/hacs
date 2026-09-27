@@ -44,7 +44,7 @@ light discovery do not use a reconciliation API.
 Open **Pro configuration** in the Hombee app after subscribing. Associate a
 connected Home Assistant instance using an administrator connection and a
 reachable remote URL. Pro includes one instance; additional Home Assistant
-packages increase the allowance. Hombee creates a **Hombee Voice** Assist
+packages add instance slots. Hombee creates a **Hombee Voice** Assist
 pipeline automatically. Select it on your Assist device or voice satellite.
 
 Voice processing uses `gpt-transcribe`, `gpt-6-luna`, and `gpt-audio-1.5`.
@@ -63,7 +63,8 @@ released when speech finishes or after five minutes for interrupted turns.
 Requests with uncertain provider outcomes retain their individual reservations.
 Cloud stages stop when there is insufficient capacity for a complete turn.
 Usage resets on the first day of the next month, and removing or reconnecting
-an instance does not reset it. Local Assist intents remain available.
+an instance does not reset it. A separate Assist pipeline using local providers
+can still run local intents when the cloud allowance is exhausted.
 
 Cancelling renewal preserves paid access until expiry. Expired Pro access
 disables cloud voice; expired additional packages pause assignments beyond the
@@ -73,7 +74,7 @@ HACS installations and offers refresh after installation or upgrade.
 
 Use **Repair connection** in Pro configuration to renew the scoped token and
 restore the three Hombee pipeline providers after a restore or reinstall.
-It preserves the association, pipeline ID, other pipeline preferences and usage.
+It preserves the association, existing pipeline ID, other pipeline preferences and usage.
 A connection pointing at a different HA identity must be explicitly reassociated.
 Unavailable HA connections must first be restored in Settings > Connections.
 
