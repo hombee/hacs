@@ -7,6 +7,7 @@ import base64
 from homeassistant.components.tts import TextToSpeechEntity
 
 from .assist import ASSIST_LANGUAGES, HombeeAssistEntity
+from .assist_notices import async_notice_audio
 
 PARALLEL_UPDATES = 0
 
@@ -27,6 +28,9 @@ class HombeeTextToSpeech(TextToSpeechEntity, HombeeAssistEntity):
 
     async def async_get_tts_audio(self, message, language, options):
         """Return an ordinary WAV that all Assist players can consume."""
+        if notice := await async_notice_audio(self.hass, message):
+            await self.client.finish()
+            return "wav", notice
         result = await self.client.request(
             "speech",
             {

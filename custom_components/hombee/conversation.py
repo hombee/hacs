@@ -11,6 +11,7 @@ from homeassistant.helpers import intent, llm
 from probatio import to_openapi
 
 from .assist import HombeeAssistEntity
+from .assist_notices import failure_notice
 from .const import DOMAIN
 
 PARALLEL_UPDATES = 0
@@ -72,6 +73,7 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
 
     async def _async_handle_message(self, user_input, chat_log):
         try:
+            await self.client.begin_conversation()
             await chat_log.async_provide_llm_data(
                 user_input.as_llm_context(DOMAIN),
                 llm.LLM_API_ASSIST,
@@ -128,9 +130,13 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
             )
         except conversation.ConverseError as error:
             return error.as_conversation_result()
-        except (HomeAssistantError, ValueError, KeyError, TypeError) as error:
+        except HomeAssistantError, ValueError, KeyError, TypeError:
+            await self.client.finish()
             response = intent.IntentResponse(language=user_input.language)
-            response.async_set_error(intent.IntentResponseErrorCode.UNKNOWN, str(error))
+            response.async_set_error(
+                intent.IntentResponseErrorCode.UNKNOWN,
+                failure_notice(user_input.language),
+            )
             return conversation.ConversationResult(
                 response=response, conversation_id=chat_log.conversation_id
             )

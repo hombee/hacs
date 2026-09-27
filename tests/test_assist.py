@@ -4,7 +4,7 @@ import base64
 import io
 import json
 import wave
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from homeassistant.components import conversation, stt
@@ -105,7 +105,10 @@ async def test_conversation_executes_exposed_entity_and_reports_tool_result(
     agent_id = er.async_get(hass).async_get_entity_id(
         "conversation", DOMAIN, "hombee_assist_conversation"
     )
-    with patch.object(entry.runtime_data, "request", side_effect=model):
+    with (
+        patch.object(entry.runtime_data, "request", side_effect=model),
+        patch.object(entry.runtime_data, "begin_conversation", new=AsyncMock()),
+    ):
         result = await conversation.async_converse(
             hass,
             "Turn on the kitchen lamp",
@@ -142,7 +145,29 @@ async def test_pairing_checks_identity_and_never_discloses_token(hass, hass_ws_c
     await client.send_json({"id": 3, "type": "hombee/assist/status"})
     status = await client.receive_json()
     assert status["result"]["configured"] is True
+    assert status["result"]["pipelineReady"] is True
     assert "token" not in json.dumps(status)
+    pipeline_id = entry.options["pipeline_id"]
+    current = next(
+        item for item in pipeline.async_get_pipelines(hass) if item.id == pipeline_id
+    )
+    await pipeline.async_update_pipeline(
+        hass, current, conversation_engine="home_assistant"
+    )
+    await client.send_json({"id": 4, "type": "hombee/assist/status"})
+    assert (await client.receive_json())["result"]["pipelineReady"] is False
+    await client.send_json(
+        {
+            "id": 5,
+            **settings,
+            "instanceId": await instance_id.async_get(hass),
+            "token": "r" * 72,
+        }
+    )
+    assert (await client.receive_json())["success"]
+    assert entry.options["pipeline_id"] == pipeline_id
+    await client.send_json({"id": 6, "type": "hombee/assist/status"})
+    assert (await client.receive_json())["result"]["pipelineReady"] is True
 
 
 async def test_native_audio_envelope_and_speech(hass):
