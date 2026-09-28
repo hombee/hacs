@@ -1,3 +1,9 @@
+## [2.4.1](https://github.com/hombee/hacs/compare/v2.4.0...v2.4.1) (2026-09-28)
+
+### Bug Fixes
+
+* **climate:** declare humidity step and document integration features ([fa48b6a](https://github.com/hombee/hacs/commit/fa48b6a2fc0a520bb82beaed3e424d638f6b01cb))
+
 ## [2.4.0](https://github.com/hombee/hacs/compare/v2.3.0...v2.4.0) (2026-09-28)
 
 ### Features
