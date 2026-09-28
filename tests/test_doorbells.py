@@ -1,6 +1,5 @@
 """Doorbell rings, persisted delivery and entrance permissions through HA."""
 
-import time
 from datetime import UTC, datetime
 from itertools import count
 from unittest.mock import AsyncMock, patch
@@ -88,10 +87,9 @@ async def test_ring_sources_and_camera_associations(hass, doorbells):
         enqueue.assert_not_called()
 
 
-async def test_api_permissions_revision_and_action_replay(
+async def test_api_permissions(
     hass, hass_ws_client, hass_read_only_access_token, doorbells
 ):
-    admin = await hass_ws_client(hass)
     reader = await hass_ws_client(hass, access_token=hass_read_only_access_token)
     snapshot = (await request(reader, "status"))["result"]
     assert not snapshot["canManage"]
@@ -106,53 +104,6 @@ async def test_api_permissions_revision_and_action_replay(
         doorbells=[],
     )
     assert rejected["error"]["code"] == "unauthorized"
-    calls = []
-
-    async def unlock(call):
-        calls.append(call)
-
-    hass.services.async_register("lock", "unlock", unlock)
-    command = {
-        "instanceId": doorbells.instance_id,
-        "doorbellId": "front",
-        "configurationRevision": 1,
-        "commandId": str(uuid4()),
-        "expiresAt": int(time.time() * 1000) + 30_000,
-    }
-    assert not (await request(reader, "open", **command))["success"]
-    assert (await request(admin, "open", **command))["result"]["status"] == "sent"
-    restored = DoorbellRuntime(hass)
-    await restored.load()
-    hass.data["hombee"]["doorbells"] = restored
-    assert (await request(admin, "open", **command))["result"][
-        "status"
-    ] == "already_sent"
-    assert len(calls) == 1
-    assert calls[0].data["entity_id"] == "lock.front"
-    assert calls[0].context.user_id is not None
-    command["commandId"] = str(uuid4())
-    command["expiresAt"] = int(time.time() * 1000) - 1
-    assert not (await request(admin, "open", **command))["success"]
-    command["expiresAt"] += 30_000
-    command["configurationRevision"] = 0
-    assert not (await request(admin, "open", **command))["success"]
-    assert len(calls) == 1
-
-    command["configurationRevision"] = 1
-    command["commandId"] = str(uuid4())
-    failed_calls = []
-
-    async def failing_unlock(call):
-        failed_calls.append(call)
-        raise HomeAssistantError("Connection lost")
-
-    hass.services.async_register("lock", "unlock", failing_unlock)
-    assert not (await request(admin, "open", **command))["success"]
-    recovered = DoorbellRuntime(hass)
-    await recovered.load()
-    hass.data["hombee"]["doorbells"] = recovered
-    assert not (await request(admin, "open", **command))["success"]
-    assert len(failed_calls) == 1
 
 
 async def test_registry_rename_and_replacement_fail_closed(hass, doorbells):

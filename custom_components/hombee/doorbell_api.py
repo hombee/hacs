@@ -1,4 +1,4 @@
-"""Authenticated, versioned doorbell configuration and control API."""
+"""Authenticated, versioned doorbell configuration API."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ async def async_setup_doorbells(hass):
     runtime = DoorbellRuntime(hass)
     await runtime.load()
     hass.data.setdefault(DOMAIN, {})["doorbells"] = runtime
-    for command in (status, configure, save, open_entrance):
+    for command in (status, configure, save):
         websocket_api.async_register_command(hass, command)
 
     async def report(call):
@@ -98,31 +98,3 @@ async def save(hass, connection, msg):
         connection.send_result(msg["id"], runtime.snapshot(connection.user))
     except (vol.Invalid, HomeAssistantError) as error:
         connection.send_error(msg["id"], "invalid_doorbell_configuration", str(error))
-
-
-@websocket_api.websocket_command(
-    {
-        vol.Required("type"): "hombee/doorbells/open",
-        vol.Required("instanceId"): KEY,
-        vol.Required("doorbellId"): KEY,
-        vol.Required("configurationRevision"): int,
-        vol.Required("commandId"): KEY,
-        vol.Required("expiresAt"): int,
-    }
-)
-@websocket_api.async_response
-async def open_entrance(hass, connection, msg):
-    runtime = _runtime(hass)
-    try:
-        if runtime.instance_id != msg["instanceId"]:
-            raise HomeAssistantError("Home Assistant identity changed")
-        result = await runtime.open(
-            connection.user,
-            msg["doorbellId"],
-            msg["configurationRevision"],
-            msg["commandId"],
-            msg["expiresAt"],
-        )
-        connection.send_result(msg["id"], result)
-    except HomeAssistantError as error:
-        connection.send_error(msg["id"], "entrance_action_rejected", str(error))

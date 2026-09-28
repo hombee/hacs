@@ -62,13 +62,6 @@ ACTION_DOMAINS = {
     "press": "button",
     "script": "script",
 }
-ACTION_SERVICES = {
-    "unlock": "unlock",
-    "unlatch": "open",
-    "open": "open_cover",
-    "press": "press",
-    "script": "turn_on",
-}
 
 
 def visible(user, doorbell: dict[str, Any]) -> bool:
