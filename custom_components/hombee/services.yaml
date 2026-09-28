@@ -45,3 +45,19 @@ resume_adaptation:
       default: true
       selector:
         boolean:
+
+report_doorbell_ring:
+  name: Report doorbell ring
+  description: Report a ring for a configured automation doorbell.
+  fields:
+    doorbellId:
+      name: Doorbell ID
+      description: Copy the doorbell ID from its setup in Hombee.
+      required: true
+      selector:
+        text:
+    eventId:
+      name: Event ID
+      description: Reuse a stable source event ID when an automation retries.
+      selector:
+        text:
