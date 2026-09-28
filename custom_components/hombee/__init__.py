@@ -30,6 +30,7 @@ from .coordinator import (
     HombeeAirRuntime,
     create_runtime,
 )
+from .doorbell_api import async_setup_doorbells
 from .entity import device_info, is_writable
 from .lighting_api import async_register_lighting_api
 from .managed_lighting import ManagedLightingManager
@@ -71,6 +72,7 @@ _WRITE_COIL_SCHEMA = vol.Schema(
 async def async_setup(hass: HomeAssistant, config) -> bool:
     """Register installation-level APIs independently of feature entries."""
     async_register_assist_api(hass)
+    await async_setup_doorbells(hass)
     return True
 
 

@@ -1299,6 +1299,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-homeassistant-custom-component" },
+    { name = "pyturbojpeg" },
     { name = "ruff" },
 ]
 
@@ -1318,6 +1319,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.1.1" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.4.0" },
     { name = "pytest-homeassistant-custom-component", marker = "extra == 'dev'", specifier = ">=0.13.363" },
+    { name = "pyturbojpeg", marker = "extra == 'dev'", specifier = "==1.8.3" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.16.6" },
     { name = "voluptuous", specifier = ">=0.16" },
 ]
@@ -2589,6 +2591,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/39/2a/cbbf9250020a4a8dd53ba83a46c097b69e5eb49dd14e708f496f548c6612/pytokens-0.4.1-cp314-cp314t-win_amd64.whl", hash = "sha256:584c80c24b078eec1e227079d56dc22ff755e0ba8654d8383b2c549107528918", size = 116287, upload-time = "2026-01-30T01:03:30.912Z" },
     { url = "https://files.pythonhosted.org/packages/c6/78/397db326746f0a342855b81216ae1f0a32965deccfd7c830a2dbc66d2483/pytokens-0.4.1-py3-none-any.whl", hash = "sha256:26cef14744a8385f35d0e095dc8b3a7583f6c953c2e3d269c7f82484bf5ad2de", size = 13729, upload-time = "2026-01-30T01:03:45.029Z" },
 ]
+
+[[package]]
+name = "pyturbojpeg"
+version = "1.8.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f2/2b/5fc7a7f51af947708a5d75d7637e923d2d4e60f43f6a4cfe55ae1ea241a2/pyturbojpeg-1.8.3.tar.gz", hash = "sha256:c131591a3990cc57f45a8b2705d6261c25df913a19b1fe88de5e911dbe04a1d4", size = 12757, upload-time = "2026-02-17T02:32:53.192Z" }
 
 [[package]]
 name = "pytz"
