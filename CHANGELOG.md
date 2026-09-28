@@ -1,3 +1,9 @@
+## [2.4.0](https://github.com/hombee/hacs/compare/v2.3.0...v2.4.0) (2026-09-28)
+
+### Features
+
+* **doorbells:** add generic notifications and entrance configuration ([bcf7a3f](https://github.com/hombee/hacs/commit/bcf7a3fb0cb94f7183e06be404dd65e82e94bc90))
+
 ## [2.3.0](https://github.com/hombee/hacs/compare/v2.2.0...v2.3.0) (2026-09-27)
 
 ### Features
