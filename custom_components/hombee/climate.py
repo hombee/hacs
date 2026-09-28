@@ -78,6 +78,7 @@ class HombeeAirClimate(CoordinatorEntity[HombeeAirCoordinator], ClimateEntity):
     _attr_max_temp = 35.0
     _attr_min_humidity = 0
     _attr_max_humidity = 100
+    _attr_target_humidity_step = 1
     _attr_hvac_modes: ClassVar[list[HVACMode]] = [HVACMode.AUTO]
     _attr_fan_modes: ClassVar[list[str]] = _FAN_MODES
     _attr_preset_modes: ClassVar[list[str]] = list(PRESET_TO_PROGRAM)

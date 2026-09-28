@@ -8,6 +8,7 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
+from homeassistant.components.climate import ClimateEntityFeature
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry as er
@@ -125,6 +126,10 @@ async def test_climate_state_reflects_registers(
     assert state.attributes["temperature"] == 24.0
     assert state.attributes["target_temp_step"] == 0.1
     assert state.attributes["humidity"] == 50.0
+    assert state.attributes["min_humidity"] == 0
+    assert state.attributes["max_humidity"] == 100
+    assert state.attributes["target_humidity_step"] == 1
+    assert state.attributes["supported_features"] & ClimateEntityFeature.TARGET_HUMIDITY
     assert state.attributes["hvac_modes"] == ["auto"]
     assert state.attributes["preset_modes"] == [
         "off",
@@ -168,17 +173,56 @@ async def test_set_temperature_survives_stale_immediate_readback(
     assert state.attributes["temperature"] == 25.1
 
 
-async def test_set_humidity_writes_active_preset_pair(
-    hass: HomeAssistant, mock_client: MockModbusClient
+@pytest.mark.parametrize(
+    ("program", "humidity_keys"),
+    [
+        (2, ("economy_heating_humidity_setpoint", "economy_cooling_humidity_setpoint")),
+        (3, ("comfort_heating_humidity_setpoint", "comfort_cooling_humidity_setpoint")),
+        (
+            4,
+            (
+                "comfort_plus_heating_humidity_setpoint",
+                "comfort_plus_cooling_humidity_setpoint",
+            ),
+        ),
+        (6, ("manual_humidity_setpoint",)),
+    ],
+)
+@pytest.mark.parametrize("humidity", [0, 55, 100])
+async def test_set_humidity_writes_active_preset(
+    hass: HomeAssistant,
+    program: int,
+    humidity_keys: tuple[str, ...],
+    humidity: int,
 ) -> None:
+    client, _entry = await _setup_mock_client(
+        hass, {"program_mode": program, "current_program": program}
+    )
+    client.writes.clear()
     await hass.services.async_call(
         "climate",
         "set_humidity",
-        {"entity_id": CLIMATE_ENTITY, "humidity": 55},
+        {"entity_id": CLIMATE_ENTITY, "humidity": humidity},
         blocking=True,
     )
-    assert ("comfort_heating_humidity_setpoint", 550) in mock_client.writes
-    assert ("comfort_cooling_humidity_setpoint", 550) in mock_client.writes
+    assert client.writes == [(key, humidity * 10) for key in humidity_keys]
+    state = hass.states.get(CLIMATE_ENTITY)
+    assert state.attributes["humidity"] == humidity
+
+
+async def test_set_humidity_requires_active_mode(hass: HomeAssistant) -> None:
+    client, _entry = await _setup_mock_client(
+        hass, {"program_mode": 0, "current_program": 0}
+    )
+    client.writes.clear()
+    with pytest.raises(HomeAssistantError, match="Select an active mode"):
+        await hass.services.async_call(
+            "climate",
+            "set_humidity",
+            {"entity_id": CLIMATE_ENTITY, "humidity": 55},
+            blocking=True,
+        )
+    assert client.writes == []
 
 
 async def test_set_humidity_survives_stale_immediate_readback(
