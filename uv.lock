@@ -1313,9 +1313,9 @@ requires-dist = [
     { name = "home-assistant-intents", marker = "extra == 'dev'", specifier = "==2026.9.17" },
     { name = "mutagen", marker = "extra == 'dev'", specifier = "==1.48.1" },
     { name = "pip-audit", marker = "extra == 'dev'", specifier = ">=2.10.1" },
-    { name = "pymicro-vad", marker = "extra == 'dev'", specifier = "==2.1.0" },
+    { name = "pymicro-vad", marker = "extra == 'dev'", specifier = "==1.0.1" },
     { name = "pymodbus", specifier = ">=3.11" },
-    { name = "pyspeex-noise", marker = "extra == 'dev'", specifier = "==2.0.1" },
+    { name = "pyspeex-noise", marker = "extra == 'dev'", specifier = "==1.0.2" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.1.1" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=1.4.0" },
     { name = "pytest-homeassistant-custom-component", marker = "extra == 'dev'", specifier = ">=0.13.363" },
@@ -2210,13 +2210,9 @@ crypto = [
 
 [[package]]
 name = "pymicro-vad"
-version = "2.1.0"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6d/e3/cf037e7b8a42bdc7d231d9cb363789538871fc000c242b0308691216dd23/pymicro_vad-2.1.0.tar.gz", hash = "sha256:df954c56227f8696cf0553bd61df4aa583c914ec5c49a14682c9472130ab1a79", size = 137619, upload-time = "2026-06-29T18:18:54.385Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b4/72/0b5e5e1b664ce0a20594a796bb8175227661412b853d8f8a57cd4d7f627f/pymicro_vad-2.1.0-cp39-abi3-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:873ebdf97de6fed7ed30ec815b00b21e4b15a72e64b70fbe9c133571646d0e0c", size = 93383, upload-time = "2026-06-29T18:18:51.826Z" },
-    { url = "https://files.pythonhosted.org/packages/0a/2a/cea4a6be9ade4c9ac3cde65a4a8a7d7b5d789267c3ec69b54316323b5e1c/pymicro_vad-2.1.0-cp39-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:a99894b0eb58e713aceff2503ba371e3816801a30b3c60443bd39d22b8699e64", size = 96844, upload-time = "2026-06-29T18:18:52.992Z" },
-]
+sdist = { url = "https://files.pythonhosted.org/packages/2e/0f/a92acea368e2b37fbc706f6d049f04557497d981316a2f428b26f14666a9/pymicro_vad-1.0.1.tar.gz", hash = "sha256:60e0508b338b694c7ad71c633c0da6fcd2678a88abb8e948b80fa68934965111", size = 135575, upload-time = "2024-07-31T20:04:04.619Z" }
 
 [[package]]
 name = "pymodbus"
@@ -2359,13 +2355,9 @@ sdist = { url = "https://files.pythonhosted.org/packages/08/64/a99f27d3b4347486c
 
 [[package]]
 name = "pyspeex-noise"
-version = "2.0.1"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d5/e8/306f0f33710ec1cc4215df174066469ffa7e18654562d205986fffae1d3e/pyspeex_noise-2.0.1.tar.gz", hash = "sha256:607b3faf8cd11edf01620fa0e05f7d98ed5027aee637ffe28534321eed1a610a", size = 50714, upload-time = "2026-06-04T20:56:38.124Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5c/42/f6d912bc4ed49912bac7908306e3e09fa90d489845c5758629a7156462fb/pyspeex_noise-2.0.1-cp39-abi3-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:e9770a7807d3f67b54dea95ac89288a8ca222feb1f9351acd411edb2b8c0fd03", size = 137902, upload-time = "2026-06-04T20:56:35.317Z" },
-    { url = "https://files.pythonhosted.org/packages/4e/a8/44214e9554f29bd1b00b4455c62219b8cc2910d118167f2138c0d2b2f284/pyspeex_noise-2.0.1-cp39-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:bbcc365556bd184ab3da17276dbfadb21485dcd013496889006eb31ffb341c06", size = 145654, upload-time = "2026-06-04T20:56:36.704Z" },
-]
+sdist = { url = "https://files.pythonhosted.org/packages/ee/1d/7d2ebb8f73c2b2e929b4ba5370b35dbc91f37268ea53f4b6acd9afa532cb/pyspeex_noise-1.0.2.tar.gz", hash = "sha256:56a888ca2ef7fdea2316aa7fad3636d2fcf5f4450f3a0db58caa7c10a614b254", size = 49882, upload-time = "2024-08-27T17:00:34.859Z" }
 
 [[package]]
 name = "pytest"
