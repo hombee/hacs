@@ -1,3 +1,9 @@
+## [2.4.2](https://github.com/hombee/hacs/compare/v2.4.1...v2.4.2) (2026-09-29)
+
+### Bug Fixes
+
+* **assist:** normalize tool schemas for OpenAI compatibility ([ae677d8](https://github.com/hombee/hacs/commit/ae677d82fdb7013ddfeda4d3d7df9953aab9b91f))
+
 ## [2.4.1](https://github.com/hombee/hacs/compare/v2.4.0...v2.4.1) (2026-09-28)
 
 ### Bug Fixes
