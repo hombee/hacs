@@ -10,8 +10,10 @@ import pytest
 from homeassistant.components import conversation, stt
 from homeassistant.components.assist_pipeline import pipeline
 from homeassistant.components.homeassistant.exposed_entities import async_expose_entity
+from homeassistant.components.intent.timers import async_register_timer_handler
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import Context
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import instance_id
 from homeassistant.setup import async_setup_component
@@ -121,6 +123,85 @@ async def test_conversation_executes_exposed_entity_and_reports_tool_result(
     assert hass.states.get("light.kitchen").state == ("on" if exposed else "off")
     assert result.response.speech["plain"]["speech"] == (
         "Kitchen lamp is on." if exposed else "Device unavailable."
+    )
+
+
+async def test_conversation_sends_compatible_timer_tools_and_executes_them(hass):
+    """Real HA timer schemas reach the gateway without unsupported root keywords."""
+    entry = MockConfigEntry(
+        domain=DOMAIN, unique_id="assist", data={"entry_kind": "assist"}
+    )
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    device = dr.async_get(hass).async_get_or_create(
+        config_entry_id=entry.entry_id, identifiers={(DOMAIN, "voice_satellite")}
+    )
+    timer_events = []
+
+    def timer_event(event, timer):
+        timer_events.append((event.value, timer.seconds))
+
+    unregister = async_register_timer_handler(hass, device.id, timer_event)
+    timer_commands = (("HassStartTimer", 2), ("HassDecreaseTimer", 1))
+
+    async def model(stage, payload):
+        assert stage == "conversation"
+        functions = [tool["function"] for tool in payload["tools"]]
+        timer_tools = [
+            next(tool for tool in functions if tool["name"].endswith(intent_name))
+            for intent_name, _minutes in timer_commands
+        ]
+        for tool in timer_tools:
+            parameters = tool["parameters"]
+            assert parameters["type"] == "object"
+            assert not {"oneOf", "anyOf", "allOf", "enum", "not"}.intersection(
+                parameters
+            )
+            assert parameters["properties"]["minutes"] == {
+                "type": "integer",
+                "minimum": 0,
+            }
+        results = [msg for msg in payload["messages"] if msg["role"] == "tool"]
+        for result in results:
+            assert "error" not in json.loads(result["content"])
+        if len(results) == len(timer_commands):
+            return {"content": "Timer shortened to one minute.", "tool_calls": None}
+        index = len(results)
+        return {
+            "content": None,
+            "tool_calls": [
+                {
+                    "id": f"call_timer_{index}",
+                    "function": {
+                        "name": timer_tools[index]["name"],
+                        "arguments": json.dumps({"minutes": timer_commands[index][1]}),
+                    },
+                }
+            ],
+        }
+
+    agent_id = er.async_get(hass).async_get_entity_id(
+        "conversation", DOMAIN, "hombee_assist_conversation"
+    )
+    try:
+        with (
+            patch.object(entry.runtime_data, "request", side_effect=model),
+            patch.object(entry.runtime_data, "begin_conversation", new=AsyncMock()),
+        ):
+            result = await conversation.async_converse(
+                hass,
+                "Start a two minute timer, then shorten it by one minute",
+                None,
+                Context(),
+                language="en",
+                agent_id=agent_id,
+                device_id=device.id,
+            )
+    finally:
+        unregister()
+    assert timer_events == [("started", 120), ("updated", 60)]
+    assert result.response.speech["plain"]["speech"] == (
+        "Timer shortened to one minute."
     )
 
 
