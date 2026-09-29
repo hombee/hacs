@@ -30,6 +30,13 @@ async def async_setup_entry(hass, entry, async_add_entities) -> None:
     async_add_entities([HombeeConversation(entry)])
 
 
+def _tool_parameters(parameters, custom_serializer):
+    """Match HA's OpenAI conversion while preserving nested parameter schemas."""
+    schema = to_openapi(parameters, custom_serializer=custom_serializer)
+    unsupported_keys = {"oneOf", "anyOf", "allOf", "enum", "not"}
+    return {key: value for key, value in schema.items() if key not in unsupported_keys}
+
+
 def _messages(chat_log):
     messages = []
     for item in chat_log.content:
@@ -90,7 +97,7 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
                         "function": {
                             "name": tool.name,
                             "description": tool.description or "",
-                            "parameters": to_openapi(
+                            "parameters": _tool_parameters(
                                 tool.parameters, custom_serializer=api.custom_serializer
                             ),
                         },
