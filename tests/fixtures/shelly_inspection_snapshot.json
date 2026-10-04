@@ -1,0 +1,32 @@
+{
+  "api_version": 1,
+  "device": {
+    "device_id": "shelly-aabbccddeeff",
+    "name": "shellyplus1-aabbccddeeff",
+    "host": "192.168.1.50",
+    "port": 80,
+    "configured": false,
+    "gen": 2,
+    "model": "SNSW-001X16EU",
+    "firmware": "1.7.0"
+  },
+  "device_info": {
+    "id": "shellyplus1-aabbccddeeff",
+    "mac": "AABBCCDDEEFF",
+    "gen": 2,
+    "model": "SNSW-001X16EU",
+    "ver": "1.7.0",
+    "auth_en": true
+  },
+  "methods": ["Shelly.GetConfig", "Shelly.GetStatus", "Shelly.GetComponents", "Future.SetConfig"],
+  "reads": {
+    "Shelly.GetConfig": {"result": {"future_field": [1, null, {"value": true}]}, "rpc_error": null},
+    "Shelly.GetStatus": {"result": {"future_field": [1, null, {"value": true}]}, "rpc_error": null},
+    "Shelly.GetComponents": {"result": {"future_field": [1, null, {"value": true}]}, "rpc_error": null}
+  },
+  "documentation": {
+    "api": "https://shelly-api-docs.shelly.cloud/gen2/",
+    "device": "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Shelly/",
+    "rpc": "https://shelly-api-docs.shelly.cloud/gen2/General/RPCChannels/"
+  }
+}

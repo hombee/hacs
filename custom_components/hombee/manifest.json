@@ -1,6 +1,9 @@
 {
   "domain": "hombee",
   "name": "Hombee",
+  "after_dependencies": [
+    "zeroconf"
+  ],
   "codeowners": [
     "@hombee"
   ],
