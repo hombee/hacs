@@ -21,6 +21,9 @@ Home Assistant Community Store integrations maintained by Hombee.
   alarms, and automatic clock synchronization.
 - **Doorbells** connect entrance ring sources, cameras, and optional entrance
   actions to Hombee, with persisted delivery of ring events to the Hombee gateway.
+- **Shelly configuration** exposes local Gen2+ discovery, inspection, and generic
+  RPC to Hombee MCP. Agents read official Shelly documentation directly; new RPC
+  methods and JSON fields do not require an integration update.
 
 Jump to [installation](#installation), [Hombee Air](#hombee-air),
 [Hombee Voice](#hombee-voice), [managed lighting](#managed-lighting),
@@ -468,6 +471,9 @@ remain stored in Home Assistant.
 | `hombee/doorbells/status` | Read configured doorbells filtered by HA permissions; administrators also receive discovery suggestions and configuration candidates |
 | `hombee/doorbells/configure` | Administrator: pair the matching instance with the Hombee gateway |
 | `hombee/doorbells/save` | Administrator: replace the doorbell list using `instanceId`, `expectedRevision`, and a unique `requestId` |
+| `hombee/shelly/list` | Administrator: list configured devices and optionally discover unconfigured Gen2+ devices using mDNS |
+| `hombee/shelly/inspect` | Administrator: inspect one device by `device_id` or identify an explicit local `host` |
+| `hombee/shelly/call` | Administrator: call one advertised RPC `method` with arbitrary JSON `params` on a stable `device_id` |
 
 Lighting supports the `profile`, `reset_profile`, `light`, `activity`, `enabled`,
 and `resume` operations. It rejects stale revisions before changing settings.
@@ -481,6 +487,52 @@ settings, selecting activities, toggling adaptation, and resuming it. See the
 [lighting API and MCP reference](docs/lighting.md#configure-through-hombee-app-mcp)
 for tool names, payloads, pagination, errors, and revision handling. The local
 lighting controller continues running when the app or MCP client disconnects.
+
+### Shelly configuration through MCP
+
+The homeowner MCP tools are `shelly_list_devices`, `shelly_inspect_device`, and
+`shelly_call`. Requests run from HA to the device's local HTTP RPC endpoint;
+Shelly cloud access is not required. Devices must be reachable from HA.
+This bridge supports Gen2 and later; Gen1 HTTP APIs are not supported.
+
+List with `discover` (default `true`), `limit` (1–200, default 50), and `offset`.
+The response includes `total`, `discovery_errors`, and official documentation
+links. Discovery browses Shelly mDNS advertisements without scanning the subnet.
+Inspect a device using exactly one of `device_id` or `host`; `port` defaults to
+80 and port 443 uses HTTPS. A manual host must resolve only to local LAN IPs.
+The bridge returns a MAC-based `device_id`, firmware, advertised methods,
+configuration, status, and the first component page when available. Use generic
+`Shelly.GetComponents` calls with `offset` to retrieve subsequent pages.
+
+Configured devices reuse the current native Shelly integration's credentials.
+Add protected devices through that integration; passwords never leave HA.
+Unconfigured devices discovered or identified by host remain known until HA
+restarts, after which listing or host inspection identifies them again.
+Every operation checks the device's identity before sending RPC. Calls reject
+methods absent from the device's current `Shelly.ListMethods` response.
+
+For example, after inspection, a local WebSocket call can set an auto-off timer:
+
+```json
+{
+  "id": 1,
+  "type": "hombee/shelly/call",
+  "device_id": "shelly-aabbccddeeff",
+  "method": "Switch.SetConfig",
+  "params": {"id": 0, "config": {"auto_off": true, "auto_off_delay": 60}}
+}
+```
+
+Agents must consult the [official Gen2+ API](https://shelly-api-docs.shelly.cloud/gen2/)
+for parameters and semantics, accounting for model, firmware, and device profile.
+The live method list confirms availability but supplies no parameter schemas.
+Read the relevant configuration before a change and verify it afterwards.
+The bridge serializes RPC calls per device, limits request JSON to 64 KiB and
+response JSON to 256 KiB, and redacts credential fields in responses.
+Successful WebSocket delivery does not imply successful RPC: check `rpc_error`,
+which is `null` on success, and `result` for the vendor result.
+A timeout or broken response after RPC dispatch returns `shelly_call_unconfirmed`;
+inspect the device before further action and never retry automatically.
 
 ## Updates
 
