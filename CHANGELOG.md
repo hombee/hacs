@@ -1,3 +1,9 @@
+## [2.5.0](https://github.com/hombee/hacs/compare/v2.4.2...v2.5.0) (2026-10-04)
+
+### Features
+
+* **shelly:** add local discovery and generic RPC bridge ([ace4710](https://github.com/hombee/hacs/commit/ace4710b3a58c69a028d3c3224df0c66bd747cdc))
+
 ## [2.4.2](https://github.com/hombee/hacs/compare/v2.4.1...v2.4.2) (2026-09-29)
 
 ### Bug Fixes
