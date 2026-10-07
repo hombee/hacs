@@ -39,6 +39,7 @@ from .modbus_client import HombeeAirModbusClient, HombeeAirModbusError
 from .registers import KIND_COIL, KIND_HOLDING_REGISTER, REGISTERS_BY_KEY
 from .repairs import async_start_alarm_issues, async_stop_alarm_issues
 from .shelly_api import async_setup_shelly_api
+from .voice_exposure import async_setup_voice_exposure
 
 AIR_PLATFORMS = [
     Platform.BINARY_SENSOR,
@@ -73,6 +74,7 @@ _WRITE_COIL_SCHEMA = vol.Schema(
 
 async def async_setup(hass: HomeAssistant, config) -> bool:
     """Register installation-level APIs independently of feature entries."""
+    async_setup_voice_exposure(hass)
     async_register_assist_api(hass)
     await async_setup_invitations(hass)
     await async_setup_doorbells(hass)
