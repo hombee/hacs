@@ -15,11 +15,11 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "bandit[toml]>=1.9.4",
-  "black>=26.5.1",
+  "black>=26.10.0",
   "gazetteer-matcher==1.2.0",
   "ha-ffmpeg==3.2.2",
   "hassil==3.12.1",
-  "home-assistant-intents==2026.9.17",
+  "home-assistant-intents==2026.10.6",
   "mutagen==1.48.1",
   "pip-audit>=2.10.1",
   "pymicro-vad==1.0.1",
@@ -27,8 +27,8 @@ dev = [
   "PyTurboJPEG==1.8.3",
   "pytest>=9.1.1",
   "pytest-asyncio>=1.4.0",
-  "pytest-homeassistant-custom-component>=0.13.363",
-  "ruff>=0.16.6",
+  "pytest-homeassistant-custom-component>=0.13.367",
+  "ruff>=0.16.10",
 ]
 
 [tool.setuptools]
