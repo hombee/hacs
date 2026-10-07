@@ -12,6 +12,7 @@
     "assist_pipeline",
     "camera",
     "conversation",
+    "person",
     "stt",
     "tts",
     "websocket_api"

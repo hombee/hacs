@@ -24,6 +24,14 @@ Home Assistant Community Store integrations maintained by Hombee.
 - **Shelly configuration** exposes local Gen2+ discovery, inspection, and generic
   RPC to Hombee MCP. Agents read official Shelly documentation directly; new RPC
   methods and JSON fields do not require an integration update.
+- **Hombee invitations** let HA administrators email a link from Hombee's
+  **Home configuration → Users**. The first signed-in Hombee account to use the
+  link receives credentials for the invited HA user and is linked to their
+  Person. Administrators can select an existing user or create a new one;
+  existing permissions and Person tracking settings are preserved. Links expire
+  after seven days and invitation access can be revoked without deleting the
+  HA user or Person. This requires the matching Hombee app/backend release and
+  the administrator's connected instance to have a reachable remote URL.
 
 Jump to [installation](#installation), [Hombee Air](#hombee-air),
 [Hombee Voice](#hombee-voice), [managed lighting](#managed-lighting),

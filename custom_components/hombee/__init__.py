@@ -32,6 +32,7 @@ from .coordinator import (
 )
 from .doorbell_api import async_setup_doorbells
 from .entity import device_info, is_writable
+from .invitation_api import async_setup_invitations
 from .lighting_api import async_register_lighting_api
 from .managed_lighting import ManagedLightingManager
 from .modbus_client import HombeeAirModbusClient, HombeeAirModbusError
@@ -73,6 +74,7 @@ _WRITE_COIL_SCHEMA = vol.Schema(
 async def async_setup(hass: HomeAssistant, config) -> bool:
     """Register installation-level APIs independently of feature entries."""
     async_register_assist_api(hass)
+    await async_setup_invitations(hass)
     await async_setup_doorbells(hass)
     await async_setup_shelly_api(hass)
     return True
