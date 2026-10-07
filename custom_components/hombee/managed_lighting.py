@@ -46,6 +46,12 @@ from .lighting_configuration import (
     light_settings,
     validate_light_settings,
 )
+from .voice_exposure import (
+    async_apply_voice_settings,
+    async_hide_from_voice,
+    voice_aliases,
+    voice_options,
+)
 
 STORAGE_VERSION = 1
 STORAGE_KEY_PREFIX = f"{DOMAIN}.managed_lighting"
@@ -79,6 +85,8 @@ class ManagedLightMapping:
     cool_kelvin: int
     transition_seconds: float
     original_hidden_by: str | None = None
+    original_voice_options: dict[str, dict[str, Any]] | None = None
+    original_voice_aliases: tuple[str | None, ...] = ()
     area_id: str | None = None
     device_id: str | None = None
     icon: str | None = None
@@ -107,6 +115,8 @@ class ManagedLightMapping:
                 if raw.get("original_hidden_by") is not None
                 else None
             ),
+            original_voice_options=raw.get("original_voice_options"),
+            original_voice_aliases=tuple(raw.get("original_voice_aliases", [])),
             area_id=str(raw["area_id"]) if raw.get("area_id") else None,
             device_id=str(raw["device_id"]) if raw.get("device_id") else None,
             icon=str(raw["icon"]) if raw.get("icon") else None,
@@ -260,7 +270,12 @@ class ManagedLightingManager:
             return
         entity_id = event.data.get("entity_id")
         registry_entry = er.async_get(self.hass).async_get(entity_id)
-        if registry_entry is None or registry_entry.platform != DOMAIN:
+        if registry_entry is None:
+            return
+        if registry_entry.id in self.mappings:
+            async_hide_from_voice(self.hass, registry_entry.entity_id)
+            return
+        if registry_entry.platform != DOMAIN:
             return
         for mapping in tuple(self.mappings.values()):
             if mapping.logical_unique_id != registry_entry.unique_id:
@@ -668,6 +683,8 @@ class ManagedLightingManager:
                 if source_entry.hidden_by is not None
                 else None
             ),
+            original_voice_options=voice_options(source_entry),
+            original_voice_aliases=voice_aliases(source_entry),
             area_id=area_id,
             device_id=source_entry.device_id,
             icon=source_entry.icon,
@@ -686,6 +703,22 @@ class ManagedLightingManager:
                 f"{mapping.source_registry_id} is missing"
             )
 
+        migrate_voice = mapping.original_voice_options is None
+        if migrate_voice:
+            mapping = replace(
+                mapping,
+                original_voice_options=voice_options(source_entry),
+                original_voice_aliases=voice_aliases(source_entry),
+            )
+            self.mappings[mapping.source_registry_id] = mapping
+
+        new_logical = (
+            registry.async_get_entity_id(
+                LIGHT_DOMAIN, DOMAIN, mapping.logical_unique_id
+            )
+            is None
+        )
+
         if source_entry.entity_id == mapping.public_entity_id:
             registry.async_update_entity(
                 source_entry.entity_id,
@@ -702,6 +735,8 @@ class ManagedLightingManager:
                 hidden_by=er.RegistryEntryHider.INTEGRATION,
             )
 
+        async_hide_from_voice(self.hass, mapping.physical_entity_id)
+
         logical_entry = registry.async_get_or_create(
             LIGHT_DOMAIN,
             DOMAIN,
@@ -716,6 +751,17 @@ class ManagedLightingManager:
             icon=mapping.icon,
             labels=set(mapping.labels),
             name=mapping.name,
+            **(
+                {
+                    "hidden_by": (
+                        er.RegistryEntryHider(mapping.original_hidden_by)
+                        if mapping.original_hidden_by is not None
+                        else None
+                    )
+                }
+                if new_logical
+                else {}
+            ),
         )
         if logical_entry.entity_id != mapping.public_entity_id:
             if registry.async_get(mapping.public_entity_id) is not None:
@@ -725,6 +771,15 @@ class ManagedLightingManager:
             registry.async_update_entity(
                 logical_entry.entity_id,
                 new_entity_id=mapping.public_entity_id,
+            )
+
+        if new_logical or migrate_voice:
+            async_apply_voice_settings(
+                self.hass,
+                mapping.public_entity_id,
+                mapping.original_voice_options,
+                mapping.original_voice_aliases,
+                overwrite=new_logical,
             )
 
         if mapping.source_registry_id in self.entities:
@@ -747,12 +802,26 @@ class ManagedLightingManager:
 
     async def _async_remove_mapping(self, mapping: ManagedLightMapping) -> None:
         registry = er.async_get(self.hass)
+        self.mappings.pop(mapping.source_registry_id, None)
         entity = self.entities.pop(mapping.source_registry_id, None)
         if entity is not None:
             await entity.async_remove()
 
         logical_entity_id = registry.async_get_entity_id(
             LIGHT_DOMAIN, DOMAIN, mapping.logical_unique_id
+        )
+        logical_entry = (
+            registry.async_get(logical_entity_id) if logical_entity_id else None
+        )
+        restored_options = (
+            voice_options(logical_entry)
+            if logical_entry is not None
+            else mapping.original_voice_options or {}
+        )
+        restored_aliases = (
+            voice_aliases(logical_entry)
+            if logical_entry is not None
+            else mapping.original_voice_aliases
         )
         if logical_entity_id is not None:
             registry.async_remove(logical_entity_id)
@@ -773,8 +842,14 @@ class ManagedLightingManager:
                 new_entity_id=mapping.public_entity_id,
                 hidden_by=hidden_by,
             )
+            async_apply_voice_settings(
+                self.hass,
+                mapping.public_entity_id,
+                restored_options,
+                restored_aliases,
+                overwrite=True,
+            )
             await self.hass.async_block_till_done()
-        self.mappings.pop(mapping.source_registry_id, None)
 
     async def _async_reconcile_temperatures(
         self, _now: datetime, *, force: bool = False

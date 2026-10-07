@@ -1,12 +1,18 @@
 """Policy and entity registration tests for Hombee managed lighting."""
 
 import asyncio
+from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import pytest
 from astral import Observer
 from astral.sun import elevation, noon, sunrise, sunset
+from homeassistant.components.homeassistant.exposed_entities import (
+    KNOWN_ASSISTANTS,
+    async_expose_entity,
+    async_should_expose,
+)
 from homeassistant.components.light import ColorMode, LightEntity, LightEntityFeature
 from homeassistant.components.sun.const import ELEVATION_HORIZON
 from homeassistant.config_entries import ConfigFlow
@@ -354,6 +360,121 @@ async def _setup_managed(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
     return entry
+
+
+@pytest.mark.parametrize("exposed", [True, False, None])
+@pytest.mark.parametrize("hidden", [True, False])
+async def test_managed_light_transfers_and_restores_voice_settings(
+    hass, exposed, hidden
+):
+    """Voice follows the public light, including aliases and later user edits."""
+    await _setup_source_light(hass, False)
+    registry = er.async_get(hass)
+    aliases = ["Ceiling", er.COMPUTED_NAME, "Main lamp"]
+    registry.async_update_entity(
+        "light.kitchen",
+        aliases=aliases,
+        hidden_by=er.RegistryEntryHider.USER if hidden else None,
+    )
+    if exposed is not None:
+        async_expose_entity(hass, "conversation", "light.kitchen", exposed)
+    async_expose_entity(hass, "cloud.alexa", "light.kitchen", True)
+    async_expose_entity(hass, "cloud.google_assistant", "light.kitchen", False)
+    entry = await _setup_managed(hass)
+
+    logical = registry.async_get("light.kitchen")
+    assert logical.aliases == aliases
+    assert logical.hidden_by == (er.RegistryEntryHider.USER if hidden else None)
+    assert async_should_expose(hass, "conversation", logical.entity_id) == (
+        exposed if exposed is not None else not hidden
+    )
+    assert async_should_expose(hass, "cloud.alexa", logical.entity_id)
+    assert not async_should_expose(hass, "cloud.google_assistant", logical.entity_id)
+    for assistant in KNOWN_ASSISTANTS:
+        assert not async_should_expose(hass, assistant, "light.kitchen_physical")
+
+    async_expose_entity(hass, "conversation", logical.entity_id, False)
+    async_expose_entity(hass, "cloud.google_assistant", logical.entity_id, True)
+    registry.async_update_entity(logical.entity_id, aliases=["Updated voice name"])
+    assert await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+    assert registry.async_get("light.kitchen").aliases == ["Updated voice name"]
+    assert not async_should_expose(hass, "conversation", "light.kitchen")
+    assert async_should_expose(hass, "cloud.google_assistant", "light.kitchen")
+
+    assert await hass.config_entries.async_remove(entry.entry_id)
+    await hass.async_block_till_done()
+    restored = registry.async_get("light.kitchen")
+    assert restored.platform == "test"
+    assert restored.aliases == ["Updated voice name"]
+    assert not async_should_expose(hass, "conversation", restored.entity_id)
+    assert async_should_expose(hass, "cloud.google_assistant", restored.entity_id)
+    assert async_should_expose(hass, "cloud.alexa", restored.entity_id)
+
+
+@pytest.mark.parametrize("public_aliases", [[er.COMPUTED_NAME], ["Public alias"], []])
+async def test_existing_mapping_migrates_voice_without_overwriting_public_choices(
+    hass, public_aliases
+):
+    """Upgrade pre-fix mappings whose hidden physical source is still exposed."""
+    await _setup_source_light(hass, False)
+    entry = await _setup_managed(hass)
+    registry = er.async_get(hass)
+    registry.async_update_entity("light.kitchen", aliases=public_aliases)
+    registry.async_update_entity("light.kitchen_physical", aliases=["Old alias"])
+    async_expose_entity(hass, "conversation", "light.kitchen", False)
+    await hass.async_block_till_done()
+    # Simulate a mapping persisted by the version without voice metadata.
+    mapping = next(iter(entry.runtime_data.mappings.values()))
+    entry.runtime_data.mappings[mapping.source_registry_id] = replace(
+        mapping, original_voice_options=None, original_voice_aliases=()
+    )
+    assert await hass.config_entries.async_unload(entry.entry_id)
+    async_expose_entity(hass, "conversation", "light.kitchen_physical", True)
+    await hass.async_block_till_done()
+    assert async_should_expose(hass, "conversation", "light.kitchen_physical")
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    assert registry.async_get("light.kitchen").aliases == (
+        ["Old alias"] if public_aliases == [er.COMPUTED_NAME] else public_aliases
+    )
+    assert not async_should_expose(hass, "conversation", "light.kitchen")
+    for assistant in KNOWN_ASSISTANTS:
+        assert not async_should_expose(hass, assistant, "light.kitchen_physical")
+    assert (
+        next(iter(entry.runtime_data.mappings.values())).original_voice_options
+        is not None
+    )
+
+
+async def test_physical_light_cannot_be_reexposed_while_managed(hass):
+    """Registry edits cannot reintroduce the internal target to voice matching."""
+    await _setup_source_light(hass, False)
+    await _setup_managed(hass)
+    for assistant in KNOWN_ASSISTANTS:
+        async_expose_entity(hass, assistant, "light.kitchen_physical", True)
+    await hass.async_block_till_done()
+    for assistant in KNOWN_ASSISTANTS:
+        assert not async_should_expose(hass, assistant, "light.kitchen_physical")
+
+
+async def test_remove_without_public_light_restores_saved_voice_settings(hass):
+    """Saved metadata survives reload and loss of the logical registry entry."""
+    await _setup_source_light(hass, False)
+    registry = er.async_get(hass)
+    registry.async_update_entity("light.kitchen", aliases=[er.COMPUTED_NAME, "Ceiling"])
+    async_expose_entity(hass, "conversation", "light.kitchen", True)
+    entry = await _setup_managed(hass)
+    assert await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+    registry.async_remove("light.kitchen")
+    await hass.async_block_till_done()
+    assert await hass.config_entries.async_remove(entry.entry_id)
+    await hass.async_block_till_done()
+    restored = registry.async_get("light.kitchen")
+    assert restored.platform == "test"
+    assert restored.aliases == [er.COMPUTED_NAME, "Ceiling"]
+    assert async_should_expose(hass, "conversation", "light.kitchen")
 
 
 async def _light_action(hass, service="turn_on", **data):
