@@ -1,3 +1,9 @@
+## [2.6.0](https://github.com/hombee/hacs/compare/v2.5.0...v2.6.0) (2026-10-07)
+
+### Features
+
+* add revocable Hombee user invitations ([16bad2e](https://github.com/hombee/hacs/commit/16bad2e2cb410c04874576d1547a1f69cbc3a75e))
+
 ## [2.5.0](https://github.com/hombee/hacs/compare/v2.4.2...v2.5.0) (2026-10-04)
 
 ### Features
