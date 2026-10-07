@@ -1,3 +1,9 @@
+## [2.6.1](https://github.com/hombee/hacs/compare/v2.6.0...v2.6.1) (2026-10-07)
+
+### Bug Fixes
+
+* **voice:** keep internal entities out of assistant exposure ([28269c3](https://github.com/hombee/hacs/commit/28269c3c2f67d97ac28557c1c57414aff72e21db))
+
 ## [2.6.0](https://github.com/hombee/hacs/compare/v2.5.0...v2.6.0) (2026-10-07)
 
 ### Features
