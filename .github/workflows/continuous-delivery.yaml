@@ -17,11 +17,13 @@ concurrency:
 jobs:
   release:
     name: Release
-    runs-on: namespace-profile-hombee-linux-x64-tiny;job.priority=1
+    runs-on:
+      - nscloud-ubuntu-24.04-amd64-1x2-with-builders
+      - nscloud-no-remote-builders
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: namespacelabs/nscloud-checkout-action@v9
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
