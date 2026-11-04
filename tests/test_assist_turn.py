@@ -81,6 +81,8 @@ async def test_native_pipeline_reserves_before_local_action_and_passes_turn_to_t
         start_stage=pipeline.PipelineStage.STT,
         end_stage=pipeline.PipelineStage.TTS,
         event_callback=events.append,
+        # The synthetic stream ends explicitly, without voice activity detection.
+        audio_settings=pipeline.AudioSettings(is_vad_enabled=False),
     )
 
     async def audio():
