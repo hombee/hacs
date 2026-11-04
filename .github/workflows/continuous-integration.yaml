@@ -16,14 +16,10 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# uv uses GitHub caching. Docker smoke tests use ephemeral local storage.
-# No job needs a persistent Namespace cache volume or remote builder.
 jobs:
   python:
     name: Python quality and tests
-    runs-on:
-      - nscloud-ubuntu-24.04-amd64-2x4-with-builders
-      - nscloud-no-remote-builders
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -52,16 +48,14 @@ jobs:
         run: uv run --locked pytest
   home-assistant:
     name: Home Assistant compatibility
-    runs-on:
-      - nscloud-ubuntu-24.04-amd64-2x4-with-builders
-      - nscloud-no-remote-builders
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - name: Validate HACS metadata
+      - name: Validate Marketplace and HACS metadata
         uses: hacs/action@main
         with:
           category: integration
@@ -69,9 +63,7 @@ jobs:
         uses: home-assistant/actions/hassfest@master
   docker:
     name: Home Assistant Docker smoke
-    runs-on:
-      - nscloud-ubuntu-24.04-amd64-2x4-with-builders
-      - nscloud-no-remote-builders
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -83,9 +75,7 @@ jobs:
   release:
     name: Release dry run
     if: github.event_name != 'push'
-    runs-on:
-      - nscloud-ubuntu-24.04-amd64-1x2-with-builders
-      - nscloud-no-remote-builders
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -96,18 +86,35 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
-          node-version: "node"
+          node-version: "lts/*"
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
       - name: Install release dependencies
         run: bun install --frozen-lockfile
       - name: Verify release runtime
-        run: bun run release -- --dry-run --no-ci
+        run: |
+          # semantic-release checks push access even in dry-run mode.
+          release_remote=$(mktemp -d)
+          trap 'rm -rf "$release_remote"' EXIT
+          git init --bare --initial-branch=main "$release_remote"
+          git switch -C main
+          git push "$release_remote" main --tags
+
+          env -u GITHUB_ACTIONS -u CI node --input-type=module - "$release_remote" <<'JS'
+          import { readFileSync } from 'node:fs';
+          import { pathToFileURL } from 'node:url';
+          import release from 'semantic-release';
+
+          const { plugins } = JSON.parse(readFileSync('.releaserc.json', 'utf8'));
+          await release({
+            dryRun: true,
+            repositoryUrl: pathToFileURL(process.argv[2]).href,
+            plugins: plugins.filter(plugin => plugin !== '@semantic-release/github'),
+          });
+          JS
   security:
     name: Security audit
-    runs-on:
-      - nscloud-ubuntu-24.04-amd64-1x2-with-builders
-      - nscloud-no-remote-builders
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout

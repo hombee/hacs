@@ -3,7 +3,7 @@
 [![Continuous integration](https://github.com/hombee/hacs/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/hombee/hacs/actions/workflows/continuous-integration.yaml)
 [![Continuous delivery](https://github.com/hombee/hacs/actions/workflows/continuous-delivery.yaml/badge.svg)](https://github.com/hombee/hacs/actions/workflows/continuous-delivery.yaml)
 
-Home Assistant Community Store integrations maintained by Hombee.
+The Hombee custom integration for Home Assistant, maintained by Hombee.
 
 ## Features
 
@@ -39,8 +39,8 @@ Jump to [installation](#installation), [Hombee Air](#hombee-air),
 
 ## Requirements
 
-Home Assistant 2026.9 or later and HACS 2.0 or later are required. Configuration
-uses Home Assistant's integration UI; there is no `hombee:` YAML setup.
+Home Assistant 2026.9 or later is required. Configuration uses Home Assistant's
+integration UI; there is no `hombee:` YAML setup.
 
 Air control runs locally and requires a reachable Hombee Air Modbus TCP
 controller. Managed lighting runs locally using lights already provided by
@@ -56,20 +56,41 @@ use the old integration's `hombee_air/managed_lights/list` command to read its
 revision, then send `hombee_air/managed_lights/reconcile` with that revision
 and `lights: []`. This restores the original physical entity IDs. Removing
 the old entry alone does not restore those IDs.
-Then remove the old integration entries, update through HACS, restart HA,
-and add Hombee again, including Air units. New installations and subsequent
-light discovery do not use a reconciliation API.
+Then remove the old integration entries, update the Hombee repository, restart
+Home Assistant, and add Hombee again, including Air units. This applies only to
+the old `hombee_air` domain. Existing `hombee` installations do not need these
+steps when Home Assistant migrates from HACS to Marketplace.
 
 ## Installation
 
-1. Install HACS in Home Assistant.
-2. Open HACS, choose **Custom repositories**, and add this repository as an
-   **Integration** repository.
-3. Install **Hombee** from HACS.
-4. Restart Home Assistant.
-5. Open **Settings > Devices & services > Add integration** and search for
-   **Hombee**.
-6. Choose managed lighting, a Hombee Air unit, or Hombee Voice.
+<!-- ha-marketplace:exclude-start -->
+
+### Home Assistant 2026.11 or later
+
+[![Open Hombee in Home Assistant Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=hombee&repository=hacs&category=integration)
+
+Open the link above, or go to **Settings > Marketplace > Add from link** and
+enter `https://github.com/hombee/hacs`. Connect GitHub when prompted to add the
+custom repository. Open **Hombee** and select **Install**.
+
+### Home Assistant 2026.9 or 2026.10
+
+Use HACS 2.0 or later. In **HACS > Custom repositories**, add
+`https://github.com/hombee/hacs` as an **Integration**, install **Hombee**, and
+restart Home Assistant.
+
+### Already installed through HACS?
+
+Home Assistant automatically carries over your Hombee installation, custom
+repository, and update entity when you upgrade to 2026.11. There is no need to
+reinstall or reconfigure Hombee. See Home Assistant's
+[HACS migration guide](https://www.home-assistant.io/integrations/marketplace/#coming-from-hacs).
+
+<!-- ha-marketplace:exclude-end -->
+
+After installation, open the setup page or go to
+**Settings > Devices & services > Add integration** and search for **Hombee**.
+Choose managed lighting, a Hombee Air unit, or Hombee Voice.
 
 ## Hombee Air
 
@@ -234,7 +255,8 @@ device actions and owns conversation history. Cloud conversation is limited to
 five requests per turn; an exchange that needs more returns an error.
 
 Speech recognition, conversation, and speech synthesis use models selected by
-the Hombee backend. Model selection can change independently of HACS updates.
+the Hombee backend. Model selection can change independently of integration
+updates.
 English and Polish speech are supported. Each audio request is limited to
 30 seconds. Requests send audio, conversation context, and the available
 exposed-entity tools to Hombee's metered OpenAI gateway. Your OpenAI API key
@@ -264,7 +286,7 @@ Cancelling renewal preserves paid access until expiry. Expired Pro access
 disables cloud voice; expired additional packages pause assignments beyond the
 remaining allowance, in association order. Remove an association in Pro
 configuration to select another instance. The app explains missing or outdated
-HACS installations and offers refresh after installation or upgrade.
+Hombee installations and offers refresh after installation or upgrade.
 
 ### Repair and diagnostics
 
@@ -544,7 +566,9 @@ inspect the device before further action and never retry automatically.
 
 ## Updates
 
-Install updates through HACS when a new GitHub Release is available.
+Install new Hombee releases under **Settings > Updates** in Home Assistant
+2026.11 or later, or through HACS on 2026.9 and 2026.10. Restart Home Assistant
+after updating to load the new version.
 
 ## Development
 

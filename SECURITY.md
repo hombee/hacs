@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Only the latest published Hombee Air HACS release receives security fixes.
+Only the latest published Hombee integration release receives security fixes.
 
 ## Reporting a vulnerability
 

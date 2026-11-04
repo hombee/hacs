@@ -17,9 +17,7 @@ concurrency:
 jobs:
   release:
     name: Release
-    runs-on:
-      - nscloud-ubuntu-24.04-amd64-1x2-with-builders
-      - nscloud-no-remote-builders
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -34,7 +32,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
-          node-version: "node"
+          node-version: "lts/*"
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
       - name: Install release dependencies

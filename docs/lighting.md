@@ -256,5 +256,5 @@ turns an inactive lamp on. Resume validates all targets before changing any.
 
 If a connection fails during a write, its outcome is unknown. Read settings and
 manual overrides before deciding whether another edit is needed. The app does
-not automatically retry writes. Install the HACS change before enabling the app
-tools; older integrations return an unsupported capability with update guidance.
+not automatically retry writes. Update the Hombee integration before enabling the
+app tools; older versions return an unsupported capability with update guidance.
