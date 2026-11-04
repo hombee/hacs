@@ -11,6 +11,11 @@ updates:
 
   - package-ecosystem: uv
     directory: /
+    # Assist loads these from Home Assistant's component manifest. Update the
+    # pins in pyproject.toml when the tested Home Assistant version changes them.
+    ignore:
+      - dependency-name: pymicro-vad
+      - dependency-name: pyspeex-noise
     groups:
       dependencies:
         patterns:
