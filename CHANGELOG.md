@@ -1,3 +1,9 @@
+## [2.7.0](https://github.com/hombee/hacs/compare/v2.6.1...v2.7.0) (2026-11-08)
+
+### Features
+
+* **energy:** add official SolarEdge local telemetry and load policies ([f4b2615](https://github.com/hombee/hacs/commit/f4b2615c4ed8e428c5dcfdd050a8900a2adc8232))
+
 ## [2.6.1](https://github.com/hombee/hacs/compare/v2.6.0...v2.6.1) (2026-10-07)
 
 ### Bug Fixes
