@@ -31,6 +31,7 @@ from .coordinator import (
     create_runtime,
 )
 from .doorbell_api import async_setup_doorbells
+from .energy.api import async_setup_energy
 from .entity import device_info, is_writable
 from .invitation_api import async_setup_invitations
 from .lighting_api import async_register_lighting_api
@@ -78,6 +79,7 @@ async def async_setup(hass: HomeAssistant, config) -> bool:
     async_register_assist_api(hass)
     await async_setup_invitations(hass)
     await async_setup_doorbells(hass)
+    await async_setup_energy(hass)
     await async_setup_shelly_api(hass)
     return True
 

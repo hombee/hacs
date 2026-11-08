@@ -1,0 +1,24 @@
+{
+  "protocol": 1,
+  "instanceId": "ha-instance-fixture",
+  "publisherId": "publisher-fixture",
+  "generation": "grant-generation-fixture",
+  "sessionId": "boot-session-fixture",
+  "bindingId": "binding-fixture",
+  "site": { "provider": "solaredge", "id": "cloud-site-42" },
+  "sourceId": "config-entry-fixture",
+  "observedAtMs": 1794096000000,
+  "sequence": 8,
+  "bindingRevision": 8,
+  "quality": "fresh",
+  "gridState": "connected",
+  "telemetry": {
+    "site": { "provider": "solaredge", "id": "cloud-site-42" },
+    "timestamp": "2026-11-08T00:00:00.000Z",
+    "gridPower": -700.0,
+    "solarPower": 3200.0,
+    "loadPower": 2000.0,
+    "batteryPower": 500.0,
+    "batterySoc": 78.0
+  }
+}

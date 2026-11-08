@@ -21,6 +21,10 @@ The Hombee custom integration for Home Assistant, maintained by Hombee.
   alarms, and automatic clock synchronization.
 - **Doorbells** connect entrance ring sources, cameras, and optional entrance
   actions to Hombee, with persisted delivery of ring events to the Hombee gateway.
+- **Local energy** publishes coherent readings from HA's official SolarEdge
+  Modbus integration and optionally runs explicit load-switch policies in HA.
+  It works with the phone closed and uses a separate account-scoped energy
+  pairing. See [local energy setup and API](docs/energy.md).
 - **Shelly configuration** exposes local Gen2+ discovery, inspection, and generic
   RPC to Hombee MCP. Agents read official Shelly documentation directly; new RPC
   methods and JSON fields do not require an integration update.
@@ -501,6 +505,10 @@ remain stored in Home Assistant.
 | `hombee/doorbells/status` | Read configured doorbells filtered by HA permissions; administrators also receive discovery suggestions and configuration candidates |
 | `hombee/doorbells/configure` | Administrator: pair the matching instance with the Hombee gateway |
 | `hombee/doorbells/save` | Administrator: replace the doorbell list using `instanceId`, `expectedRevision`, and a unique `requestId` |
+| `hombee/energy/status` | Administrator: discover official SolarEdge sources and inspect a scoped publisher's bindings, revision, and health |
+| `hombee/energy/configure` | Administrator: configure the matching instance's account-scoped energy publisher and binding list |
+| `hombee/energy/save` | Administrator: atomically replace one publisher's mappings and opt-in local policies using its current revision |
+| `hombee/energy/unconfigure` | Administrator: remove one energy binding and delete its grant on final removal |
 | `hombee/shelly/list` | Administrator: list configured devices and optionally discover unconfigured Gen2+ devices using mDNS |
 | `hombee/shelly/inspect` | Administrator: inspect one device by `device_id` or identify an explicit local `host` |
 | `hombee/shelly/call` | Administrator: call one advertised RPC `method` with arbitrary JSON `params` on a stable `device_id` |
