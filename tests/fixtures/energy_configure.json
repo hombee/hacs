@@ -1,0 +1,43 @@
+{
+  "protocol": 1,
+  "instanceId": "ha-instance-fixture",
+  "publisherId": "publisher-fixture",
+  "operationId": "configure-fixture",
+  "expectedRevision": 7,
+  "bindings": [
+    {
+      "bindingId": "binding-fixture",
+      "site": { "provider": "solaredge", "id": "cloud-site-42" },
+      "sourceIds": ["config-entry-fixture"],
+      "gridMeterId": "meter-fixture",
+      "batteryIds": ["battery-fixture"],
+      "policy": {
+        "enabled": true,
+        "maxObservationAgeSeconds": 30,
+        "maxSkewSeconds": 5,
+        "rules": [
+          {
+            "id": "surplus-water-heater",
+            "enabled": true,
+            "conditions": [
+              { "field": "gridPower", "maximum": -1500, "hysteresis": 250 },
+              { "field": "batterySoc", "minimum": 70, "hysteresis": 5 }
+            ],
+            "dwellSeconds": 120,
+            "action": {
+              "entityId": "switch.water_heater",
+              "service": "turnOn"
+            },
+            "manualOverrideUntilMs": 1794096600000
+          }
+        ]
+      }
+    }
+  ],
+  "publisher": {
+    "url": "https://hombee.app",
+    "token": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "generation": "grant-generation-fixture",
+    "bindingRevision": 8
+  }
+}
