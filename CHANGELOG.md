@@ -1,3 +1,9 @@
+## [2.8.0](https://github.com/hombee/hacs/compare/v2.7.0...v2.8.0) (2026-11-11)
+
+### Features
+
+* **voice:** use authorized Hombee tools through the backend ([504a1c5](https://github.com/hombee/hacs/commit/504a1c52733e5863e6930147ce40876dcc05c213))
+
 ## [2.7.0](https://github.com/hombee/hacs/compare/v2.6.1...v2.7.0) (2026-11-08)
 
 ### Features
