@@ -80,8 +80,15 @@ async def test_conversation_executes_exposed_entity_and_reports_tool_result(
             else:
                 assert "error" in payload["messages"][-1]["content"]
             return {
-                "content": "Kitchen lamp is on." if exposed else "Device unavailable.",
-                "tool_calls": None,
+                "messages": [],
+                "message": {
+                    "role": "assistant",
+                    "content": (
+                        "Kitchen lamp is on." if exposed else "Device unavailable."
+                    ),
+                    "tool_calls": None,
+                },
+                "continuation": None,
             }
         names = [tool["function"]["name"] for tool in payload["tools"]]
         turn_on_tool = next(
@@ -90,18 +97,24 @@ async def test_conversation_executes_exposed_entity_and_reports_tool_result(
         if exposed:
             assert turn_on_tool, names
         return {
-            "content": None,
-            "tool_calls": [
-                {
-                    "id": "call_light",
-                    "function": {
-                        "name": turn_on_tool or "homeassistant__HassTurnOn",
-                        "arguments": json.dumps(
-                            {"name": "Kitchen lamp", "domain": ["light"]}
-                        ),
-                    },
-                }
-            ],
+            "messages": [],
+            "continuation": "native-light",
+            "message": {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "call_light",
+                        "type": "function",
+                        "function": {
+                            "name": turn_on_tool or "homeassistant__HassTurnOn",
+                            "arguments": json.dumps(
+                                {"name": "Kitchen lamp", "domain": ["light"]}
+                            ),
+                        },
+                    }
+                ],
+            },
         }
 
     agent_id = er.async_get(hass).async_get_entity_id(
@@ -110,6 +123,7 @@ async def test_conversation_executes_exposed_entity_and_reports_tool_result(
     with (
         patch.object(entry.runtime_data, "request", side_effect=model),
         patch.object(entry.runtime_data, "begin_conversation", new=AsyncMock()),
+        patch.object(entry.runtime_data, "finish", new=AsyncMock()),
     ):
         result = await conversation.async_converse(
             hass,
@@ -165,19 +179,35 @@ async def test_conversation_sends_compatible_timer_tools_and_executes_them(hass)
         for result in results:
             assert "error" not in json.loads(result["content"])
         if len(results) == len(timer_commands):
-            return {"content": "Timer shortened to one minute.", "tool_calls": None}
+            return {
+                "messages": [],
+                "message": {
+                    "role": "assistant",
+                    "content": "Timer shortened to one minute.",
+                    "tool_calls": None,
+                },
+                "continuation": None,
+            }
         index = len(results)
         return {
-            "content": None,
-            "tool_calls": [
-                {
-                    "id": f"call_timer_{index}",
-                    "function": {
-                        "name": timer_tools[index]["name"],
-                        "arguments": json.dumps({"minutes": timer_commands[index][1]}),
-                    },
-                }
-            ],
+            "messages": [],
+            "continuation": f"timer-{index}",
+            "message": {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": f"call_timer_{index}",
+                        "type": "function",
+                        "function": {
+                            "name": timer_tools[index]["name"],
+                            "arguments": json.dumps(
+                                {"minutes": timer_commands[index][1]}
+                            ),
+                        },
+                    }
+                ],
+            },
         }
 
     agent_id = er.async_get(hass).async_get_entity_id(

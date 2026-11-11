@@ -14,7 +14,7 @@ from homeassistant.helpers.entity import Entity
 from .assist_client import HombeeAssistClient
 
 ASSIST_ENTRY_KIND = "assist"
-ASSIST_PROTOCOL = 2
+ASSIST_PROTOCOL = 3
 ASSIST_NAME = "Hombee Voice"
 ASSIST_LANGUAGES = ["en", "en-US", "en-GB", "pl", "pl-PL"]
 
