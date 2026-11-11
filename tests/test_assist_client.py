@@ -96,3 +96,22 @@ async def test_conversation_transport_timeout_releases_turn_without_retry(hass):
         await client.request("conversation", {"messages": []})
     session.post.assert_called_once()
     finish.assert_awaited_once()
+
+
+@pytest.mark.parametrize(
+    ("turn", "expected"),
+    [
+        (None, False),
+        (_Turn("turn-1", expires_at=1001), True),
+        (_Turn("turn-1", expires_at=1000), False),
+        (_Turn("turn-1", expires_at=1001, failed=True), False),
+        (_Turn("turn-1", expires_at=1001, closed=True), False),
+    ],
+)
+def test_native_execution_requires_a_live_reserved_turn(hass, turn, expected):
+    with (
+        patch("custom_components.hombee.assist_client._TURN") as current,
+        patch("custom_components.hombee.assist_client.time", return_value=1000),
+    ):
+        current.get.return_value = turn
+        assert _client(hass).can_execute_tools() is expected

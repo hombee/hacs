@@ -14,7 +14,7 @@ from probatio import to_openapi
 from . import assist_history
 from .assist import HombeeAssistEntity
 from .assist_conversation import decode_response
-from .assist_notices import failure_notice
+from .assist_notices import failure_notice, limit_notice
 from .const import DOMAIN
 
 PARALLEL_UPDATES = 0
@@ -46,6 +46,7 @@ def _messages(chat_log):
                     "role": "tool",
                     "tool_call_id": item.tool_call_id,
                     "content": json.dumps(assist_history.TOOL_RESULTS.data(item)),
+                    "is_error": assist_history.TOOL_RESULTS.error(item),
                 }
             )
             continue
@@ -64,6 +65,14 @@ def _messages(chat_log):
             ]
         messages.append(message)
     return messages
+
+
+def _result_counts(content):
+    results = [
+        item for item in content if isinstance(item, conversation.ToolResultContent)
+    ]
+    failed = sum(assist_history.TOOL_RESULTS.error(item) for item in results)
+    return len(results) - failed, failed
 
 
 class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
@@ -114,6 +123,8 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
             }
             seen_continuations = set()
             continuation = None
+            completed = 0
+            failed = 0
             device = (
                 dr.async_get(self.hass).async_get(user_input.device_id)
                 if user_input.device_id
@@ -126,7 +137,7 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
                 "satelliteId": user_input.satellite_id,
                 "areaId": device.area_id if device else None,
             }
-            for _ in range(5):
+            for iteration in range(20):
                 payload = {
                     "messages": _messages(chat_log),
                     "tools": tools,
@@ -140,20 +151,44 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
                 )
                 for item in history:
                     chat_log.async_add_assistant_content_without_tools(item)
-                for item in [*history, content]:
-                    if isinstance(item, conversation.AssistantContent):
-                        seen_ids.update(call.id for call in item.tool_calls or [])
+                done, errors = _result_counts(history)
+                completed += done
+                failed += errors
+                pending = len(content.tool_calls or [])
+                if pending and (
+                    completed + failed + pending > 40
+                    or iteration == 19
+                    or not self.client.can_execute_tools()
+                ):
+                    chat_log.async_add_assistant_content_without_tools(
+                        conversation.AssistantContent(
+                            agent_id=user_input.agent_id,
+                            content=limit_notice(
+                                user_input.language, completed, failed, pending
+                            ),
+                        )
+                    )
+                    return conversation.async_get_result_from_chat_log(
+                        user_input, chat_log
+                    )
+                seen_ids.update(
+                    call.id
+                    for item in [*history, content]
+                    if isinstance(item, conversation.AssistantContent)
+                    for call in item.tool_calls or []
+                )
                 if continuation is not None:
                     seen_continuations.add(continuation)
-                async for _result in chat_log.async_add_assistant_content(content):
-                    pass
+                results = [
+                    item async for item in chat_log.async_add_assistant_content(content)
+                ]
+                done, errors = _result_counts(results)
+                completed += done
+                failed += errors
                 if not content.tool_calls:
                     return conversation.async_get_result_from_chat_log(
                         user_input, chat_log
                     )
-            raise HomeAssistantError(
-                "Too many device actions. Please make a shorter request."
-            )
         except conversation.ConverseError as error:
             await self.client.finish()
             return error.as_conversation_result()

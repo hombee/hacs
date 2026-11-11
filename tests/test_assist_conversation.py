@@ -19,7 +19,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.hombee import assist_history
 from custom_components.hombee.assist_conversation import decode_response
-from custom_components.hombee.assist_notices import failure_notice
+from custom_components.hombee.assist_notices import failure_notice, limit_notice
 from custom_components.hombee.const import DOMAIN
 from custom_components.hombee.conversation import _messages
 
@@ -95,7 +95,9 @@ def test_cloud_and_native_history_roundtrip_on_supported_ha_result_apis(legacy):
     assert token is None
     assert history[0].tool_calls[0].external
     assert json.loads(wire[1]["content"]) == data
+    assert wire[1]["is_error"] is True
     assert json.loads(wire[2]["content"]) == {"success": []}
+    assert wire[2]["is_error"] is False
     assert wire[3] == {"role": "assistant", "content": "Access changed."}
     if not legacy:
         assert history[1].result.error
@@ -121,6 +123,7 @@ async def voice(hass):
     )
     with (
         patch.object(entry.runtime_data, "begin_conversation", new=AsyncMock()),
+        patch.object(entry.runtime_data, "can_execute_tools", return_value=True),
         patch.object(entry.runtime_data, "finish", new=AsyncMock()) as finish,
     ):
         yield entry.runtime_data, agent_id, actions, finish
@@ -291,3 +294,172 @@ async def test_continuation_failure_does_not_repeat_completed_native_action(
     assert count == 3
     finish.assert_awaited_once()
     assert result.response.speech["plain"]["speech"] == failure_notice("pl")
+
+
+async def test_more_than_five_native_continuations_keep_one_cloud_execution(
+    hass, voice
+):
+    client, agent_id, actions, _finish = voice
+    count = 0
+    for index in range(1, 7):
+        entity_id = f"light.room_{index}"
+        hass.states.async_set(entity_id, "off", {"friendly_name": f"Lamp {index}"})
+        async_expose_entity(hass, "conversation", entity_id, True)
+
+    async def gateway(_stage, payload):
+        nonlocal count
+        count += 1
+        if count > 1:
+            cloud = [
+                item
+                for item in payload["messages"]
+                if item.get("tool_call_id") == "cloud-1"
+            ]
+            assert len(cloud) == 1
+            assert not cloud[0]["is_error"]
+        if count == 7:
+            return _response(content="Task listed and six device actions completed.")
+        call = _native(payload, f"native-{count}")
+        call["function"]["arguments"] = json.dumps(
+            {"name": f"Lamp {count}", "domain": ["light"]}
+        )
+        return _response(
+            [call],
+            continuation=f"continue-{count}",
+            messages=_cloud_history() if count == 1 else [],
+        )
+
+    with patch.object(client, "request", side_effect=gateway):
+        result = await conversation.async_converse(
+            hass,
+            "List tasks and do six device actions",
+            None,
+            Context(),
+            language="en",
+            agent_id=agent_id,
+        )
+    assert count == 7
+    assert len(actions) == 6
+    assert result.response.speech["plain"]["speech"] == (
+        "Task listed and six device actions completed."
+    )
+
+
+@pytest.mark.parametrize(
+    ("batch_size", "cloud", "executed", "pending", "requests"),
+    [(40, False, 40, 1, 2), (39, True, 39, 1, 2), (40, True, 0, 40, 1)],
+)
+async def test_combined_tool_limit_rejects_entire_native_batch(
+    hass, voice, *, batch_size, cloud, executed, pending, requests
+):
+    client, agent_id, actions, _finish = voice
+    count = 0
+
+    async def gateway(_stage, payload):
+        nonlocal count
+        count += 1
+        return _response(
+            [
+                _native(payload, f"native-{count}-{index}")
+                for index in range(batch_size if count == 1 else 1)
+            ],
+            continuation=f"continue-{count}",
+            messages=_cloud_history() if cloud and count == 1 else [],
+        )
+
+    with patch.object(client, "request", side_effect=gateway):
+        result = await conversation.async_converse(
+            hass,
+            "Perform many actions",
+            None,
+            Context(),
+            language="en",
+            agent_id=agent_id,
+        )
+    assert len(actions) == executed
+    assert count == requests
+    assert result.response.speech["plain"]["speech"] == limit_notice(
+        "en", executed + int(cloud), 0, pending
+    )
+
+
+async def test_twentieth_response_cannot_start_another_native_action(hass, voice):
+    client, agent_id, actions, _finish = voice
+    count = 0
+
+    async def gateway(_stage, payload):
+        nonlocal count
+        count += 1
+        return _response(
+            [_native(payload, f"native-{count}")], continuation=f"continue-{count}"
+        )
+
+    with patch.object(client, "request", side_effect=gateway):
+        result = await conversation.async_converse(
+            hass, "Continue actions", None, Context(), language="pl", agent_id=agent_id
+        )
+    assert count == 20
+    assert len(actions) == 19
+    assert result.response.speech["plain"]["speech"] == limit_notice("pl", 19, 0, 1)
+
+
+async def test_turn_expiry_after_response_prevents_native_batch(hass, voice):
+    client, agent_id, actions, _finish = voice
+
+    async def gateway(_stage, payload):
+        return _response(
+            [_native(payload)], continuation="continue-1", messages=_cloud_history()
+        )
+
+    with (
+        patch.object(client, "request", side_effect=gateway),
+        patch.object(client, "can_execute_tools", return_value=False),
+    ):
+        result = await conversation.async_converse(
+            hass,
+            "List tasks and switch on light",
+            None,
+            Context(),
+            language="en",
+            agent_id=agent_id,
+        )
+    assert actions == []
+    assert result.response.speech["plain"]["speech"] == limit_notice("en", 1, 0, 1)
+
+
+async def test_modern_native_failure_flag_reaches_backend_without_changing_data(
+    hass, voice
+):
+    client, agent_id, actions, _finish = voice
+    data = {"message": "The device is unavailable."}
+    count = 0
+
+    async def gateway(_stage, payload):
+        nonlocal count
+        count += 1
+        if count == 1:
+            return _response([_native(payload)], continuation="continue-1")
+        assert payload["messages"][-1]["is_error"] is True
+        assert json.loads(payload["messages"][-1]["content"]) == data
+        return _response(content="The device action failed; nothing else was run.")
+
+    with (
+        patch.object(client, "request", side_effect=gateway),
+        patch.object(
+            llm.APIInstance,
+            "async_call_tool",
+            return_value=llm.ToolResult(data=data, error=True),
+        ),
+    ):
+        result = await conversation.async_converse(
+            hass,
+            "Switch on the light",
+            None,
+            Context(),
+            language="en",
+            agent_id=agent_id,
+        )
+    assert actions == []
+    assert result.response.speech["plain"]["speech"] == (
+        "The device action failed; nothing else was run."
+    )

@@ -26,6 +26,14 @@ class ToolResultAdapter:
         """Read both native and external results without a deprecated API call."""
         return content.tool_result if self._result_type is None else content.result.data
 
+    def error(self, content) -> bool:
+        """Preserve native failures even when the result data has no error key."""
+        return (
+            bool(content.tool_result.get("error"))
+            if self._result_type is None
+            else bool(content.result.error)
+        )
+
 
 # HA 2026.10 introduced llm.ToolResult; 2026.9 stores the result dictionary directly.
 TOOL_RESULTS = ToolResultAdapter(

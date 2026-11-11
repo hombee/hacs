@@ -123,6 +123,7 @@ async def test_conversation_executes_exposed_entity_and_reports_tool_result(
     with (
         patch.object(entry.runtime_data, "request", side_effect=model),
         patch.object(entry.runtime_data, "begin_conversation", new=AsyncMock()),
+        patch.object(entry.runtime_data, "can_execute_tools", return_value=True),
         patch.object(entry.runtime_data, "finish", new=AsyncMock()),
     ):
         result = await conversation.async_converse(
@@ -217,6 +218,7 @@ async def test_conversation_sends_compatible_timer_tools_and_executes_them(hass)
         with (
             patch.object(entry.runtime_data, "request", side_effect=model),
             patch.object(entry.runtime_data, "begin_conversation", new=AsyncMock()),
+            patch.object(entry.runtime_data, "can_execute_tools", return_value=True),
         ):
             result = await conversation.async_converse(
                 hass,

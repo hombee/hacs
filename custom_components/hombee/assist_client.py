@@ -43,6 +43,16 @@ class HombeeAssistClient:
         if current := _TURN.get():
             current.conversation_started = True
 
+    def can_execute_tools(self) -> bool:
+        """Native actions must still belong to a live, reserved voice turn."""
+        current = _TURN.get()
+        return bool(
+            current
+            and not current.closed
+            and not current.failed
+            and current.expires_at > time()
+        )
+
     async def _begin(self, *, force=False) -> _Turn:
         current = _TURN.get()
         if not force and current and not current.closed:
