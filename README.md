@@ -253,10 +253,21 @@ packages add instance slots. Hombee creates a **Hombee Voice** Assist
 pipeline automatically. Select it on your Assist device or voice satellite.
 
 The integration provides native `stt`, `conversation`, and `tts` entities.
-The pipeline is created with local intents preferred; cloud conversation uses
-Home Assistant's Assist tools and exposed entities. Home Assistant executes
-device actions and owns conversation history. Cloud conversation is limited to
-five requests per turn; an exchange that needs more returns an error.
+The pipeline is created with local intents preferred. Home Assistant executes
+its native Assist tools with exposed-entity permissions and keeps conversation
+history, room context and device context. Hombee also discovers and executes
+the Hombee tools currently authorized for the account that enabled Voice on the
+instance, including Workforce operations. It checks current account permissions
+in the backend; Home Assistant needs no additional login or MCP configuration.
+Mixed requests can use both native device actions and Hombee operations. The
+backend allows up to 20 model requests and 40 combined native and Hombee tool
+executions per turn, within five minutes and the reserved spend allowance.
+It reserves the final model request for a report of completed and unfinished
+work. Three consecutive tool failures or three identical calls without progress
+also stop further actions and produce a report. Each instance can process at
+most two complex requests at once. A final response releases its work slot;
+delivering its speech does not occupy that slot. These limits apply to each
+new spoken request; follow-up requests keep the native conversation history.
 
 Speech recognition, conversation, and speech synthesis use models selected by
 the Hombee backend. Model selection can change independently of integration
@@ -273,13 +284,16 @@ grant cloud access: complete the association in Hombee Pro configuration.
 
 ### Usage and subscription
 
-Each instance has a US$2 API allowance per UTC calendar month. The gateway
-reserves enough for a bounded voice turn before recognition or cloud-controlled
-device actions: one recording, up to five conversation requests, and one spoken
-reply. This protects the spoken reply even if concurrent turns use the remaining
-allowance. Pro configuration separates consumed and reserved amounts, warns at
+Each instance has a US$2 API allowance per UTC calendar month. Before recognition
+or cloud-controlled device actions, the gateway reserves a US$0.27 turn allowance
+from that balance. A turn can include one recording, up to 20 model requests,
+and one spoken reply; each step must fit the remaining allowance and time.
+Capacity for the final report and spoken reply stays reserved even if concurrent
+turns use the remaining monthly allowance. Pro configuration separates consumed
+and reserved amounts, warns at
 80% usage, and shows the reset date in your local time zone. Unused capacity is
-released when speech finishes or after five minutes for interrupted turns.
+released when the final response finishes, retaining only the speech allowance
+until speech finishes, the turn closes, or the original five-minute expiry.
 Requests with uncertain provider outcomes retain their individual reservations.
 Cloud stages stop when there is insufficient capacity for a complete turn.
 Usage resets on the first day of the next month, and removing or reconnecting

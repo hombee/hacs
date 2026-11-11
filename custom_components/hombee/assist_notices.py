@@ -19,6 +19,21 @@ def failure_notice(language: str) -> str:
     return FAILURE_NOTICES["pl" if language.startswith("pl") else "en"]
 
 
+def limit_notice(language: str, completed: int, failed: int, pending: int) -> str:
+    """Summarize recorded results when a defensive turn guard stops new actions."""
+    if language.startswith("pl"):
+        return (
+            f"Osiągnięto limit tej tury. Ukończone czynności: {completed}; "
+            f"nieudane: {failed}. Nie wykonano {pending} oczekujących czynności. "
+            "Poproś ponownie o dokończenie pozostałej pracy."
+        )
+    return (
+        f"This turn reached its limit. Operations completed: {completed}; "
+        f"failed: {failed}. I did not run {pending} pending operations. "
+        "Ask again for the remaining work."
+    )
+
+
 async def async_notice_audio(hass, message: str):
     """Only exact notice text is eligible, avoiding cached false confirmations."""
     for language, notice in FAILURE_NOTICES.items():

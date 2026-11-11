@@ -43,6 +43,16 @@ class HombeeAssistClient:
         if current := _TURN.get():
             current.conversation_started = True
 
+    def can_execute_tools(self) -> bool:
+        """Native actions must still belong to a live, reserved voice turn."""
+        current = _TURN.get()
+        return bool(
+            current
+            and not current.closed
+            and not current.failed
+            and current.expires_at > time()
+        )
+
     async def _begin(self, *, force=False) -> _Turn:
         current = _TURN.get()
         if not force and current and not current.closed:
@@ -93,6 +103,15 @@ class HombeeAssistClient:
                 raise HomeAssistantError(
                     "Repair this instance in Hombee Pro configuration."
                 )
+            timeout = ClientTimeout(total=40)
+            if stage == "conversation":
+                remaining = turn.expires_at - time() if turn is not None else 0
+                if remaining <= 0:
+                    code = "turn_expired"
+                    raise HomeAssistantError("This voice turn has expired.")
+                # One request can include several cloud inferences and tool calls.
+                # Disable aiohttp's deadline rounding so it stops by turn expiry.
+                timeout = ClientTimeout(total=remaining, ceil_threshold=float("inf"))
             headers = {
                 "Authorization": f"Bearer {data['token']}",
                 "Idempotency-Key": request_id,
@@ -107,7 +126,7 @@ class HombeeAssistClient:
                 url,
                 json=payload,
                 headers=headers,
-                timeout=ClientTimeout(total=40),
+                timeout=timeout,
                 allow_redirects=False,
             ) as response:
                 result = await response.json()
