@@ -91,6 +91,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         entry.runtime_data = HombeeAssistClient(hass, entry)
         await hass.config_entries.async_forward_entry_setups(entry, ASSIST_PLATFORMS)
         await async_setup_assist_pipeline(hass, entry)
+        entry.runtime_data.notices.async_start()
         return True
     if entry_kind == ENTRY_KIND_MANAGED_LIGHTING:
         async_register_lighting_api(hass)

@@ -15,6 +15,19 @@ from homeassistant.components import persistent_notification
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
+from .assist_device_notices import DeviceNotices, NoticeTarget, VoiceNotice
+
+
+class AssistRequestError(HomeAssistantError):
+    """Keep the backend failure code and the stage that produced it."""
+
+    def __init__(self, code: str, stage: str) -> None:
+        super().__init__(
+            "Hombee Voice could not complete this request. Check Pro configuration."
+        )
+        self.code = code
+        self.stage = stage
+
 
 @dataclass
 class _Turn:
@@ -23,6 +36,8 @@ class _Turn:
     failed: bool = False
     conversation_started: bool = False
     closed: bool = False
+    notice_target: NoticeTarget | None = None
+    notice_queued: bool = False
 
 
 _TURN: ContextVar[_Turn | None] = ContextVar("hombee_assist_turn", default=None)
@@ -35,6 +50,7 @@ class HombeeAssistClient:
         self.hass = hass
         self.entry = entry
         self.diagnostic: dict[str, Any] | None = None
+        self.notices = DeviceNotices(hass, entry)
 
     async def begin_conversation(self) -> None:
         """A follow-up is a new turn, even when it shares a conversation ID."""
@@ -53,13 +69,13 @@ class HombeeAssistClient:
             and current.expires_at > time()
         )
 
-    async def _begin(self, *, force=False) -> _Turn:
+    async def _begin(self, *, force=False, notice_target=None) -> _Turn:
         current = _TURN.get()
         if not force and current and not current.closed:
             if current.failed or current.expires_at <= time():
                 raise HomeAssistantError("This voice turn could not be completed.")
             return current
-        current = _Turn(str(uuid4()))
+        current = _Turn(str(uuid4()), notice_target=notice_target)
         _TURN.set(current)
         try:
             result = await self._send("turn", {}, current.id)
@@ -79,9 +95,31 @@ class HombeeAssistClient:
         with suppress(HomeAssistantError):
             await self._send("finish", {}, str(uuid4()), turn=current, diagnose=False)
 
-    async def request(self, stage: str, payload: dict[str, Any]) -> dict[str, Any]:
+    def set_notice_target(self, target: NoticeTarget | None) -> None:
+        current = _TURN.get()
+        if current is not None and current.notice_target is None:
+            current.notice_target = target
+
+    def play_notice(
+        self, notice: VoiceNotice, target: NoticeTarget | None = None
+    ) -> bool:
+        current = _TURN.get()
+        if current is None:
+            return self.notices.play(target, notice)
+        if current.notice_queued:
+            return True
+        current.notice_queued = self.notices.play(
+            current.notice_target or target, notice
+        )
+        return current.notice_queued
+
+    async def request(
+        self, stage: str, payload: dict[str, Any], *, notice_target=None
+    ) -> dict[str, Any]:
         """Reserve before recognition/actions and never retry provider writes."""
-        current = await self._begin(force=stage == "transcription")
+        current = await self._begin(
+            force=stage == "transcription", notice_target=notice_target
+        )
         try:
             result = await self._send(stage, payload, str(uuid4()), turn=current)
         except HomeAssistantError:
@@ -157,6 +195,4 @@ class HombeeAssistClient:
                     title="Hombee Voice needs attention",
                     notification_id="hombee_voice",
                 )
-            raise HomeAssistantError(
-                "Hombee Voice could not complete this request. Check Pro configuration."
-            ) from error
+            raise AssistRequestError(code, stage) from error

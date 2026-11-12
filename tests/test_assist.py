@@ -301,8 +301,9 @@ async def test_native_audio_envelope_and_speech(hass):
     async def audio():
         yield bytes(32000)
 
-    async def gateway(stage, payload):
+    async def gateway(stage, payload, *, notice_target=None):
         if stage == "transcription":
+            assert notice_target is None
             with wave.open(io.BytesIO(base64.b64decode(payload["audio"])), "rb") as wav:
                 assert wav.getframerate() == 16000
                 assert wav.getnframes() == 16000

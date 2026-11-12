@@ -5,8 +5,10 @@ from __future__ import annotations
 import base64
 
 from homeassistant.components.tts import TextToSpeechEntity
+from homeassistant.exceptions import HomeAssistantError
 
 from .assist import ASSIST_LANGUAGES, HombeeAssistEntity
+from .assist_device_notices import VoiceNotice
 from .assist_notices import async_notice_audio
 
 PARALLEL_UPDATES = 0
@@ -31,11 +33,12 @@ class HombeeTextToSpeech(TextToSpeechEntity, HombeeAssistEntity):
         if notice := await async_notice_audio(self.hass, message):
             await self.client.finish()
             return "wav", notice
-        result = await self.client.request(
-            "speech",
-            {
-                "text": message,
-                "language": language,
-            },
-        )
-        return "wav", base64.b64decode(result["audio"], validate=True)
+        try:
+            result = await self.client.request(
+                "speech",
+                {"text": message, "language": language},
+            )
+            return "wav", base64.b64decode(result["audio"], validate=True)
+        except HomeAssistantError, KeyError, TypeError, ValueError:
+            self.client.play_notice(VoiceNotice.UNCERTAIN)
+            raise

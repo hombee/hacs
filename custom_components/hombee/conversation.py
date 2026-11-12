@@ -13,7 +13,9 @@ from probatio import to_openapi
 
 from . import assist_history
 from .assist import HombeeAssistEntity
+from .assist_client import AssistRequestError
 from .assist_conversation import decode_response
+from .assist_device_notices import VoiceNotice, before_action_notice
 from .assist_notices import failure_notice, limit_notice
 from .const import DOMAIN
 
@@ -88,8 +90,12 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
         return MATCH_ALL
 
     async def _async_handle_message(self, user_input, chat_log):
+        target = self.client.notices.target_for_satellite(
+            user_input.satellite_id, user_input.language
+        )
         try:
             await self.client.begin_conversation()
+            self.client.set_notice_target(target)
             await chat_log.async_provide_llm_data(
                 user_input.as_llm_context(DOMAIN),
                 llm.LLM_API_ASSIST,
@@ -192,7 +198,7 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
         except conversation.ConverseError as error:
             await self.client.finish()
             return error.as_conversation_result()
-        except HomeAssistantError, ValueError, KeyError, TypeError:
+        except (HomeAssistantError, ValueError, KeyError, TypeError) as error:
             await self.client.finish()
             notice = failure_notice(user_input.language)
             chat_log.async_add_assistant_content_without_tools(
@@ -201,9 +207,12 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
                 )
             )
             response = intent.IntentResponse(language=user_input.language)
+            local_notice = VoiceNotice.UNCERTAIN
+            if isinstance(error, AssistRequestError) and error.stage == "turn":
+                local_notice = before_action_notice(error.code)
             response.async_set_error(
                 intent.IntentResponseErrorCode.UNKNOWN,
-                notice,
+                "" if self.client.play_notice(local_notice, target) else notice,
             )
             return conversation.ConversationResult(
                 response=response, conversation_id=chat_log.conversation_id
