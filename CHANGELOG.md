@@ -1,3 +1,9 @@
+## [2.8.1](https://github.com/hombee/hacs/compare/v2.8.0...v2.8.1) (2026-11-12)
+
+### Bug Fixes
+
+* **voice:** route Assist failures to local device notices ([8ad452c](https://github.com/hombee/hacs/commit/8ad452c3233561870a3ccc64761a22aedca57bf0))
+
 ## [2.8.0](https://github.com/hombee/hacs/compare/v2.7.0...v2.8.0) (2026-11-11)
 
 ### Features
