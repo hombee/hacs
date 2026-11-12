@@ -11,6 +11,8 @@ from homeassistant.components import stt
 from homeassistant.exceptions import HomeAssistantError
 
 from .assist import ASSIST_LANGUAGES, HombeeAssistEntity
+from .assist_client import AssistRequestError
+from .assist_device_notices import VoiceNotice, before_action_notice
 
 PARALLEL_UPDATES = 0
 
@@ -54,10 +56,12 @@ class HombeeSpeechToText(stt.SpeechToTextEntity, HombeeAssistEntity):
         self, metadata: stt.SpeechMetadata, stream: AsyncIterable[bytes]
     ) -> stt.SpeechResult:
         """Package PCM in a verifiable WAV envelope, without storing recordings."""
+        target = self.client.notices.target_for_stt(metadata.language)
         pcm = bytearray()
         async for chunk in stream:
             pcm.extend(chunk)
             if len(pcm) > 960_000:
+                self.client.notices.play(target, VoiceNotice.RETRY)
                 return stt.SpeechResult("", stt.SpeechResultState.ERROR)
         if not pcm:
             return stt.SpeechResult("", stt.SpeechResultState.ERROR)
@@ -74,7 +78,10 @@ class HombeeSpeechToText(stt.SpeechToTextEntity, HombeeAssistEntity):
                     "audio": base64.b64encode(buffer.getvalue()).decode("ascii"),
                     "language": metadata.language,
                 },
+                notice_target=target,
             )
-        except HomeAssistantError:
+        except (HomeAssistantError, KeyError, TypeError) as error:
+            code = error.code if isinstance(error, AssistRequestError) else ""
+            self.client.notices.play(target, before_action_notice(code))
             return stt.SpeechResult("", stt.SpeechResultState.ERROR)
         return stt.SpeechResult(result["text"], stt.SpeechResultState.SUCCESS)
