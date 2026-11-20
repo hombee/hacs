@@ -1,3 +1,9 @@
+## [2.9.0](https://github.com/hombee/hacs/compare/v2.8.1...v2.9.0) (2026-11-20)
+
+### Features
+
+* **voice:** stream conversations through Hombee Assist ([cf0ebe3](https://github.com/hombee/hacs/commit/cf0ebe318c51a2f783365af5d182a8aad8cc3aa4))
+
 ## [2.8.1](https://github.com/hombee/hacs/compare/v2.8.0...v2.8.1) (2026-11-12)
 
 ### Bug Fixes
