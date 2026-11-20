@@ -16,6 +16,7 @@ from .assist import HombeeAssistEntity
 from .assist_client import AssistRequestError
 from .assist_conversation import decode_response
 from .assist_device_notices import VoiceNotice, before_action_notice
+from .assist_live_conversation import live_conversation
 from .assist_notices import failure_notice, limit_notice
 from .const import DOMAIN
 
@@ -80,6 +81,7 @@ def _result_counts(content):
 class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
     """HA owns native execution and history; Hombee owns cloud authorization."""
 
+    _attr_supports_streaming = True
     _attr_supported_features = conversation.ConversationEntityFeature.CONTROL
 
     def __init__(self, entry) -> None:
@@ -143,6 +145,15 @@ class HombeeConversation(conversation.ConversationEntity, HombeeAssistEntity):
                 "satelliteId": user_input.satellite_id,
                 "areaId": device.area_id if device else None,
             }
+            if live := self.client.current_voice():
+                return await live_conversation(
+                    self.client,
+                    live,
+                    user_input,
+                    chat_log,
+                    tools=tools,
+                    context=context,
+                )
             for iteration in range(20):
                 payload = {
                     "messages": _messages(chat_log),

@@ -63,6 +63,15 @@ async def async_setup_assist_pipeline(
                 stt_engine=stt_id,
                 tts_engine=tts_id,
                 conversation_engine=conversation_id,
+                prefer_local_intents=False,
+            )
+        elif existing.prefer_local_intents and (
+            existing.stt_engine,
+            existing.conversation_engine,
+            existing.tts_engine,
+        ) == (stt_id, conversation_id, tts_id):
+            await pipeline.async_update_pipeline(
+                hass, existing, prefer_local_intents=False
             )
         return
     created = await pipeline.async_create_default_pipeline(
@@ -71,7 +80,7 @@ async def async_setup_assist_pipeline(
     if created is None:
         raise HomeAssistantError("Choose English or Polish as your Assist language.")
     await pipeline.async_update_pipeline(
-        hass, created, conversation_engine=conversation_id, prefer_local_intents=True
+        hass, created, conversation_engine=conversation_id, prefer_local_intents=False
     )
     hass.config_entries.async_update_entry(
         entry, options={**entry.options, "pipeline_id": created.id}

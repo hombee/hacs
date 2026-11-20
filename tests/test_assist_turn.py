@@ -192,7 +192,8 @@ async def test_native_pipeline_reserves_before_local_action_and_passes_turn_to_t
     run = pipeline.PipelineRun(
         hass=hass,
         context=Context(),
-        pipeline=selected,
+        # Exercise the independent legacy STT and local-intent configuration.
+        pipeline=replace(selected, prefer_local_intents=True),
         start_stage=pipeline.PipelineStage.STT,
         end_stage=pipeline.PipelineStage.TTS,
         event_callback=receive,

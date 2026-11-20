@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 
 from homeassistant.components.tts import TextToSpeechEntity
+from homeassistant.components.tts.entity import TTSAudioResponse
 from homeassistant.exceptions import HomeAssistantError
 
 from .assist import ASSIST_LANGUAGES, HombeeAssistEntity
@@ -27,9 +28,28 @@ class HombeeTextToSpeech(TextToSpeechEntity, HombeeAssistEntity):
 
     def __init__(self, entry) -> None:
         super().__init__(entry, "speech")
+        # Keep clips from before the streaming upgrade in a separate HA cache.
+        self._attr_default_options = {"hombee_cache_version": 1}
+
+    async def async_stream_tts_audio(self, request):
+        message = "".join([part async for part in request.message_gen])
+        if live := self.client.audio_replies.get(message):
+            return TTSAudioResponse("wav", live.playback())
+        extension, wav = await self.async_get_tts_audio(
+            message, request.language, request.options
+        )
+
+        async def audio():
+            yield wav
+
+        return TTSAudioResponse(extension, audio())
 
     async def async_get_tts_audio(self, message, language, options):
         """Return an ordinary WAV that all Assist players can consume."""
+        if live := self.client.audio_replies.get(message):
+            return "wav", b"".join([chunk async for chunk in live.playback()])
+        if message.startswith("Hombee voice audio ") and "/" in message:
+            raise HomeAssistantError("This voice reply has expired.")
         if notice := await async_notice_audio(self.hass, message):
             await self.client.finish()
             return "wav", notice

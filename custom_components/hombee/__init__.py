@@ -140,7 +140,16 @@ async def _async_setup_air_entry(
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unloads one Hombee config entry."""
     if entry.data.get(CONF_ENTRY_KIND) == ASSIST_ENTRY_KIND:
-        return await hass.config_entries.async_unload_platforms(entry, ASSIST_PLATFORMS)
+        unloaded = await hass.config_entries.async_unload_platforms(
+            entry, ASSIST_PLATFORMS
+        )
+        if unloaded:
+            for voice in list(entry.runtime_data.active_voice):
+                await voice.close()
+            for chat in entry.runtime_data.voice_chats.values():
+                if chat.resumed:
+                    await entry.runtime_data.end_voice_chat(chat.key)
+        return unloaded
     runtime = entry.runtime_data
     if isinstance(runtime, ManagedLightingManager):
         unloaded = await hass.config_entries.async_unload_platforms(
