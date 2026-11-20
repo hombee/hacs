@@ -7,7 +7,7 @@ import wave
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from homeassistant.components import conversation, stt
+from homeassistant.components import conversation, stt, tts
 from homeassistant.components.assist_pipeline import pipeline
 from homeassistant.components.homeassistant.exposed_entities import async_expose_entity
 from homeassistant.components.intent.timers import async_register_timer_handler
@@ -44,9 +44,15 @@ async def test_assist_pipeline_survives_reload_without_duplicates(hass):
     ):
         assert registry.async_get_entity_id(domain, DOMAIN, f"hombee_assist_{stage}")
     pipeline_id = entry.options["pipeline_id"]
+    previous = pipeline.async_get_pipeline(hass, pipeline_id)
+    await pipeline.async_update_pipeline(
+        hass, previous, name="Kitchen assistant", prefer_local_intents=True
+    )
     assert await hass.config_entries.async_reload(entry.entry_id)
     await hass.async_block_till_done()
     assert entry.options["pipeline_id"] == pipeline_id
+    upgraded = pipeline.async_get_pipeline(hass, pipeline_id)
+    assert upgraded.name == "Kitchen assistant" and not upgraded.prefer_local_intents
     assert (
         len([p for p in pipeline.async_get_pipelines(hass) if p.id == pipeline_id]) == 1
     )
@@ -320,3 +326,34 @@ async def test_native_audio_envelope_and_speech(hass):
         assert await HombeeTextToSpeech(entry).async_get_tts_audio(
             "Światło włączone", "pl", {}
         ) == ("wav", b"RIFF test")
+
+
+async def test_announcement_upgrade_skips_chirp_cache_and_reuses_gemini_audio(hass):
+    entry = MockConfigEntry(
+        domain=DOMAIN, unique_id="assist", data={"entry_kind": "assist"}
+    )
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    engine = pipeline.async_get_pipeline(hass, entry.options["pipeline_id"]).tts_engine
+    message = "Światło włączone"
+    options = {"preferred_format": "wav"}
+    manager = hass.data[tts.DATA_TTS_MANAGER]
+    with patch.object(entry.runtime_data, "request", new_callable=AsyncMock) as gateway:
+        gateway.return_value = {"audio": base64.b64encode(b"old clip").decode()}
+        cached = manager.async_cache_message_in_memory(
+            engine, message, False, "pl", options
+        )
+        assert (
+            b"".join([chunk async for chunk in cached.async_stream_data()])
+            == b"old clip"
+        )
+        gateway.reset_mock()
+        gateway.return_value = {"audio": base64.b64encode(b"new clip").decode()}
+        for _ in range(2):
+            stream = manager.async_create_result_stream(engine, False, "pl", options)
+            stream.async_set_message(message)
+            assert (
+                b"".join([chunk async for chunk in stream.async_stream_result()])
+                == b"new clip"
+            )
+        gateway.assert_awaited_once_with("speech", {"text": message, "language": "pl"})

@@ -252,35 +252,21 @@ reachable remote URL. Pro includes one instance; additional Home Assistant
 packages add instance slots. Hombee creates a **Hombee Voice** Assist
 pipeline automatically. Select it on your Assist device or voice satellite.
 
-The integration provides native `stt`, `conversation`, and `tts` entities.
-The pipeline is created with local intents preferred. Home Assistant executes
-its native Assist tools with exposed-entity permissions and keeps conversation
-history, room context and device context. Hombee also discovers and executes
-the Hombee tools currently authorized for the account that enabled Voice on the
-instance, including Workforce operations. It checks current account permissions
-in the backend; Home Assistant needs no additional login or MCP configuration.
-Mixed requests can use both native device actions and Hombee operations. The
-backend allows up to 20 model requests and 40 combined native and Hombee tool
-executions per turn, within five minutes and the reserved spend allowance.
-It reserves the final model request for a report of completed and unfinished
-work. Three consecutive tool failures or three identical calls without progress
-also stop further actions and produce a report. Each instance can process at
-most two complex requests at once. A final response releases its work slot;
-delivering its speech does not occupy that slot. These limits apply to each
-new spoken request; follow-up requests keep the native conversation history.
+The existing Hombee Voice pipeline streams English or Polish microphone audio
+to Gemini Live through the Hombee gateway. Gemini detects the end of speech
+and streams its spoken reply back. On Voice Preview Edition, wait for playback
+to finish before speaking again. You have seven seconds to start a follow-up
+without repeating the wake word. Say goodbye or let that window expire to end
+the conversation. A silent follow-up stays local.
 
-Speech recognition, conversation, and speech synthesis use models selected by
-the Hombee backend. Model selection can change independently of integration
-updates.
-English and Polish speech are supported. Each audio request is limited to
-30 seconds. Requests send audio, conversation context, and the available
-exposed-entity tools to Hombee's metered OpenAI gateway. Your OpenAI API key
-is never stored in Home Assistant. Spoken replies are AI-generated.
-
-Existing Assist devices and satellites supply the audio. The transcription
-provider accepts 16 kHz, 16-bit mono PCM in WAV format; generated speech is
-returned as WAV. Selecting Hombee Voice in the integration menu alone does not
-grant cloud access: complete the association in Hombee Pro configuration.
+Home Assistant executes native tools using its exposed entities and the
+satellite's room context. Hombee account and Workforce requests use the
+existing authorized cloud agent. Each spoken turn keeps the same conversation
+and gets its own reservation. Typed requests and standalone announcements
+continue to use the conversation and TTS entities. Standalone announcements
+use Gemini 3.8 Flash-Lite TTS. Both announcements and Gemini Live conversations
+use Google's Achernar voice. Pairing and satellite pipeline selections carry
+over when upgrading.
 
 ### Usage and subscription
 

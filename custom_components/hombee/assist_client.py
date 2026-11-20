@@ -38,6 +38,7 @@ class _Turn:
     closed: bool = False
     notice_target: NoticeTarget | None = None
     notice_queued: bool = False
+    live: Any = None
 
 
 _TURN: ContextVar[_Turn | None] = ContextVar("hombee_assist_turn", default=None)
@@ -50,7 +51,38 @@ class HombeeAssistClient:
         self.hass = hass
         self.entry = entry
         self.diagnostic: dict[str, Any] | None = None
+        self.voice_chats = {}
+        self.audio_replies = {}
+        self.active_voice = set()
         self.notices = DeviceNotices(hass, entry)
+
+    async def end_voice_chat(self, key):
+        """Release the held Gemini session when the local follow-up window closes."""
+        data = self.entry.data
+        url = f"{data['gatewayUrl']}/api/assist/instances/{data['instanceId']}/live"
+        # A disconnected satellite also expires on the gateway's idle timer.
+        with suppress(ClientError, TimeoutError):
+            async with async_get_clientsession(self.hass).delete(
+                url,
+                headers={
+                    "Authorization": f"Bearer {data['token']}",
+                    "X-Hombee-Live-Session": key,
+                },
+                timeout=ClientTimeout(total=2),
+                allow_redirects=False,
+            ):
+                pass
+
+    async def begin_voice(self, target):
+        return await self._begin(force=True, notice_target=target)
+
+    def current_voice(self):
+        turn = _TURN.get()
+        return (
+            turn.live
+            if turn and not turn.closed and turn.live in self.active_voice
+            else None
+        )
 
     async def begin_conversation(self) -> None:
         """A follow-up is a new turn, even when it shares a conversation ID."""
@@ -85,9 +117,9 @@ class HombeeAssistClient:
             raise
         return current
 
-    async def finish(self) -> None:
+    async def finish(self, turn=None) -> None:
         """Release unused capacity; ambiguous in-flight costs stay reserved."""
-        current = _TURN.get()
+        current = turn or _TURN.get()
         if current is None or current.closed:
             return
         current.closed = True
