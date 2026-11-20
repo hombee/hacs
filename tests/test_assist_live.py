@@ -139,7 +139,7 @@ async def test_satellite_streams_audio_and_reuses_session(hass, aioclient_mock):
     async def observed_playback(live):
         async for part in playback(live):
             if part.startswith(b"\x10\x01"):
-                # Consume native samples before Gemini completes its response.
+                # Consume native samples before the gateway completes its response.
                 live.socket.frames.put_nowait({"done": True, "ended": False})
             yield part
 

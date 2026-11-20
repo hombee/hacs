@@ -253,8 +253,8 @@ packages add instance slots. Hombee creates a **Hombee Voice** Assist
 pipeline automatically. Select it on your Assist device or voice satellite.
 
 The existing Hombee Voice pipeline streams English or Polish microphone audio
-to Gemini Live through the Hombee gateway. Gemini detects the end of speech
-and streams its spoken reply back. On Voice Preview Edition, wait for playback
+to the Hombee gateway, which detects the end of speech and streams the spoken
+reply back. On Voice Preview Edition, wait for playback
 to finish before speaking again. You have seven seconds to start a follow-up
 without repeating the wake word. Say goodbye or let that window expire to end
 the conversation. A silent follow-up stays local.
@@ -263,10 +263,9 @@ Home Assistant executes native tools using its exposed entities and the
 satellite's room context. Hombee account and Workforce requests use the
 existing authorized cloud agent. Each spoken turn keeps the same conversation
 and gets its own reservation. Typed requests and standalone announcements
-continue to use the conversation and TTS entities. Standalone announcements
-use Gemini 3.8 Flash-Lite TTS. Both announcements and Gemini Live conversations
-use Google's Achernar voice. Pairing and satellite pipeline selections carry
-over when upgrading.
+continue to use the conversation and TTS entities. The gateway selects the
+voice for conversations and announcements. Pairing and satellite pipeline
+selections carry over when upgrading.
 
 ### Usage and subscription
 

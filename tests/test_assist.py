@@ -328,7 +328,7 @@ async def test_native_audio_envelope_and_speech(hass):
         ) == ("wav", b"RIFF test")
 
 
-async def test_announcement_upgrade_skips_chirp_cache_and_reuses_gemini_audio(hass):
+async def test_announcement_upgrade_skips_old_cache_and_reuses_new_audio(hass):
     entry = MockConfigEntry(
         domain=DOMAIN, unique_id="assist", data={"entry_kind": "assist"}
     )

@@ -57,7 +57,7 @@ class HombeeAssistClient:
         self.notices = DeviceNotices(hass, entry)
 
     async def end_voice_chat(self, key):
-        """Release the held Gemini session when the local follow-up window closes."""
+        """Release the held gateway session when the local follow-up window closes."""
         data = self.entry.data
         url = f"{data['gatewayUrl']}/api/assist/instances/{data['instanceId']}/live"
         # A disconnected satellite also expires on the gateway's idle timer.

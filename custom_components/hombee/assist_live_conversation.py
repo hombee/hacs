@@ -1,4 +1,4 @@
-"""Handle Gemini tool requests only after Assist supplies the user's HA context."""
+"""Handle gateway tool requests after Assist supplies the user's HA context."""
 
 import asyncio
 import json

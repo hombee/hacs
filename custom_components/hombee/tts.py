@@ -28,10 +28,8 @@ class HombeeTextToSpeech(TextToSpeechEntity, HombeeAssistEntity):
 
     def __init__(self, entry) -> None:
         super().__init__(entry, "speech")
-        # Home Assistant includes default options in its on-disk announcement cache key.
-        self._attr_default_options = {
-            "hombee_synthesis": "gemini-3.8-flash-lite-tts-achernar"
-        }
+        # Keep clips from before the streaming upgrade in a separate HA cache.
+        self._attr_default_options = {"hombee_cache_version": 1}
 
     async def async_stream_tts_audio(self, request):
         message = "".join([part async for part in request.message_gen])

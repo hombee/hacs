@@ -71,7 +71,7 @@ class LiveChat:
 
 
 class LiveTurn:
-    """One reader transfers from STT to conversation when Gemini endpoints."""
+    """Pass the gateway stream from STT to conversation when the speaker finishes."""
 
     def __init__(self, client, turn, chat, socket, output):
         self.output = output
